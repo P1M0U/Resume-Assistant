@@ -1,0 +1,110 @@
+.welcome-section {
+  margin-bottom: 24px;
+}
+
+.welcome-card {
+  background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+  color: white;
+  border: none;
+}
+
+.welcome-card :deep(.el-card__body) {
+  padding: 32px;
+}
+
+.welcome-content h2 {
+  margin: 0 0 12px 0;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.welcome-content p {
+  margin: 0;
+  font-size: 16px;
+  opacity: 0.9;
+}
+
+.feature-section {
+  margin-bottom: 24px;
+}
+
+.feature-card {
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  padding: 20px;
+}
+
+.feature-card:hover {
+  transform: translateY(-4px);
+}
+
+.feature-card :deep(.el-card__body) {
+  padding: 24px;
+}
+
+.feature-icon {
+  margin-bottom: 16px;
+}
+
+.feature-card h3 {
+  margin: 0 0 12px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #303133;
+}
+
+.feature-card p {
+  margin: 0;
+  font-size: 14px;
+  color: #909399;
+  line-height: 1.6;
+}
+
+.quick-actions {
+  margin-top: 32px;
+}
+
+.quick-actions h3 {
+  margin: 0 0 16px 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #303133;
+}
+
+.action-card {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.action-card:hover {
+  transform: translateY(-2px);
+  border-color: #409eff;
+}
+
+.action-card :deep(.el-card__body) {
+  padding: 20px;
+}
+
+.action-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.action-text h4 {
+  margin: 0 0 8px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #303133;
+}
+
+.action-text p {
+  margin: 0;
+  font-size: 14px;
+  color: #909399;
+}
+
+.el-button {
+  border-radius: 8px;
+}

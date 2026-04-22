@@ -1,0 +1,10 @@
+* text=auto eol=lf
+* text=auto
+*.vue text eol=lf
+*.js text eol=lf
+*.ts text eol=lf
+*.dockerfile text eol=lf
+Dockerfile text eol=lf
+*.md text eol=lf
+*.ts text eol=lf
+
