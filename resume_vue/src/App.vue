@@ -55,7 +55,7 @@ const handleRegister = (): void => {
               <el-icon><HomeFilled /></el-icon>
               <span>首页</span>
             </el-menu-item>
-            <el-menu-item index="resume-analyze">
+            <el-menu-item index="resume-analyze" >
               <el-icon><Document /></el-icon>
               <span>简历分析</span>
             </el-menu-item>

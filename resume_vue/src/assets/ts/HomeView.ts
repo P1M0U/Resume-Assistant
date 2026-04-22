@@ -1,5 +1,7 @@
 import { ref, type Ref } from 'vue'
+// import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
+// import { useResumeStore } from '../../stores/resume'
 
 /**
  * 功能特性接口定义
@@ -21,6 +23,9 @@ interface UseHomeViewReturn {
   handleInputJob: () => void
   handleFeatureClick: (featureId: string) => void
   handleFileChange: (event: Event) => void
+  jobDialogVisible: Ref<boolean>
+  jobForm: Ref<{ jobName: string }>
+  confirmJobInput: () => void
 }
 
 /**
@@ -100,10 +105,36 @@ export function useHomeView(fileInputRef: Ref<HTMLInputElement | null>): UseHome
   }
 
   /**
+   * 控制岗位输入弹窗显示状态
+   */
+  const jobDialogVisible = ref(false)
+
+  /**
+   * 岗位表单数据
+   */
+  const jobForm = ref({
+    jobName: ''
+  })
+
+  /**
    * 处理输入期望岗位按钮点击
    */
   const handleInputJob = (): void => {
-    ElMessage.info('请输入您的期望岗位名称')
+    jobDialogVisible.value = true
+  }
+
+  /**
+   * 确认岗位输入
+   */
+  const confirmJobInput = (): void => {
+    if (!jobForm.value.jobName.trim()) {
+      ElMessage.warning('请输入期望岗位名称')
+      return
+    }
+    ElMessage.success(`已提交期望岗位：${jobForm.value.jobName}`)
+    console.log('期望岗位：', jobForm.value.jobName)
+    jobDialogVisible.value = false
+    jobForm.value.jobName = ''
   }
 
   /**
@@ -132,5 +163,8 @@ export function useHomeView(fileInputRef: Ref<HTMLInputElement | null>): UseHome
     handleInputJob,
     handleFeatureClick,
     handleFileChange,
+    jobDialogVisible,
+    jobForm,
+    confirmJobInput,
   }
 }

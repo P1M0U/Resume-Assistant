@@ -1,0 +1,175 @@
+.resume-analysis-view {
+  min-height: calc(100vh - 120px);
+}
+
+.page-header {
+  margin-bottom: 24px;
+}
+
+.page-header h2 {
+  margin: 0 0 8px 0;
+  font-size: 28px;
+  font-weight: 600;
+  color: #303133;
+}
+
+.page-header p {
+  margin: 0;
+  font-size: 14px;
+  color: #909399;
+}
+
+.upload-card {
+  margin-bottom: 20px;
+}
+
+.upload-area {
+  padding: 60px 20px;
+  text-align: center;
+  cursor: pointer;
+  border: 2px dashed #dcdfe6;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.upload-area:hover {
+  border-color: #409eff;
+  background-color: #f5f7fa;
+}
+
+.upload-area h3 {
+  margin: 16px 0 8px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #303133;
+}
+
+.upload-area p {
+  margin: 0;
+  font-size: 14px;
+  color: #909399;
+}
+
+.file-info-card {
+  margin-bottom: 20px;
+}
+
+.file-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.file-details {
+  flex: 1;
+}
+
+.file-details h4 {
+  margin: 0 0 4px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #303133;
+}
+
+.file-details p {
+  margin: 0;
+  font-size: 14px;
+  color: #909399;
+}
+
+.analysis-result {
+  margin-top: 24px;
+}
+
+.result-card {
+  margin-bottom: 20px;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.card-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #303133;
+}
+
+.result-content {
+  padding: 10px 0;
+}
+
+.score-section {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  margin-bottom: 20px;
+}
+
+.score-circle {
+  flex-shrink: 0;
+}
+
+.score-text h4 {
+  margin: 0 0 8px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #303133;
+}
+
+.score-text p {
+  margin: 0;
+  font-size: 14px;
+  color: #67c23a;
+  font-weight: 500;
+}
+
+.detail-section {
+  margin-bottom: 20px;
+}
+
+.detail-section h4 {
+  margin: 0 0 12px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #303133;
+}
+
+.tag-item {
+  margin-right: 8px;
+  margin-bottom: 8px;
+}
+
+.suggestions-row {
+  margin-top: 20px;
+}
+
+.suggestions-card {
+  margin-bottom: 20px;
+}
+
+.suggestion-item {
+  margin: 0;
+}
+
+.suggestion-item h4 {
+  margin: 0 0 8px 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: #303133;
+}
+
+.suggestion-item p {
+  margin: 0;
+  font-size: 14px;
+  color: #606266;
+  line-height: 1.6;
+}
+
+.el-timeline-item__timestamp {
+  color: #409eff !important;
+  font-weight: 500;
+}

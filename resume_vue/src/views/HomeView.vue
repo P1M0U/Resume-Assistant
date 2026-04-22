@@ -63,6 +63,23 @@
         </el-col>
       </el-row>
     </div>
+    <el-dialog v-model="jobDialogVisible" title="输入期望岗位" width="500px" :close-on-click-modal="false">
+      <el-form :model="jobForm" label-width="100px">
+        <el-form-item label="岗位名称">
+          <el-input 
+            v-model="jobForm.jobName" 
+            placeholder="请输入您的期望岗位名称"
+            clearable
+          />
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="jobDialogVisible = false">取消</el-button>
+          <el-button type="primary" @click="confirmJobInput">确认</el-button>
+        </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -72,7 +89,16 @@ import { useHomeView } from '../assets/ts/HomeView'
 
 const fileInputRef = ref<HTMLInputElement | null>(null)
 
-const { features, handleUpload, handleInputJob, handleFeatureClick, handleFileChange } = useHomeView(fileInputRef)
+const { 
+  features, 
+  handleUpload, 
+  handleInputJob, 
+  handleFeatureClick, 
+  handleFileChange,
+  jobDialogVisible,
+  jobForm,
+  confirmJobInput
+} = useHomeView(fileInputRef)
 </script>
 
 <style src="../assets/css/HomeView.css"></style>
