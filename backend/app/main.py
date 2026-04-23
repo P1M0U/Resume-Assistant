@@ -1,115 +1,252 @@
 # Author:CQIE_PIDUJING
-from fastapi import FastAPI, Depends, Request, HTTPException, status
-from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import text
-from db.database import get_db, async_engine, Base
-from api.router import router
-from loguru import logger
-# 导入缓存相关模块
-from fastapi_cache import FastAPICache
-from fastapi_cache.backends.redis import RedisBackend
-from core.cache import get_redis_client, check_redis_connection
-# 导入上下文管理器相关模块
+"""
+FastAPI应用主入口文件
+负责应用初始化、中间件配置、路由注册和生命周期管理
+"""
+import sys
+import time
+from pathlib import Path
 from contextlib import asynccontextmanager
 from typing import AsyncGenerator
 
+from fastapi import FastAPI, Request, HTTPException, status
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.gzip import GZipMiddleware
+from fastapi.responses import JSONResponse
+from loguru import logger
+
+from routers.router import router
+from settings import settings
+
+# 配置日志
+def setup_logger():
+    """
+    配置Loguru日志记录器
+    """
+    # 移除默认的处理器
+    logger.remove()
+    
+    # 控制台输出 - 彩色格式
+    logger.add(
+        sys.stdout,
+        format="<green>{time:YYYY-MM-DD HH:mm:ss}</green> | <level>{level: <8}</level> | <cyan>{name}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> - <level>{message}</level>",
+        level="INFO",
+        colorize=True,
+        enqueue=True
+    )
+    
+    # 文件输出 - 详细日志
+    log_path = Path(__file__).parent / "logs"
+    log_path.mkdir(exist_ok=True)
+    
+    logger.add(
+        log_path / "app_{time:YYYY-MM-DD}.log",
+        rotation="00:00",
+        retention="30 days",
+        format="{time:YYYY-MM-DD HH:mm:ss} | {level: <8} | {name}:{function}:{line} - {message}",
+        level="DEBUG",
+        encoding="utf-8",
+        enqueue=True
+    )
+    
+    # 错误日志单独记录
+    logger.add(
+        log_path / "error_{time:YYYY-MM-DD}.log",
+        rotation="00:00",
+        retention="90 days",
+        format="{time:YYYY-MM-DD HH:mm:ss} | {level: <8} | {name}:{function}:{line} - {message}",
+        level="ERROR",
+        encoding="utf-8",
+        enqueue=True
+    )
+
+# 初始化日志
+setup_logger()
+
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
-    """应用生命周期管理"""
-
-    # 启动阶段 - 相当于@app.on_event("startup")
-    logger.debug("开始初始化应用资源...")
-
-    # 创建数据库表
-    # logger.debug("正在创建数据库表...")
-    # async with async_engine.begin() as conn:
-    #     await conn.run_sync(Base.metadata.create_all)
-    # logger.debug("数据库表创建完成")
-
-    logger.debug("应用资源初始化完成，应用启动成功")
-
-    # 程序运行阶段 - yield 之后的代码在应用关闭时执行
+    """
+    应用生命周期管理
+    负责应用启动和关闭时的资源初始化与清理
+    """
+    # ========== 启动阶段 ==========
+    logger.info("="*50)
+    logger.info("开始初始化应用资源...")
+    logger.info(f"应用名称: {app.title}")
+    logger.info(f"应用版本: {app.version}")
+    
+    
+    # 初始化智谱AI配置
+    zhipu_api_key = settings["ZHIPU"]["API_KEY"]
+    if zhipu_api_key:
+        logger.info("智谱AI配置加载成功")
+    else:
+        logger.warning("未配置智谱AI API密钥")
+    
+    logger.info("应用资源初始化完成")
+    logger.info("="*50)
+    
     yield
+    
+    # ========== 关闭阶段 ==========
+    logger.info("="*50)
+    logger.info("开始关闭应用资源...")
+    
+    # 清理资源
+    logger.info("应用资源关闭完成")
+    logger.info("="*50)
 
-    # 关闭阶段 - 相当于@app.on_event("shutdown")
-    logger.debug("开始关闭应用资源...")
-
-    # 关闭数据库连接池
-    try:
-        await async_engine.dispose()
-        logger.debug("数据库连接池已关闭")
-    except Exception as e:
-        logger.error(f"关闭数据库连接池时出现异常: {type(e).__name__}: {e}")
-
-    # 同时尝试通过FastAPICache清理
-    try:
-        if hasattr(FastAPICache, 'clear'):
-            try:
-                await FastAPICache.clear()
-                logger.debug("FastAPICache缓存已清理")
-            except Exception as e:
-                logger.error(f"清理FastAPICache缓存时出现异常: {type(e).__name__}: {e}")
-    except Exception as e:
-        logger.error(f"通过FastAPICache清理时出现异常: {type(e).__name__}: {e}")
-
-    logger.debug("应用资源关闭完成")
-
-# FastAPI版本为0.118.3
+# 创建FastAPI应用实例
 app = FastAPI(
     title="AI简历助手",
-    version="1.0",
-    description="基于FastAPI的高性能后端服务",
-    lifespan=lifespan  # 使用lifespan上下文管理器
+    version="1.0.0",
+    description="""
+    ## 🤖 AI简历助手 API
+    
+    基于智谱AI大模型的智能简历分析与岗位推荐系统
+    
+    ### 主要功能
+    - 📄 **简历分析**: 智能解析简历内容，提供专业的优化建议
+    - 💼 **岗位推荐**: 根据简历内容推荐匹配度高的岗位
+    - 🎯 **技能评估**: 分析技能匹配度，提供提升建议
+    
+    ### 技术栈
+    - FastAPI + Python 3.13
+    - 智谱AI GLM-4
+    - LangChain
+    """,
+    lifespan=lifespan,
+    docs_url="/docs",
+    redoc_url="/redoc",
+    openapi_url="/openapi.json"
 )
 
-# 添加CORS配置，允许前端访问
+# ========== 添加中间件 ==========
+
+# Gzip压缩中间件
+app.add_middleware(GZipMiddleware, minimum_size=1000)
+
+# CORS中间件
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://localhost", "http://127.0.0.1"],
+    allow_origins=[
+        "http://localhost:5173",
+        "http://localhost:5174",
+        "http://localhost",
+        "http://127.0.0.1",
+        "http://127.0.0.1:5173",
+        "http://127.0.0.1:5174",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
-    expose_headers=["*"]  # 暴露所有响应头
+    expose_headers=["*"],
+    max_age=3600
 )
 
-# 集成API路由
-app.include_router(router)
+
+@app.middleware("http")
+async def log_requests(request: Request, call_next):
+    """
+    请求日志中间件
+    记录每个请求的方法、路径、处理时间和状态码
+    """
+    start_time = time.time()
+    
+    # 记录请求信息
+    logger.info(f"请求开始 | {request.method} {request.url.path}")
+    
+    # 处理请求
+    response = await call_next(request)
+    
+    # 计算处理时间
+    process_time = time.time() - start_time
+    
+    # 记录响应信息
+    logger.info(
+        f"请求完成 | {request.method} {request.url.path} | "
+        f"状态码: {response.status_code} | 耗时: {process_time:.3f}s"
+    )
+    
+    # 添加处理时间到响应头
+    response.headers["X-Process-Time"] = f"{process_time:.3f}s"
+    
+    return response
+
+# ========== 注册路由 ==========
+app.include_router(router, tags=["API"])
 
 
-@app.get("/welcome")
+# ========== 核心端点 ==========
+
+@app.get("/", tags=["根路径"])
+async def root():
+    """
+    根路径欢迎信息
+    """
+    return {
+        "message": "欢迎使用AI简历助手",
+        "docs": "/docs",
+        "version": "1.0.0"
+    }
+
+
+@app.get("/health", tags=["健康检查"])
+async def health_check():
+    """
+    健康检查端点
+    用于监控服务运行状态
+    """
+    return {
+        "status": "healthy",
+        "service": "AI简历助手",
+        "version": "1.0.0"
+    }
+
+
+@app.get("/welcome", tags=["欢迎"])
 async def read_root():
+    """
+    欢迎页面
+    """
     return {"message": "Welcome to the AI Resume Assistant"}
 
+# ========== 异常处理 ==========
 
-@app.get("/db-test")
-async def test_database_connection(db: AsyncSession = Depends(get_db)):
-    try:
-        # 尝试执行一个简单的查询
-        result = await db.execute(text("SELECT 1"))
-        return {"status": "success", "message": "数据库连接成功", "result": result.scalar()}
-    except Exception as e:
-        return {"status": "error", "message": f"数据库连接失败: {str(e)}"}
-
-# 全局异常处理
-
-
-@app.exception_handler(Exception)
-def global_exception_handler(request: Request, exc: Exception):
-    # 记录异常信息
-    logger.error(f"全局异常: {str(exc)}")
-    # 返回统一格式的错误响应
+@app.exception_handler(HTTPException)
+async def http_exception_handler(request: Request, exc: HTTPException):
+    """
+    HTTP异常处理器
+    """
+    logger.error(f"HTTP异常 | {request.method} {request.url.path} | 状态码: {exc.status_code} | 详情: {exc.detail}")
     return JSONResponse(
-        status_code=500,
-        content={"detail": "Internal server error", "error": str(exc)}
+        status_code=exc.status_code,
+        content={
+            "success": False,
+            "error": {
+                "type": "HTTPException",
+                "code": exc.status_code,
+                "message": exc.detail
+            }
+        }
     )
 
 
-@app.exception_handler(HTTPException)
-def http_exception_handler(request: Request, exc: HTTPException):
-    # 处理FastAPI的HTTP异常
+@app.exception_handler(Exception)
+async def global_exception_handler(request: Request, exc: Exception):
+    """
+    全局异常处理器
+    捕获所有未处理的异常
+    """
+    logger.exception(f"全局异常 | {request.method} {request.url.path} | 异常类型: {type(exc).__name__} | 异常信息: {str(exc)}")
     return JSONResponse(
-        status_code=exc.status_code,
-        content={"detail": exc.detail}
+        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        content={
+            "success": False,
+            "error": {
+                "type": "InternalServerError",
+                "code": 500,
+                "message": "服务器内部错误，请稍后重试" if not get_config("APP.DEBUG", False) else str(exc)
+            }
+        }
     )

@@ -8,7 +8,7 @@ from app.settings import settings
 class ZhipuConfig(BaseModel):
     """智谱AI配置类"""
     
-    api_key: str = settings.config["ZHIPU"]["API_KEY"]
+    api_key: str = settings["ZHIPU"]["API_KEY"]
     model_name: str = "glm-4.7-flash"  # 智谱GLM-4.7-flash模型
     temperature: float = 0.7
     max_tokens: int = 2000

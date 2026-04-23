@@ -1,2 +1,7 @@
 ZHIPU:
   API_KEY: "11e78cf9b1cb4b58bc7f18a9dbd0c299.KX46JNWt9iYXuwHz"
+
+  
+APP:
+  DEBUG: true
+  LOG_LEVEL: "INFO"
