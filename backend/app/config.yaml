@@ -5,3 +5,10 @@ ZHIPU:
 APP:
   DEBUG: true
   LOG_LEVEL: "INFO"
+
+MYSQL:
+  HOST: "localhost"
+  PORT: 3306
+  USER: "root"
+  PASSWORD: "root"
+  DB: "resume_db"

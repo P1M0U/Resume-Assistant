@@ -12,7 +12,8 @@ Thumbs.db
 
 # 编辑器目录和文件
 **/.vscode/
-.trae/**
+!.trae/**
+config.yaml
 .idea
 *.suo
 *.ntvs*
