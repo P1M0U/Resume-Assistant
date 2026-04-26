@@ -22,13 +22,15 @@ from routers.main_router import router
 from settings import ZHIPU_API_KEY, APP_DEBUG
 
 # 配置日志
+
+
 def setup_logger():
     """
     配置Loguru日志记录器
     """
     # 移除默认的处理器
     logger.remove()
-    
+
     # 控制台输出 - 彩色格式
     logger.add(
         sys.stdout,
@@ -37,11 +39,11 @@ def setup_logger():
         colorize=True,
         enqueue=True
     )
-    
+
     # 文件输出 - 详细日志
     log_path = Path(__file__).parent / "logs"
     log_path.mkdir(exist_ok=True)
-    
+
     logger.add(
         log_path / "app_{time:YYYY-MM-DD}.log",
         rotation="00:00",
@@ -51,7 +53,7 @@ def setup_logger():
         encoding="utf-8",
         enqueue=True
     )
-    
+
     # 错误日志单独记录
     logger.add(
         log_path / "error_{time:YYYY-MM-DD}.log",
@@ -63,8 +65,10 @@ def setup_logger():
         enqueue=True
     )
 
+
 # 初始化日志
 setup_logger()
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
@@ -77,24 +81,23 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     logger.info("开始初始化应用资源...")
     logger.info(f"应用名称: {app.title}")
     logger.info(f"应用版本: {app.version}")
-    
-    
+
     # 初始化智谱AI配置
     zhipu_api_key = ZHIPU_API_KEY
     if zhipu_api_key:
         logger.info("智谱AI配置加载成功")
     else:
         logger.warning("未配置智谱AI API密钥")
-    
+
     logger.info("应用资源初始化完成")
     logger.info("="*50)
-    
+
     yield
-    
+
     # ========== 关闭阶段 ==========
     logger.info("="*50)
     logger.info("开始关闭应用资源...")
-    
+
     # 清理资源
     logger.info("应用资源关闭完成")
     logger.info("="*50)
@@ -155,25 +158,25 @@ async def log_requests(request: Request, call_next):
     记录每个请求的方法、路径、处理时间和状态码
     """
     start_time = time.time()
-    
+
     # 记录请求信息
     logger.info(f"请求开始 | {request.method} {request.url.path}")
-    
+
     # 处理请求
     response = await call_next(request)
-    
+
     # 计算处理时间
     process_time = time.time() - start_time
-    
+
     # 记录响应信息
     logger.info(
         f"请求完成 | {request.method} {request.url.path} | "
         f"状态码: {response.status_code} | 耗时: {process_time:.3f}s"
     )
-    
+
     # 添加处理时间到响应头
     response.headers["X-Process-Time"] = f"{process_time:.3f}s"
-    
+
     return response
 
 # ========== 注册路由 ==========
@@ -216,12 +219,14 @@ async def read_root():
 
 # ========== 异常处理 ==========
 
+
 @app.exception_handler(HTTPException)
 async def http_exception_handler(request: Request, exc: HTTPException):
     """
     HTTP异常处理器
     """
-    logger.error(f"HTTP异常 | {request.method} {request.url.path} | 状态码: {exc.status_code} | 详情: {exc.detail}")
+    logger.error(
+        f"HTTP异常 | {request.method} {request.url.path} | 状态码: {exc.status_code} | 详情: {exc.detail}")
     return JSONResponse(
         status_code=exc.status_code,
         content={
@@ -241,7 +246,8 @@ async def global_exception_handler(request: Request, exc: Exception):
     全局异常处理器
     捕获所有未处理的异常
     """
-    logger.exception(f"全局异常 | {request.method} {request.url.path} | 异常类型: {type(exc).__name__} | 异常信息: {str(exc)}")
+    logger.exception(
+        f"全局异常 | {request.method} {request.url.path} | 异常类型: {type(exc).__name__} | 异常信息: {str(exc)}")
     return JSONResponse(
         status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
         content={
