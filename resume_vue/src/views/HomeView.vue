@@ -19,11 +19,7 @@
     <div class="feature-section">
       <el-row :gutter="20">
         <el-col :span="8" v-for="feature in features" :key="feature.id">
-          <el-card
-            class="feature-card"
-            shadow="hover"
-            @click="handleFeatureClick(feature.id)"
-          >
+          <el-card class="feature-card" shadow="hover" @click="handleFeatureClick(feature.id)">
             <div class="feature-icon">
               <el-icon :size="48" :color="feature.color">
                 <component :is="feature.icon" />
@@ -63,14 +59,15 @@
         </el-col>
       </el-row>
     </div>
-    <el-dialog v-model="jobDialogVisible" title="输入期望岗位" width="500px" :close-on-click-modal="false">
+    <el-dialog
+      v-model="jobDialogVisible"
+      title="输入期望岗位"
+      width="500px"
+      :close-on-click-modal="false"
+    >
       <el-form :model="jobForm" label-width="100px">
         <el-form-item label="岗位名称">
-          <el-input 
-            v-model="jobForm.jobName" 
-            placeholder="请输入您的期望岗位名称"
-            clearable
-          />
+          <el-input v-model="jobForm.jobName" placeholder="请输入您的期望岗位名称" clearable />
         </el-form-item>
       </el-form>
       <template #footer>
@@ -89,15 +86,15 @@ import { useHomeView } from '../assets/ts/HomeView'
 
 const fileInputRef = ref<HTMLInputElement | null>(null)
 
-const { 
-  features, 
-  handleUpload, 
-  handleInputJob, 
-  handleFeatureClick, 
+const {
+  features,
+  handleUpload,
+  handleInputJob,
+  handleFeatureClick,
   handleFileChange,
   jobDialogVisible,
   jobForm,
-  confirmJobInput
+  confirmJobInput,
 } = useHomeView(fileInputRef)
 </script>
 

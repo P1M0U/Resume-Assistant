@@ -1,7 +1,7 @@
 import { ref, type Ref } from 'vue'
-// import { useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
-// import { useResumeStore } from '../../stores/resume'
+import { useResumeStore } from '../../stores/resume'
 
 /**
  * 功能特性接口定义
@@ -34,6 +34,9 @@ interface UseHomeViewReturn {
  * @returns 响应式数据和方法
  */
 export function useHomeView(fileInputRef: Ref<HTMLInputElement | null>): UseHomeViewReturn {
+  const router = useRouter()
+  const resumeStore = useResumeStore()
+
   const features: Ref<Feature[]> = ref([
     {
       id: 'analyze',
@@ -74,7 +77,7 @@ export function useHomeView(fileInputRef: Ref<HTMLInputElement | null>): UseHome
   const handleFileChange = (event: Event): void => {
     const target = event.target as HTMLInputElement
     const file = target.files?.[0]
-    
+
     if (!file) {
       return
     }
@@ -96,12 +99,17 @@ export function useHomeView(fileInputRef: Ref<HTMLInputElement | null>): UseHome
       return
     }
 
-    ElMessage.success(`已选择文件：${file.name}`)
+    resumeStore.setUploadedFile(file)
+    ElMessage.success(`已选择文件：${file.name}，正在跳转到分析页面...`)
     console.log('上传的文件：', file)
 
     if (target) {
       target.value = ''
     }
+
+    setTimeout(() => {
+      router.push({ name: 'resume-analyze' })
+    }, 500)
   }
 
   /**
@@ -113,7 +121,7 @@ export function useHomeView(fileInputRef: Ref<HTMLInputElement | null>): UseHome
    * 岗位表单数据
    */
   const jobForm = ref({
-    jobName: ''
+    jobName: '',
   })
 
   /**

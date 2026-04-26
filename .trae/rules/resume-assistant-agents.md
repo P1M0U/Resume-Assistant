@@ -6,4 +6,4 @@
    - 前端：Vue3 + TypeScript + ElementPlus
    - 后端：FastAPI + Langchain
    - 数据库：MySQL
-
+   - Python包管理器：UV

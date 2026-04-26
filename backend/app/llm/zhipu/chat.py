@@ -3,15 +3,19 @@ from typing import Optional
 from pydantic import BaseModel
 from langchain_community.chat_models import ChatZhipuAI
 from langchain_community.embeddings import ZhipuAIEmbeddings
-from app.settings import settings
+from settings import (ZHIPU_API_KEY, 
+    ZHIPU_MODEL_NAME, 
+    ZHIPU_TEMPERATURE, 
+    ZHIPU_MAX_TOKENS
+)
 
 class ZhipuConfig(BaseModel):
     """智谱AI配置类"""
     
-    api_key: str = settings["ZHIPU"]["API_KEY"]
-    model_name: str = "glm-4.7-flash"  # 智谱GLM-4.7-flash模型
-    temperature: float = 0.7
-    max_tokens: int = 2000
+    api_key: str = ZHIPU_API_KEY
+    model_name: str = ZHIPU_MODEL_NAME  # 智谱GLM-4.7-flash模型
+    temperature: float = ZHIPU_TEMPERATURE
+    max_tokens: int = ZHIPU_MAX_TOKENS
     streaming: bool = False
     
     def get_chat_model(self) -> ChatZhipuAI:

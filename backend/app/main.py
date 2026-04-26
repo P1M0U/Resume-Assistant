@@ -9,14 +9,17 @@ from pathlib import Path
 from contextlib import asynccontextmanager
 from typing import AsyncGenerator
 
+# 必须先导入settings，确保sys.path被设置
+import settings
+
 from fastapi import FastAPI, Request, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.responses import JSONResponse
 from loguru import logger
 
-from routers.router import router
-from settings import settings
+from routers.main_router import router
+from settings import ZHIPU_API_KEY, APP_DEBUG
 
 # 配置日志
 def setup_logger():
@@ -77,7 +80,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     
     
     # 初始化智谱AI配置
-    zhipu_api_key = settings["ZHIPU"]["API_KEY"]
+    zhipu_api_key = ZHIPU_API_KEY
     if zhipu_api_key:
         logger.info("智谱AI配置加载成功")
     else:
@@ -174,7 +177,7 @@ async def log_requests(request: Request, call_next):
     return response
 
 # ========== 注册路由 ==========
-app.include_router(router, tags=["API"])
+app.include_router(router, prefix="/api", tags=["API"])
 
 
 # ========== 核心端点 ==========
@@ -246,7 +249,7 @@ async def global_exception_handler(request: Request, exc: Exception):
             "error": {
                 "type": "InternalServerError",
                 "code": 500,
-                "message": "服务器内部错误，请稍后重试" if not get_config("APP.DEBUG", False) else str(exc)
+                "message": "服务器内部错误，请稍后重试" if not APP_DEBUG else str(exc)
             }
         }
     )

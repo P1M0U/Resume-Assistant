@@ -39,12 +39,8 @@ const handleRegister = (): void => {
             <h1>AI简历助手</h1>
           </div>
           <div class="header-actions">
-            <el-button @click="handleLogin">
-              登录
-            </el-button>
-            <el-button type="primary" @click="handleRegister">
-              注册
-            </el-button>
+            <el-button @click="handleLogin"> 登录 </el-button>
+            <el-button type="primary" @click="handleRegister"> 注册 </el-button>
           </div>
         </div>
       </el-header>
@@ -55,7 +51,7 @@ const handleRegister = (): void => {
               <el-icon><HomeFilled /></el-icon>
               <span>首页</span>
             </el-menu-item>
-            <el-menu-item index="resume-analyze" >
+            <el-menu-item index="resume-analyze">
               <el-icon><Document /></el-icon>
               <span>简历分析</span>
             </el-menu-item>

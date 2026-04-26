@@ -16,7 +16,12 @@
     <el-row :gutter="20">
       <el-col :span="24">
         <el-card class="upload-card" shadow="hover">
-          <div class="upload-area" @click="handleUploadClick" @dragover.prevent @drop.prevent="handleDrop">
+          <div
+            class="upload-area"
+            @click="handleUploadClick"
+            @dragover.prevent
+            @drop.prevent="handleDrop"
+          >
             <el-icon :size="60" color="#409EFF"><Upload /></el-icon>
             <h3>点击或拖拽上传简历</h3>
             <p>支持 PDF、DOCX 格式，文件大小不超过 10MB</p>
@@ -121,6 +126,90 @@
         </el-col>
       </el-row>
     </div>
+
+    <!-- AI分析结果对话框 -->
+    <el-dialog
+      v-model="dialogVisible"
+      title="AI简历分析报告"
+      width="80%"
+      :close-on-click-modal="false"
+    >
+      <div v-if="analysisResult" class="ai-dialog-content">
+        <el-card class="dialog-card" shadow="never">
+          <template #header>
+            <div class="dialog-header">
+              <el-icon :size="24" color="#409EFF"><ChatDotRound /></el-icon>
+              <span>AI智能分析</span>
+            </div>
+          </template>
+
+          <el-descriptions :column="2" border>
+            <el-descriptions-item label="综合评分">
+              <el-tag :type="getScoreTagType(analysisResult.score)" size="large">
+                {{ analysisResult.score }} 分 - {{ getScoreLevel(analysisResult.score) }}
+              </el-tag>
+            </el-descriptions-item>
+            <el-descriptions-item label="姓名">
+              {{ analysisResult.personal_info?.name || '未识别' }}
+            </el-descriptions-item>
+            <el-descriptions-item label="电话">
+              {{ analysisResult.personal_info?.phone || '未识别' }}
+            </el-descriptions-item>
+            <el-descriptions-item label="邮箱">
+              {{ analysisResult.personal_info?.email || '未识别' }}
+            </el-descriptions-item>
+          </el-descriptions>
+
+          <el-divider content-position="left">简历亮点</el-divider>
+          <div class="highlight-tags">
+            <el-tag
+              v-for="(highlight, index) in analysisResult.highlights"
+              :key="index"
+              type="success"
+              effect="dark"
+              class="result-tag"
+            >
+              {{ highlight }}
+            </el-tag>
+          </div>
+
+          <el-divider content-position="left">待改进项</el-divider>
+          <div class="issue-tags">
+            <el-tag
+              v-for="(issue, index) in analysisResult.issues"
+              :key="index"
+              type="warning"
+              effect="dark"
+              class="result-tag"
+            >
+              {{ issue }}
+            </el-tag>
+          </div>
+
+          <el-divider content-position="left">优化建议</el-divider>
+          <el-timeline>
+            <el-timeline-item
+              v-for="(suggestion, index) in analysisResult.suggestions"
+              :key="index"
+              :timestamp="suggestion.category"
+              placement="top"
+              color="#67C23A"
+            >
+              <el-card class="suggestion-card">
+                <h4>{{ suggestion.title }}</h4>
+                <p>{{ suggestion.content }}</p>
+              </el-card>
+            </el-timeline-item>
+          </el-timeline>
+        </el-card>
+      </div>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="dialogVisible = false">关闭</el-button>
+          <el-button type="primary" @click="exportReport">导出报告</el-button>
+        </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -134,6 +223,7 @@ const {
   uploadedFile,
   analyzing,
   analysisResult,
+  dialogVisible,
   handleUploadClick,
   handleFileChange,
   handleDrop,
@@ -141,6 +231,40 @@ const {
   formatFileSize,
   getScoreLevel,
 } = useResumeAnalysis(fileInputRef)
+
+/**
+ * 根据分数获取标签类型
+ */
+const getScoreTagType = (score: number): string => {
+  if (score >= 90) return 'success'
+  if (score >= 80) return 'primary'
+  if (score >= 70) return 'warning'
+  return 'danger'
+}
+
+/**
+ * 导出报告
+ */
+const exportReport = () => {
+  if (!analysisResult.value) return
+
+  const report = {
+    score: analysisResult.value.score,
+    personal_info: analysisResult.value.personal_info,
+    highlights: analysisResult.value.highlights,
+    issues: analysisResult.value.issues,
+    suggestions: analysisResult.value.suggestions,
+    export_time: new Date().toLocaleString(),
+  }
+
+  const blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = `简历分析报告_${new Date().getTime()}.json`
+  a.click()
+  URL.revokeObjectURL(url)
+}
 </script>
 
 <style src="../assets/css/ResumeAnalysisView.css"></style>
