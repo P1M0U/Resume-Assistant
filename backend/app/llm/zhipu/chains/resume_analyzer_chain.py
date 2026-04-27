@@ -9,7 +9,7 @@ from settings import (
     ZHIPU_MAX_TOKENS
 )
 from llm.zhipu.prompts.resume_prompt import RESUME_ANALYSIS_PROMPT
-from llm.zhipu.shemas.resume_shema import ResumeAnalysisResult
+from llm.zhipu.schemas.resume_schema import ResumeAnalysisResult
 import json
 import re
 
