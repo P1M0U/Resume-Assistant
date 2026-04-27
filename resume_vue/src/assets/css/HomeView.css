@@ -3,9 +3,35 @@
 }
 
 .welcome-card {
-  background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+  background: linear-gradient(135deg, #0066ff 0%, #00d4ff 100%);
   color: white;
   border: none;
+  box-shadow: 0 8px 32px rgba(0, 102, 255, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.welcome-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+  animation: pulse 3s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
 }
 
 .welcome-card :deep(.el-card__body) {
@@ -33,10 +59,14 @@
   transition: all 0.3s ease;
   text-align: center;
   padding: 20px;
+  border: 1px solid rgba(0, 212, 255, 0.2);
+  background: linear-gradient(135deg, #ffffff 0%, #f8fbff 100%);
 }
 
 .feature-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-8px);
+  box-shadow: 0 12px 40px rgba(0, 102, 255, 0.15);
+  border-color: #00d4ff;
 }
 
 .feature-card :deep(.el-card__body) {
@@ -45,6 +75,15 @@
 
 .feature-icon {
   margin-bottom: 16px;
+  background: linear-gradient(135deg, #e3f2fd 0%, #f0f8ff 100%);
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .feature-card h3 {
@@ -75,11 +114,14 @@
 .action-card {
   cursor: pointer;
   transition: all 0.3s ease;
+  border: 1px solid rgba(0, 212, 255, 0.2);
+  background: linear-gradient(135deg, #ffffff 0%, #f8fbff 100%);
 }
 
 .action-card:hover {
-  transform: translateY(-2px);
-  border-color: #409eff;
+  transform: translateY(-4px);
+  border-color: #00d4ff;
+  box-shadow: 0 8px 24px rgba(0, 102, 255, 0.15);
 }
 
 .action-card :deep(.el-card__body) {
@@ -106,5 +148,12 @@
 }
 
 .el-button {
-  border-radius: 8px;
+  border-radius: 12px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.el-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 102, 255, 0.3);
 }

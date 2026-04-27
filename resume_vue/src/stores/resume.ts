@@ -1,5 +1,6 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
+import type { ResumeAnalysisResult } from '../services/resume_api'
 
 /**
  * 简历文件状态管理Store
@@ -7,6 +8,7 @@ import { defineStore } from 'pinia'
 export const useResumeStore = defineStore('resume', () => {
   const uploadedFile = ref<File | null>(null)
   const shouldAutoAnalyze = ref(false)
+  const analysisResult = ref<ResumeAnalysisResult | null>(null)
 
   /**
    * 设置上传的文件
@@ -32,11 +34,38 @@ export const useResumeStore = defineStore('resume', () => {
     shouldAutoAnalyze.value = false
   }
 
+  /**
+   * 设置简历分析结果
+   * @param result - 简历分析结果
+   */
+  const setAnalysisResult = (result: ResumeAnalysisResult): void => {
+    analysisResult.value = result
+  }
+
+  /**
+   * 获取简历分析结果
+   * @returns 简历分析结果或null
+   */
+  const getAnalysisResult = (): ResumeAnalysisResult | null => {
+    return analysisResult.value
+  }
+
+  /**
+   * 清除简历分析结果
+   */
+  const clearAnalysisResult = (): void => {
+    analysisResult.value = null
+  }
+
   return {
     uploadedFile,
     shouldAutoAnalyze,
+    analysisResult,
     setUploadedFile,
     clearUploadedFile,
     resetAutoAnalyze,
+    setAnalysisResult,
+    getAnalysisResult,
+    clearAnalysisResult,
   }
 })

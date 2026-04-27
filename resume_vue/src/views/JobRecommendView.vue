@@ -1,5 +1,11 @@
 <template>
-  <div class="job-recommend-view">
-    <h1>岗位推荐</h1>
-  </div>
+  <JobRecommend />
 </template>
+
+<script setup lang="ts">
+import JobRecommend from '../components/JobRecommend.vue'
+</script>
+
+<style scoped>
+/* 视图特定样式可以在这里添加 */
+</style>

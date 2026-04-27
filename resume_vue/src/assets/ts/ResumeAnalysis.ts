@@ -47,12 +47,17 @@ export function useResumeAnalysis(
   })
 
   /**
-   * 组件挂载时检查是否需要自动分析
+   * 组件挂载时检查是否需要自动分析或加载已有结果
    */
   onMounted(async () => {
     if (resumeStore.shouldAutoAnalyze && resumeStore.uploadedFile) {
       resumeStore.resetAutoAnalyze()
       await handleAnalyze()
+    } else {
+      const savedResult = resumeStore.getAnalysisResult()
+      if (savedResult) {
+        analysisResult.value = savedResult
+      }
     }
   })
 
@@ -157,6 +162,7 @@ export function useResumeAnalysis(
       })
 
       analysisResult.value = result
+      resumeStore.setAnalysisResult(result)
       ElMessage.success('简历分析完成')
     } catch (error) {
       console.error('分析失败:', error)

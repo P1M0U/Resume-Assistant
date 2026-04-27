@@ -7,10 +7,10 @@ from typing import List, Dict, Any
 def search_job_market_info(position: str) -> Dict[str, Any]:
     """
     搜索岗位市场信息
-    
+
     Args:
         position: 岗位名称
-        
+
     Returns:
         市场信息字典
     """
@@ -22,7 +22,7 @@ def search_job_market_info(position: str) -> Dict[str, Any]:
         "market_size": "大型",
         "competition_level": "中等"
     }
-    
+
     return mock_data
 
 
@@ -30,10 +30,10 @@ def search_job_market_info(position: str) -> Dict[str, Any]:
 def search_company_info(company_name: str) -> Dict[str, Any]:
     """
     搜索公司信息
-    
+
     Args:
         company_name: 公司名称
-        
+
     Returns:
         公司信息字典
     """
@@ -45,7 +45,7 @@ def search_company_info(company_name: str) -> Dict[str, Any]:
         "location": "北京",
         "rating": 4.5
     }
-    
+
     return mock_data
 
 
@@ -53,10 +53,10 @@ def search_company_info(company_name: str) -> Dict[str, Any]:
 def search_industry_trends(industry: str) -> List[Dict[str, Any]]:
     """
     搜索行业趋势
-    
+
     Args:
         industry: 行业名称
-        
+
     Returns:
         行业趋势列表
     """
@@ -77,7 +77,7 @@ def search_industry_trends(industry: str) -> List[Dict[str, Any]]:
             "description": "企业数字化转型需求激增"
         }
     ]
-    
+
     return mock_trends
 
 

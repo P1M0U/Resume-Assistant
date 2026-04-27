@@ -1,10 +1,21 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, watch } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 import { ElMessage } from 'element-plus'
 
 const router = useRouter()
+const route = useRoute()
 const activeMenu = ref('home')
+
+watch(
+  () => route.name,
+  (newName) => {
+    if (newName && typeof newName === 'string') {
+      activeMenu.value = newName
+    }
+  },
+  { immediate: true },
+)
 
 /**
  * 处理菜单选择事件
@@ -93,7 +104,7 @@ body,
 
 .common-layout {
   height: 100vh;
-  background-color: #f5f7fa;
+  background: linear-gradient(135deg, #e8f4f8 0%, #f0f4f8 50%, #e3f2fd 100%);
 }
 
 .el-container {
@@ -101,10 +112,11 @@ body,
 }
 
 .header {
-  background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+  background: linear-gradient(135deg, #0066ff 0%, #00d4ff 100%);
   color: white;
   padding: 0 20px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 102, 255, 0.25);
+  backdrop-filter: blur(10px);
 }
 
 .header-content {
@@ -133,8 +145,9 @@ body,
 }
 
 .aside {
-  background-color: white;
-  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+  box-shadow: 2px 0 20px rgba(0, 102, 255, 0.08);
+  border-right: 1px solid rgba(0, 212, 255, 0.1);
 }
 
 .aside-menu {
@@ -149,22 +162,40 @@ body,
 }
 
 .aside-menu .el-menu-item:hover {
-  background-color: #f5f7fa;
+  background: linear-gradient(90deg, #e3f2fd 0%, #f0f8ff 100%);
+  color: #0066ff;
 }
 
 .aside-menu .el-menu-item.is-active {
-  background-color: #ecf5ff;
-  color: #409eff;
-  border-right: 3px solid #409eff;
+  background: linear-gradient(90deg, #e3f2fd 0%, #cce5ff 100%);
+  color: #0066ff;
+  border-right: 3px solid #00d4ff;
+  box-shadow: inset 0 0 20px rgba(0, 212, 255, 0.1);
 }
 
 .main {
   padding: 24px;
-  background-color: #f5f7fa;
+  background: linear-gradient(135deg, #e8f4f8 0%, #f0f4f8 50%, #e3f2fd 100%);
   overflow-y: auto;
 }
 
 .el-button {
-  border-radius: 8px;
+  border-radius: 12px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.el-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 102, 255, 0.3);
+}
+
+.el-button--primary {
+  background: linear-gradient(135deg, #0066ff 0%, #00d4ff 100%);
+  border: none;
+}
+
+.el-button--primary:hover {
+  background: linear-gradient(135deg, #0052cc 0%, #00b8e6 100%);
 }
 </style>

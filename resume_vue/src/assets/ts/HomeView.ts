@@ -1,7 +1,6 @@
 import { ref, type Ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
-import { useResumeStore } from '../../stores/resume'
 
 /**
  * 功能特性接口定义
@@ -22,10 +21,6 @@ interface UseHomeViewReturn {
   handleUpload: () => void
   handleInputJob: () => void
   handleFeatureClick: (featureId: string) => void
-  handleFileChange: (event: Event) => void
-  jobDialogVisible: Ref<boolean>
-  jobForm: Ref<{ jobName: string }>
-  confirmJobInput: () => void
 }
 
 /**
@@ -33,9 +28,8 @@ interface UseHomeViewReturn {
  * @param fileInputRef - 文件输入框引用
  * @returns 响应式数据和方法
  */
-export function useHomeView(fileInputRef: Ref<HTMLInputElement | null>): UseHomeViewReturn {
+export function useHomeView(): UseHomeViewReturn {
   const router = useRouter()
-  const resumeStore = useResumeStore()
 
   const features: Ref<Feature[]> = ref([
     {
@@ -65,84 +59,14 @@ export function useHomeView(fileInputRef: Ref<HTMLInputElement | null>): UseHome
    * 处理上传简历按钮点击
    */
   const handleUpload = (): void => {
-    if (fileInputRef.value) {
-      fileInputRef.value.click()
-    }
+    router.push('/resume-analyze')
   }
-
-  /**
-   * 处理文件选择变化
-   * @param event - 文件选择事件
-   */
-  const handleFileChange = (event: Event): void => {
-    const target = event.target as HTMLInputElement
-    const file = target.files?.[0]
-
-    if (!file) {
-      return
-    }
-
-    const allowedTypes = [
-      'application/pdf',
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-    ]
-    const fileExtension = file.name.split('.').pop()?.toLowerCase()
-
-    if (!allowedTypes.includes(file.type) && !['pdf', 'docx'].includes(fileExtension || '')) {
-      ElMessage.error('仅支持PDF和DOCX格式的文件')
-      return
-    }
-
-    const maxSize = 10 * 1024 * 1024
-    if (file.size > maxSize) {
-      ElMessage.error('文件大小不能超过10MB')
-      return
-    }
-
-    resumeStore.setUploadedFile(file)
-    ElMessage.success(`已选择文件：${file.name}，正在跳转到分析页面...`)
-    console.log('上传的文件：', file)
-
-    if (target) {
-      target.value = ''
-    }
-
-    setTimeout(() => {
-      router.push({ name: 'resume-analyze' })
-    }, 500)
-  }
-
-  /**
-   * 控制岗位输入弹窗显示状态
-   */
-  const jobDialogVisible = ref(false)
-
-  /**
-   * 岗位表单数据
-   */
-  const jobForm = ref({
-    jobName: '',
-  })
 
   /**
    * 处理输入期望岗位按钮点击
    */
   const handleInputJob = (): void => {
-    jobDialogVisible.value = true
-  }
-
-  /**
-   * 确认岗位输入
-   */
-  const confirmJobInput = (): void => {
-    if (!jobForm.value.jobName.trim()) {
-      ElMessage.warning('请输入期望岗位名称')
-      return
-    }
-    ElMessage.success(`已提交期望岗位：${jobForm.value.jobName}`)
-    console.log('期望岗位：', jobForm.value.jobName)
-    jobDialogVisible.value = false
-    jobForm.value.jobName = ''
+    router.push('/job-recommend')
   }
 
   /**
@@ -152,13 +76,13 @@ export function useHomeView(fileInputRef: Ref<HTMLInputElement | null>): UseHome
   const handleFeatureClick = (featureId: string): void => {
     switch (featureId) {
       case 'analyze':
-        ElMessage.info('即将进入简历分析页面')
+        router.push('/resume-analyze')
         break
       case 'optimize':
-        ElMessage.info('即将进入简历优化页面')
+        ElMessage.info('简历优化功能开发中，敬请期待')
         break
       case 'recommend':
-        ElMessage.info('即将进入岗位推荐页面')
+        router.push('/job-recommend')
         break
       default:
         ElMessage.warning('功能开发中，敬请期待')
@@ -170,9 +94,5 @@ export function useHomeView(fileInputRef: Ref<HTMLInputElement | null>): UseHome
     handleUpload,
     handleInputJob,
     handleFeatureClick,
-    handleFileChange,
-    jobDialogVisible,
-    jobForm,
-    confirmJobInput,
   }
 }

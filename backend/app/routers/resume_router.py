@@ -33,17 +33,18 @@ async def upload_resume(file: UploadFile = File(...)):
             resume_text = parser.parse_pdf(tmp_path)
         else:
             resume_text = parser.parse_docx(tmp_path)
-        
+
         logger.info(f"文件解析成功，文本长度：{len(resume_text)}")
-        
+
         # 调用智能体分析
         logger.info("开始调用智能体分析")
         analyzer = ResumeAnalyzer()
         result = await analyzer.analyze_text(resume_text)
-        
+
         logger.info(f"分析完成，评分：{result.score}")
-        logger.info(f"亮点数量：{len(result.highlights)}, 问题数量：{len(result.issues)}")
-        
+        logger.info(
+            f"亮点数量：{len(result.highlights)}, 问题数量：{len(result.issues)}")
+
         return JSONResponse(
             status_code=200,
             content={
