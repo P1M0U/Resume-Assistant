@@ -40,30 +40,7 @@ def setup_logger():
         enqueue=True
     )
 
-    # 文件输出 - 详细日志
-    log_path = Path(__file__).parent / "logs"
-    log_path.mkdir(exist_ok=True)
 
-    logger.add(
-        log_path / "app_{time:YYYY-MM-DD}.log",
-        rotation="00:00",
-        retention="30 days",
-        format="{time:YYYY-MM-DD HH:mm:ss} | {level: <8} | {name}:{function}:{line} - {message}",
-        level="DEBUG",
-        encoding="utf-8",
-        enqueue=True
-    )
-
-    # 错误日志单独记录
-    logger.add(
-        log_path / "error_{time:YYYY-MM-DD}.log",
-        rotation="00:00",
-        retention="90 days",
-        format="{time:YYYY-MM-DD HH:mm:ss} | {level: <8} | {name}:{function}:{line} - {message}",
-        level="ERROR",
-        encoding="utf-8",
-        enqueue=True
-    )
 
 
 # 初始化日志
