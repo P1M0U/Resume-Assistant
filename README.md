@@ -254,6 +254,105 @@ uvicorn main:app --reload
 
 ## 🔧 系统配置
 
+### 配置文件说明
+
+本项目使用**环境变量优先级**的配置策略，支持两种配置方式：
+
+#### 配置优先级
+
+```
+环境变量 > config.yaml
+```
+
+#### 配置文件说明
+
+| 文件 | 用途 | 是否提交到Git | 说明 |
+|------|------|--------------|------|
+| `config.yaml` | 默认配置 | ❌ 不提交 | 本地开发默认配置 |
+| `.env` | 实际配置 | ❌ 不提交 | 包含真实敏感信息 |
+| `.env.example` | 配置模板 | ✅ 提交 | 配置示例，不包含敏感信息 |
+
+### 本地开发配置
+
+1. **创建本地配置文件**
+
+```bash
+# 复制配置模板
+cp backend/app/config.yaml.example backend/app/config.yaml
+
+# 复制环境变量模板
+cp .env.example .env
+```
+
+2. **编辑 config.yaml**（本地开发默认配置）
+
+```yaml
+ZHIPU:
+  API_KEY: "your_zhipu_api_key_here"  # 智谱AI API密钥
+  MODEL_NAME: "glm-4-flash-250414"
+  TEMPERATURE: 0.7
+  MAX_TOKENS: 2000
+
+APP:
+  DEBUG: true
+  LOG_LEVEL: "INFO"
+
+MYSQL:
+  HOST: "localhost"
+  PORT: 3306
+  USER: "root"
+  PASSWORD: "your_mysql_password"  # MySQL密码
+  DB: "resume_db"
+```
+
+3. **编辑 .env**（可选，优先级更高）
+
+```env
+# 智谱AI API密钥
+ZHIPU_API_KEY=your_real_api_key_here
+
+# MySQL配置
+MYSQL_PASSWORD=your_real_password
+```
+
+### Docker 部署配置
+
+Docker 部署时，使用 `.env` 文件配置环境变量：
+
+```env
+# 智谱AI API密钥
+ZHIPU_API_KEY=your_real_api_key_here
+ZHIPU_MODEL_NAME=glm-4-flash-250414
+
+# MySQL配置
+MYSQL_HOST=mysql
+MYSQL_PORT=3306
+MYSQL_USER=root
+MYSQL_PASSWORD=your_secure_password
+MYSQL_DB=resume_db
+```
+
+### 配置项说明
+
+#### 智谱AI配置
+
+| 配置项 | 环境变量 | 说明 | 默认值 |
+|--------|---------|------|--------|
+| API_KEY | ZHIPU_API_KEY | 智谱AI API密钥 | - |
+| MODEL_NAME | ZHIPU_MODEL_NAME | 模型名称 | glm-4-flash-250414 |
+| TEMPERATURE | ZHIPU_TEMPERATURE | 温度参数 | 0.7 |
+| MAX_TOKENS | ZHIPU_MAX_TOKENS | 最大token数 | 2000 |
+
+#### MySQL配置
+
+| 配置项 | 环境变量 | 说明 | 默认值 |
+|--------|---------|------|--------|
+| HOST | MYSQL_HOST | 数据库地址 | localhost |
+| PORT | MYSQL_PORT | 数据库端口 | 3306 |
+| USER | MYSQL_USER | 数据库用户 | root |
+| PASSWORD | MYSQL_PASSWORD | 数据库密码 | - |
+| DB | MYSQL_DB | 数据库名称 | resume_db |
+
 ### 前端配置
 
 前端通过环境变量进行配置，在项目根目录创建 `.env` 文件：
@@ -264,14 +363,6 @@ VITE_API_BASE_URL=http://localhost:8000
 # 生产环境
 # VITE_API_BASE_URL=https://api.yourdomain.com
 ```
-
-### 后端配置
-
-后端通过 `config.yaml` 文件进行配置，主要包括：
-
-- **智谱AI配置**：API密钥、模型名称、温度参数等
-- **应用配置**：调试模式、日志级别
-- **数据库配置**：MySQL连接信息
 
 ## 📝 开发指南
 
