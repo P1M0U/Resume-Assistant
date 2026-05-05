@@ -42,14 +42,18 @@
 | PyPDF | 6.10.2 | PDF解析 |
 | Python-docx | 1.2.0 | DOCX解析 |
 | Loguru | 0.7.3 | 日志管理 |
+| ChromaDB | - | 向量数据库 |
+| httpx | - | HTTP客户端 |
 
 ### AI技术栈
 
 | 技术/框架 | 版本 | 用途 |
 |---------|------|------|
 | 智谱AI GLM-4 | - | 大语言模型 |
+| 智谱AI Embedding-3 | - | 文本向量化 |
 | LangChain Agents | 1.2.15 | 智能体框架 |
 | LangChain Tools | - | 工具集成 |
+| RAG | - | 检索增强生成 |
 
 ## 📁 项目结构
 
@@ -71,6 +75,10 @@ resume_assistant/
 │       │       ├── prompts/    # 提示词模板
 │       │       │   ├── job_prompt.py    # 岗位推荐提示词
 │       │       │   └── resume_prompt.py # 简历分析提示词
+│       │       ├── rag/        # RAG模块
+│       │       │   ├── rag_chain.py      # RAG链
+│       │       │   ├── text_splitter.py # 文本分块
+│       │       │   └── vector_store.py  # 向量存储
 │       │       ├── schemas/    # 数据模型
 │       │       │   └── resume_schema.py # 简历相关数据模型
 │       │       ├── tools/      # 工具集
@@ -81,11 +89,13 @@ resume_assistant/
 │       │       │   ├── file_parser.py    # 文件解析
 │       │       │   └── text_processor.py # 文本处理
 │       │       ├── chat.py              # 聊天模块
+│       │       ├── embeddings.py        # 向量化模块
 │       │       ├── job_recommender.py   # 岗位推荐主应用
 │       │       └── resume_analyzer.py   # 简历分析主应用
 │       ├── routers/            # API路由
 │       │   ├── job_router.py      # 岗位推荐路由
 │       │   ├── main_router.py     # 主路由聚合
+│       │   ├── rag_router.py      # RAG功能路由
 │       │   └── resume_router.py   # 简历分析路由
 │       ├── main.py             # 应用入口
 │       ├── settings.py         # 配置管理
@@ -207,7 +217,22 @@ MYSQL:
   USER: "your_username"
   PASSWORD: "your_password"
   DB: "resume_assistant"
-```
+
+CHROMA:
+  PERSIST_DIR: "chroma_db"
+  COLLECTION_RESUME: "resume_collection"
+  COLLECTION_JOB: "job_collection"
+
+RAG:
+  CHUNK_SIZE: 500
+  CHUNK_OVERLAP: 50
+  TOP_K: 3
+
+VECTOR_STORE:
+  ENABLED: true
+  MAX_RETRIES: 3
+  RETRY_DELAY: 2.0
+  REQUEST_DELAY: 1.0
 
 4. 启动后端服务
 ```bash
@@ -230,6 +255,13 @@ uvicorn main:app --reload
 
 #### 岗位推荐
 - `POST /api/resume/job-recommend` - 获取岗位推荐
+
+#### RAG功能
+- `POST /api/rag/store-resume` - 存储简历到向量库
+- `POST /api/rag/search-resumes` - 搜索相似简历
+- `POST /api/rag/store-job` - 存储岗位信息到向量库
+- `POST /api/rag/search-jobs` - 搜索相似岗位
+- `POST /api/rag/chat` - RAG增强对话
 
 #### 系统信息
 - `GET /api/health` - 健康检查
@@ -353,6 +385,31 @@ MYSQL_DB=resume_db
 | PASSWORD | MYSQL_PASSWORD | 数据库密码 | - |
 | DB | MYSQL_DB | 数据库名称 | resume_db |
 
+#### ChromaDB配置
+
+| 配置项 | 环境变量 | 说明 | 默认值 |
+|--------|---------|------|--------|
+| PERSIST_DIR | CHROMA_PERSIST_DIR | 向量数据库存储目录 | chroma_db |
+| COLLECTION_RESUME | CHROMA_COLLECTION_RESUME | 简历集合名称 | resume_collection |
+| COLLECTION_JOB | CHROMA_COLLECTION_JOB | 岗位集合名称 | job_collection |
+
+#### RAG配置
+
+| 配置项 | 环境变量 | 说明 | 默认值 |
+|--------|---------|------|--------|
+| CHUNK_SIZE | RAG_CHUNK_SIZE | 文本分块大小 | 500 |
+| CHUNK_OVERLAP | RAG_CHUNK_OVERLAP | 分块重叠大小 | 50 |
+| TOP_K | RAG_TOP_K | 检索返回数量 | 3 |
+
+#### 向量存储配置
+
+| 配置项 | 环境变量 | 说明 | 默认值 |
+|--------|---------|------|--------|
+| ENABLED | VECTOR_STORE_ENABLED | 是否启用向量存储 | true |
+| MAX_RETRIES | VECTOR_STORE_MAX_RETRIES | 最大重试次数 | 3 |
+| RETRY_DELAY | VECTOR_STORE_RETRY_DELAY | 重试基础延迟（秒） | 2.0 |
+| REQUEST_DELAY | VECTOR_STORE_REQUEST_DELAY | 请求间延迟（秒） | 1.0 |
+
 ### 前端配置
 
 前端通过环境变量进行配置，在项目根目录创建 `.env` 文件：
@@ -413,6 +470,13 @@ VITE_API_BASE_URL=http://localhost:8000
 - 支持导出简历分析报告（JSON格式）
 - 支持导出岗位推荐报告（JSON格式）
 
+### 5. RAG检索增强
+- 基于ChromaDB的向量存储
+- 智能文本分块与向量化
+- 相似简历和岗位检索
+- RAG增强的智能对话
+- 优雅降级机制（向量存储失败不影响核心功能）
+
 ## 🤝 贡献指南
 
 欢迎对本项目进行贡献！请按照以下步骤操作：
@@ -438,7 +502,7 @@ VITE_API_BASE_URL=http://localhost:8000
 
 ## 🎯 后续优化方向
 
-1. 🗄️ 添加数据库持久化存储分析结果
+1. ✅ ~~添加数据库持久化存储分析结果~~
 2. 🔐 增加用户认证和权限管理
 3. 📱 优化移动端响应式体验
 4. 🌐 支持更多简历格式（如图片简历OCR识别）
@@ -446,5 +510,6 @@ VITE_API_BASE_URL=http://localhost:8000
 6. 📊 添加简历评分历史趋势分析
 7. 🔍 增加岗位搜索和筛选功能
 8. 💾 支持简历模板生成和下载
+9. 🚀 使用本地Embedding模型替代API调用（避免限流）
 
 感谢使用AI简历助手！🎉

@@ -42,14 +42,18 @@
 | PyPDF | 6.10.2 | PDF Parsing |
 | Python-docx | 1.2.0 | DOCX Parsing |
 | Loguru | 0.7.3 | Log Management |
+| ChromaDB | - | Vector Database |
+| httpx | - | HTTP Client |
 
 ### AI Tech Stack
 
 | Technology/Framework | Version | Purpose |
 |---------|------|------|
 | Zhipu AI GLM-4 | - | Large Language Model |
+| Zhipu AI Embedding-3 | - | Text Vectorization |
 | LangChain Agents | 1.2.15 | Agent Framework |
 | LangChain Tools | - | Tool Integration |
+| RAG | - | Retrieval-Augmented Generation |
 
 ## 📁 Project Structure
 
@@ -71,6 +75,10 @@ resume_assistant/
 │       │       ├── prompts/    # Prompt Templates
 │       │       │   ├── job_prompt.py    # Job Recommendation Prompts
 │       │       │   └── resume_prompt.py # Resume Analysis Prompts
+│       │       ├── rag/        # RAG Module
+│       │       │   ├── rag_chain.py      # RAG Chain
+│       │       │   ├── text_splitter.py # Text Splitter
+│       │       │   └── vector_store.py  # Vector Store
 │       │       ├── schemas/    # Data Models
 │       │       │   └── resume_schema.py # Resume Related Data Models
 │       │       ├── tools/      # Tool Sets
@@ -81,11 +89,13 @@ resume_assistant/
 │       │       │   ├── file_parser.py    # File Parsing
 │       │       │   └── text_processor.py # Text Processing
 │       │       ├── chat.py              # Chat Module
+│       │       ├── embeddings.py        # Vectorization Module
 │       │       ├── job_recommender.py   # Job Recommendation Main App
 │       │       └── resume_analyzer.py   # Resume Analysis Main App
 │       ├── routers/            # API Routes
 │       │   ├── job_router.py      # Job Recommendation Route
 │       │   ├── main_router.py     # Main Route Aggregation
+│       │   ├── rag_router.py      # RAG Feature Route
 │       │   └── resume_router.py   # Resume Analysis Route
 │       ├── main.py             # Application Entry
 │       ├── settings.py         # Configuration Management
@@ -231,6 +241,13 @@ After starting the backend service, you can access the auto-generated API docume
 #### Job Recommendation
 - `POST /api/resume/job-recommend` - Get job recommendations
 
+#### RAG Features
+- `POST /api/rag/store-resume` - Store resume to vector database
+- `POST /api/rag/search-resumes` - Search similar resumes
+- `POST /api/rag/store-job` - Store job information to vector database
+- `POST /api/rag/search-jobs` - Search similar jobs
+- `POST /api/rag/chat` - RAG-enhanced chat
+
 #### System Information
 - `GET /api/health` - Health check
 - `GET /api/welcome` - Welcome message
@@ -322,6 +339,13 @@ Types include:
 - Support exporting resume analysis report (JSON format)
 - Support exporting job recommendation report (JSON format)
 
+### 5. RAG Retrieval Enhancement
+- Vector storage based on ChromaDB
+- Intelligent text chunking and vectorization
+- Similar resume and job retrieval
+- RAG-enhanced intelligent conversation
+- Graceful degradation mechanism (vector storage failure does not affect core functionality)
+
 ## 🤝 Contributing Guide
 
 Welcome to contribute to this project! Please follow these steps:
@@ -347,7 +371,7 @@ This project uses MIT license
 
 ## 🎯 Future Optimization Directions
 
-1. 🗄️ Add database persistent storage for analysis results
+1. ✅ ~~Add database persistent storage for analysis results~~
 2. 🔐 Add user authentication and permission management
 3. 📱 Optimize mobile responsive experience
 4. 🌐 Support more resume formats (such as image resume OCR recognition)
@@ -355,5 +379,6 @@ This project uses MIT license
 6. 📊 Add resume score history trend analysis
 7. 🔍 Add job search and filtering functions
 8. 💾 Support resume template generation and download
+9. 🚀 Use local Embedding model instead of API calls (avoid rate limiting)
 
 Thank you for using AI Resume Assistant!🎉
