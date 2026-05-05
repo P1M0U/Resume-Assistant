@@ -10,6 +10,7 @@ from settings import (
 from llm.zhipu.tools.job_tools import JOB_TOOLS
 from llm.zhipu.tools.web_tools import WEB_TOOLS
 from llm.zhipu.schemas.resume_schema import JobMatchResult, JobRecommendation, Suggestion
+from llm.zhipu.rag.vector_store import JobVectorStore, ResumeVectorStore
 from loguru import logger
 from typing import List, Dict, Any, Optional
 import json
@@ -150,7 +151,7 @@ class JobRecommenderAgent:
         target_job: str
     ) -> JobMatchResult:
         """
-        直接使用 LLM 进行岗位推荐（备选方案）
+        使用 RAG + LLM 进行岗位推荐，先从向量库检索相关岗位信息作为上下文
 
         Args:
             resume_text: 简历文本内容
@@ -159,8 +160,15 @@ class JobRecommenderAgent:
         Returns:
             JobMatchResult: 结构化的岗位匹配结果
         """
-        logger.info("使用直接 LLM 模式")
+        logger.info("使用 RAG + LLM 模式")
 
+        # RAG 检索：从岗位向量库中获取相关岗位信息
+        rag_context = self._get_rag_context(resume_text, target_job)
+
+        # RAG 检索：从简历向量库中获取相似简历信息
+        similar_resumes = self._get_similar_resumes(resume_text)
+
+        # 构建增强的输入文本
         input_text = f"""请根据以下信息生成岗位推荐：
 
 简历内容：
@@ -168,7 +176,13 @@ class JobRecommenderAgent:
 
 期望岗位：{target_job}
 
-请分析简历与期望岗位的匹配度，并推荐相关岗位。"""
+参考岗位信息（来自知识库）：
+{rag_context}
+
+相似简历参考（来自知识库）：
+{similar_resumes}
+
+请结合参考信息，分析简历与期望岗位的匹配度，并推荐相关岗位。"""
 
         messages = [
             ("system", self.system_prompt),
@@ -178,16 +192,78 @@ class JobRecommenderAgent:
         result = await self.llm.ainvoke(messages)
         output_text = result.content
 
-        logger.info(f"LLM 返回结果: {output_text[:200]}...")
+        logger.info(f"RAG + LLM 返回结果: {output_text[:200]}...")
 
         json_data = self._extract_json(output_text)
 
         if json_data:
-            logger.success("成功解析 LLM 返回的 JSON 数据")
+            logger.success("成功解析 RAG + LLM 返回的 JSON 数据")
             return self._build_result(json_data, target_job)
         else:
             logger.warning("JSON 解析失败，使用默认值")
             return self._get_default_result(target_job)
+
+    def _get_rag_context(self, resume_text: str, target_job: str) -> str:
+        """
+        从岗位向量库中检索与简历和目标岗位相关的岗位信息
+
+        Args:
+            resume_text: 简历文本
+            target_job: 目标岗位
+
+        Returns:
+            格式化后的岗位上下文信息
+        """
+        job_store = JobVectorStore()
+        job_count = job_store.get_collection_count()
+
+        if job_count == 0:
+            return "暂无岗位知识库数据"
+
+        # 用目标岗位和简历内容分别检索
+        job_results = job_store.similarity_search(target_job, k=2)
+        resume_job_results = job_store.similarity_search(resume_text[:500], k=2)
+
+        all_results = job_results + resume_job_results
+        seen = set()
+        unique_results = []
+        for doc in all_results:
+            content_key = doc.page_content[:100]
+            if content_key not in seen:
+                seen.add(content_key)
+                unique_results.append(doc)
+
+        context_parts = []
+        for doc in unique_results:
+            job_title = doc.metadata.get('job_title', '未知岗位')
+            context_parts.append(f"- {job_title}: {doc.page_content}")
+
+        return "\n".join(context_parts) if context_parts else "暂无相关岗位信息"
+
+    def _get_similar_resumes(self, resume_text: str) -> str:
+        """
+        从简历向量库中检索与当前简历相似的简历信息
+
+        Args:
+            resume_text: 当前简历文本
+
+        Returns:
+            格式化后的相似简历上下文信息
+        """
+        resume_store = ResumeVectorStore()
+        resume_count = resume_store.get_collection_count()
+
+        if resume_count == 0:
+            return "暂无简历知识库数据"
+
+        similar_docs = resume_store.similarity_search(resume_text[:500], k=2)
+
+        context_parts = []
+        for doc in similar_docs:
+            file_name = doc.metadata.get('file_name', '未知文件')
+            context_parts.append(f"- [{file_name}]: {doc.page_content[:300]}...")
+
+        return "\n".join(context_parts) if context_parts else "暂无相似简历信息"
 
     def _extract_json(self, text: str) -> Optional[Dict[str, Any]]:
         """

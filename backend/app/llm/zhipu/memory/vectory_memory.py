@@ -1,9 +1,8 @@
 # 向量记忆管理
 from langchain_community.vectorstores import Chroma
-from langchain_community.embeddings import ZhipuAIEmbeddings
 from langchain.memory import VectorStoreRetrieverMemory
 from typing import Optional, List
-from settings import ZHIPU_API_KEY
+from llm.zhipu.embeddings import ZhipuAIEmbeddings
 
 
 class VectorMemory:
@@ -21,9 +20,7 @@ class VectorMemory:
             persist_directory: 向量数据库持久化目录
             collection_name: 集合名称
         """
-        self.embeddings = ZhipuAIEmbeddings(
-            zhipuai_api_key=ZHIPU_API_KEY
-        )
+        self.embeddings = ZhipuAIEmbeddings()
 
         self.persist_directory = persist_directory
         self.collection_name = collection_name

@@ -5,5 +5,5 @@
 3. 这个项目的技术栈包括：
    - 前端：Vue3 + TypeScript + ElementPlus
    - 后端：FastAPI + Langchain
-   - 数据库：MySQL
+   - 数据库：关系型数据库（MySQL） + 向量数据库（ChromaDB）
    - Python包管理器：UV
