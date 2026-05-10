@@ -12,6 +12,7 @@
 
 - 📄 **简历智能分析**：上传PDF/DOCX格式简历，AI自动解析并提供专业优化建议
 - 💼 **岗位智能推荐**：根据简历内容和期望岗位，推荐匹配度高的岗位
+- 🤖 **AI智能对话**：与AI助手实时对话，获取简历优化建议和职业规划指导
 - 🎯 **技能匹配评估**：分析简历技能与岗位要求的匹配度
 - 💡 **优化建议生成**：提供个性化的简历优化建议
 - 📊 **分析结果导出**：支持导出简历分析报告和岗位推荐报告
@@ -66,6 +67,7 @@ resume_assistant/
 │       ├── llm/                # LLM相关模块
 │       │   └── zhipu/          # 智谱AI模块
 │       │       ├── agents/     # 智能体
+│       │       │   ├── chat_agent.py     # AI对话智能体
 │       │       │   ├── job_agent.py      # 岗位推荐智能体
 │       │       │   └── resume_agent.py   # 简历分析智能体
 │       │       ├── chains/     # 链式调用
@@ -95,10 +97,12 @@ resume_assistant/
 │       │       ├── job_recommender.py   # 岗位推荐主应用
 │       │       └── resume_analyzer.py   # 简历分析主应用
 │       ├── routers/            # API路由
-│       │   ├── job_router.py      # 岗位推荐路由
-│       │   ├── main_router.py     # 主路由聚合
-│       │   ├── rag_router.py      # RAG功能路由
-│       │   └── resume_router.py   # 简历分析路由
+│       │   └── v1/              # API版本1
+│       │       ├── chat_router.py      # AI对话路由
+│       │       ├── job_router.py       # 岗位推荐路由
+│       │       ├── main_router.py      # 主路由聚合
+│       │       ├── rag_router.py       # RAG功能路由
+│       │       └── resume_router.py    # 简历分析路由
 │       ├── main.py             # 应用入口
 │       ├── settings.py         # 配置管理
 │       └── config.yaml         # 配置文件
@@ -106,36 +110,36 @@ resume_assistant/
 │   ├── public/                 # 静态资源
 │   ├── src/                    # 源代码
 │   │   ├── assets/             # 资源文件
-│   │   │   ├── css/            # 样式文件
-│   │   │   │   ├── HistoryView.css      # 历史记录样式
-│   │   │   │   ├── HomeView.css        # 首页样式
-│   │   │   │   ├── JobRecommend.css    # 岗位推荐样式
-│   │   │   │   ├── ResumeAnalysis.css  # 简历分析样式
-│   │   │   │   └── SettingsView.css    # 设置样式
-│   │   │   └── ts/             # TypeScript逻辑
-│   │   │       ├── HistoryView.ts      # 历史记录逻辑
-│   │   │       ├── HomeView.ts        # 首页逻辑
-│   │   │       ├── JobRecommend.ts    # 岗位推荐逻辑
-│   │   │       ├── ResumeAnalysis.ts  # 简历分析逻辑
-│   │   │       └── SettingsView.ts    # 设置逻辑
+│   │   │   ├── css/             # 样式文件
+│   │   │   │   ├── AiChatView.css        # AI对话样式
+│   │   │   │   ├── HomeView.css          # 首页样式
+│   │   │   │   ├── JobRecommend.css      # 岗位推荐样式
+│   │   │   │   ├── ResumeAnalysis.css    # 简历分析样式
+│   │   │   │   └── SettingsView.css      # 设置样式
+│   │   │   └── ts/              # TypeScript逻辑
+│   │   │       ├── AiChatView.ts        # AI对话逻辑
+│   │   │       ├── HomeView.ts          # 首页逻辑
+│   │   │       ├── JobRecommend.ts      # 岗位推荐逻辑
+│   │   │       ├── ResumeAnalysis.ts    # 简历分析逻辑
+│   │   │       └── SettingsView.ts      # 设置逻辑
 │   │   ├── components/         # Vue组件
 │   │   │   ├── JobRecommend.vue        # 岗位推荐组件
 │   │   │   └── ResumeAnalysis.vue      # 简历分析组件
 │   │   ├── router/             # 路由配置
 │   │   │   └── index.ts        # 路由定义
 │   │   ├── services/           # API服务
-│   │   │   ├── index.ts        # 服务导出
-│   │   │   ├── main_api.ts     # 主API服务
-│   │   │   └── resume_api.ts   # 简历API服务
+│   │   │   ├── chat_api.ts      # AI对话API服务
+│   │   │   ├── index.ts         # 主API服务
+│   │   │   └── resume_api.ts    # 简历API服务
 │   │   ├── stores/             # Pinia状态管理
 │   │   │   ├── counter.ts      # 计数器示例
 │   │   │   └── resume.ts       # 简历状态管理
 │   │   ├── views/              # 页面组件
-│   │   │   ├── HistoryView.vue        # 历史记录页面
-│   │   │   ├── HomeView.vue          # 首页
-│   │   │   ├── JobRecommendView.vue  # 岗位推荐页面
-│   │   │   ├── ResumeAnalysisView.vue # 简历分析页面
-│   │   │   └── SettingsView.vue      # 设置页面
+│   │   │   ├── AiChatView.vue          # AI对话页面
+│   │   │   ├── HomeView.vue            # 首页
+│   │   │   ├── JobRecommendView.vue    # 岗位推荐页面
+│   │   │   ├── ResumeAnalysisView.vue  # 简历分析页面
+│   │   │   └── SettingsView.vue        # 设置页面
 │   │   ├── App.vue             # 根组件
 │   │   └── main.ts             # 应用入口
 │   ├── package.json            # 项目配置
@@ -250,24 +254,29 @@ uvicorn main:app --reload
 
 ### 主要API端点
 
+#### AI对话
+- `POST /api/v1/chat/send` - 发送消息给AI助手
+- `GET /api/v1/chat/history` - 获取对话历史
+- `POST /api/v1/chat/clear` - 清空对话历史
+
 #### 简历分析
-- `POST /api/resume/upload` - 上传并分析简历
-- `POST /api/resume/analyze` - 分析已上传的简历
-- `GET /api/resume/history` - 获取分析历史
+- `POST /api/v1/resume/upload` - 上传并分析简历
+- `POST /api/v1/resume/analyze` - 分析已上传的简历
+- `GET /api/v1/resume/history` - 获取分析历史
 
 #### 岗位推荐
-- `POST /api/resume/job-recommend` - 获取岗位推荐
+- `POST /api/v1/job/recommend` - 获取岗位推荐
 
 #### RAG功能
-- `POST /api/rag/store-resume` - 存储简历到向量库
-- `POST /api/rag/search-resumes` - 搜索相似简历
-- `POST /api/rag/store-job` - 存储岗位信息到向量库
-- `POST /api/rag/search-jobs` - 搜索相似岗位
-- `POST /api/rag/chat` - RAG增强对话
+- `POST /api/v1/rag/store-resume` - 存储简历到向量库
+- `POST /api/v1/rag/search-resumes` - 搜索相似简历
+- `POST /api/v1/rag/store-job` - 存储岗位信息到向量库
+- `POST /api/v1/rag/search-jobs` - 搜索相似岗位
+- `POST /api/v1/rag/chat` - RAG增强对话
 
 #### 系统信息
-- `GET /api/health` - 健康检查
-- `GET /api/welcome` - 欢迎信息
+- `GET /health` - 健康检查
+- `GET /welcome` - 欢迎信息
 
 ## 📊 数据模型
 
@@ -463,16 +472,23 @@ VITE_API_BASE_URL=http://localhost:8000
 - 分析技能匹配度和缺失技能
 - 推荐多个相关岗位
 
-### 3. 数据临时存储
+### 3. AI智能对话
+- 与AI助手实时对话
+- 获取简历优化建议
+- 提供职业规划指导
+- 分享面试技巧和薪资谈判策略
+- 对话历史记忆功能
+
+### 4. 数据临时存储
 - 分析结果仅在当前会话中保留
 - 刷新页面后自动重置数据
 - 保护用户隐私安全
 
-### 4. 结果导出
+### 5. 结果导出
 - 支持导出简历分析报告（JSON格式）
 - 支持导出岗位推荐报告（JSON格式）
 
-### 5. RAG检索增强
+### 6. RAG检索增强
 - 基于ChromaDB的向量存储
 - 智能文本分块与向量化
 - 相似简历和岗位检索

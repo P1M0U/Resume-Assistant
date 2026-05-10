@@ -12,6 +12,7 @@
 
 - 📄 **Intelligent Resume Analysis**: Upload PDF/DOCX format resumes, AI automatically parses and provides professional optimization suggestions
 - 💼 **Intelligent Job Recommendation**: Recommend highly matching positions based on resume content and desired position
+- 🤖 **AI Intelligent Chat**: Real-time conversation with AI assistant for resume optimization advice and career planning guidance
 - 🎯 **Skill Matching Assessment**: Analyze the matching degree between resume skills and job requirements
 - 💡 **Optimization Suggestion Generation**: Provide personalized resume optimization suggestions
 - 📊 **Analysis Result Export**: Support exporting resume analysis reports and job recommendation reports
@@ -66,6 +67,7 @@ resume_assistant/
 │       ├── llm/                # LLM Related Modules
 │       │   └── zhipu/          # Zhipu AI Module
 │       │       ├── agents/     # Agents
+│       │       │   ├── chat_agent.py     # AI Chat Agent
 │       │       │   ├── job_agent.py      # Job Recommendation Agent
 │       │       │   └── resume_agent.py   # Resume Analysis Agent
 │       │       ├── chains/     # Chain Calls
@@ -95,10 +97,12 @@ resume_assistant/
 │       │       ├── job_recommender.py   # Job Recommendation Main App
 │       │       └── resume_analyzer.py   # Resume Analysis Main App
 │       ├── routers/            # API Routes
-│       │   ├── job_router.py      # Job Recommendation Route
-│       │   ├── main_router.py     # Main Route Aggregation
-│       │   ├── rag_router.py      # RAG Feature Route
-│       │   └── resume_router.py   # Resume Analysis Route
+│       │   └── v1/              # API Version 1
+│       │       ├── chat_router.py      # AI Chat Route
+│       │       ├── job_router.py       # Job Recommendation Route
+│       │       ├── main_router.py      # Main Route Aggregation
+│       │       ├── rag_router.py       # RAG Feature Route
+│       │       └── resume_router.py    # Resume Analysis Route
 │       ├── main.py             # Application Entry
 │       ├── settings.py         # Configuration Management
 │       └── config.yaml         # Configuration File
@@ -106,36 +110,36 @@ resume_assistant/
 │   ├── public/                 # Static Assets
 │   ├── src/                    # Source Code
 │   │   ├── assets/             # Asset Files
-│   │   │   ├── css/            # Style Files
-│   │   │   │   ├── HistoryView.css      # History View Styles
-│   │   │   │   ├── HomeView.css        # Home View Styles
-│   │   │   │   ├── JobRecommend.css    # Job Recommendation Styles
-│   │   │   │   ├── ResumeAnalysis.css  # Resume Analysis Styles
-│   │   │   │   └── SettingsView.css    # Settings Styles
-│   │   │   └── ts/             # TypeScript Logic
-│   │   │       ├── HistoryView.ts      # History View Logic
-│   │   │       ├── HomeView.ts        # Home View Logic
-│   │   │       ├── JobRecommend.ts    # Job Recommendation Logic
-│   │   │       ├── ResumeAnalysis.ts  # Resume Analysis Logic
-│   │   │       └── SettingsView.ts    # Settings Logic
+│   │   │   ├── css/             # Style Files
+│   │   │   │   ├── AiChatView.css        # AI Chat Styles
+│   │   │   │   ├── HomeView.css          # Home View Styles
+│   │   │   │   ├── JobRecommend.css      # Job Recommendation Styles
+│   │   │   │   ├── ResumeAnalysis.css    # Resume Analysis Styles
+│   │   │   │   └── SettingsView.css      # Settings Styles
+│   │   │   └── ts/              # TypeScript Logic
+│   │   │       ├── AiChatView.ts        # AI Chat Logic
+│   │   │       ├── HomeView.ts          # Home View Logic
+│   │   │       ├── JobRecommend.ts      # Job Recommendation Logic
+│   │   │       ├── ResumeAnalysis.ts    # Resume Analysis Logic
+│   │   │       └── SettingsView.ts      # Settings Logic
 │   │   ├── components/         # Vue Components
 │   │   │   ├── JobRecommend.vue        # Job Recommendation Component
 │   │   │   └── ResumeAnalysis.vue      # Resume Analysis Component
 │   │   ├── router/             # Route Configuration
 │   │   │   └── index.ts        # Route Definition
 │   │   ├── services/           # API Services
-│   │   │   ├── index.ts        # Service Export
-│   │   │   ├── main_api.ts     # Main API Service
-│   │   │   └── resume_api.ts   # Resume API Service
+│   │   │   ├── chat_api.ts      # AI Chat API Service
+│   │   │   ├── index.ts         # Main API Service
+│   │   │   └── resume_api.ts    # Resume API Service
 │   │   ├── stores/             # Pinia State Management
 │   │   │   ├── counter.ts      # Counter Example
 │   │   │   └── resume.ts       # Resume State Management
 │   │   ├── views/              # Page Components
-│   │   │   ├── HistoryView.vue        # History View Page
-│   │   │   ├── HomeView.vue          # Home Page
-│   │   │   ├── JobRecommendView.vue  # Job Recommendation Page
-│   │   │   ├── ResumeAnalysisView.vue # Resume Analysis Page
-│   │   │   └── SettingsView.vue      # Settings Page
+│   │   │   ├── AiChatView.vue          # AI Chat Page
+│   │   │   ├── HomeView.vue            # Home Page
+│   │   │   ├── JobRecommendView.vue    # Job Recommendation Page
+│   │   │   ├── ResumeAnalysisView.vue  # Resume Analysis Page
+│   │   │   └── SettingsView.vue        # Settings Page
 │   │   ├── App.vue             # Root Component
 │   │   └── main.ts             # Application Entry
 │   ├── package.json            # Project Configuration
@@ -235,24 +239,29 @@ After starting the backend service, you can access the auto-generated API docume
 
 ### Main API Endpoints
 
+#### AI Chat
+- `POST /api/v1/chat/send` - Send message to AI assistant
+- `GET /api/v1/chat/history` - Get chat history
+- `POST /api/v1/chat/clear` - Clear chat history
+
 #### Resume Analysis
-- `POST /api/resume/upload` - Upload and analyze resume
-- `POST /api/resume/analyze` - Analyze uploaded resume
-- `GET /api/resume/history` - Get analysis history
+- `POST /api/v1/resume/upload` - Upload and analyze resume
+- `POST /api/v1/resume/analyze` - Analyze uploaded resume
+- `GET /api/v1/resume/history` - Get analysis history
 
 #### Job Recommendation
-- `POST /api/resume/job-recommend` - Get job recommendations
+- `POST /api/v1/job/recommend` - Get job recommendations
 
 #### RAG Features
-- `POST /api/rag/store-resume` - Store resume to vector database
-- `POST /api/rag/search-resumes` - Search similar resumes
-- `POST /api/rag/store-job` - Store job information to vector database
-- `POST /api/rag/search-jobs` - Search similar jobs
-- `POST /api/rag/chat` - RAG-enhanced chat
+- `POST /api/v1/rag/store-resume` - Store resume to vector database
+- `POST /api/v1/rag/search-resumes` - Search similar resumes
+- `POST /api/v1/rag/store-job` - Store job information to vector database
+- `POST /api/v1/rag/search-jobs` - Search similar jobs
+- `POST /api/v1/rag/chat` - RAG-enhanced chat
 
 #### System Information
-- `GET /api/health` - Health check
-- `GET /api/welcome` - Welcome message
+- `GET /health` - Health check
+- `GET /welcome` - Welcome message
 
 ## 📊 Data Models
 
@@ -332,16 +341,23 @@ Types include:
 - Analyze skill matching degree and missing skills
 - Recommend multiple related positions
 
-### 3. Temporary Data Storage
+### 3. AI Intelligent Chat
+- Real-time conversation with AI assistant
+- Get resume optimization suggestions
+- Provide career planning guidance
+- Share interview tips and salary negotiation strategies
+- Chat history memory function
+
+### 4. Temporary Data Storage
 - Analysis results are only retained in current session
 - Automatically reset data after page refresh
 - Protect user privacy and security
 
-### 4. Result Export
+### 5. Result Export
 - Support exporting resume analysis report (JSON format)
 - Support exporting job recommendation report (JSON format)
 
-### 5. RAG Retrieval Enhancement
+### 6. RAG Retrieval Enhancement
 - Vector storage based on ChromaDB
 - Intelligent text chunking and vectorization
 - Similar resume and job retrieval
