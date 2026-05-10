@@ -1,143 +1,113 @@
-# 简历分析相关工具
+# tools/resume_tools.py
 from langchain_core.tools import tool
-from typing import Optional, Dict, Any
+from typing import List, Dict, Any
+from llm.zhipu.rag.vector_store import ResumeVectorStore
 from llm.zhipu.utils.file_parser import FileParser
-from llm.zhipu.schemas.resume_schema import ResumeAnalysisResult
-import json
+from loguru import logger
+import re
+
+
+@tool
+def search_similar_resumes(resume_text: str, top_k: int = 3) -> List[Dict[str, Any]]:
+    """
+    从向量数据库中搜索相似的简历
+    
+    Args:
+        resume_text: 简历文本内容
+        top_k: 返回结果数量，默认3个
+        
+    Returns:
+        相似简历列表，包含文件名和相似度
+    """
+    logger.info(f"开始搜索相似简历 | 文本长度: {len(resume_text)} | 数量: {top_k}")
+    
+    resume_store = ResumeVectorStore()
+    resume_count = resume_store.get_collection_count()
+    
+    if resume_count == 0:
+        logger.warning("简历向量库为空")
+        return []
+    
+    # 使用前500字符进行搜索
+    docs = resume_store.similarity_search(resume_text[:500], k=top_k)
+    
+    results = []
+    for doc in docs:
+        results.append({
+            "file_name": doc.metadata.get("file_name", "未知文件"),
+            "content_preview": doc.page_content[:300],
+            "metadata": doc.metadata
+        })
+    
+    logger.info(f"搜索完成 | 找到 {len(results)} 份相似简历")
+    return results
+
+
+@tool
+def extract_skills_from_resume(resume_text: str) -> List[str]:
+    """
+    从简历文本中提取技能标签
+    
+    Args:
+        resume_text: 简历文本内容
+        
+    Returns:
+        提取的技能列表
+    """
+    logger.info(f"开始提取技能 | 文本长度: {len(resume_text)}")
+    
+    # 常见技能关键词
+    skill_patterns = [
+        r'Python|Java|JavaScript|TypeScript|C\+\+|Go|Rust',
+        r'React|Vue|Angular|Node\.js|Django|Flask|FastAPI',
+        r'MySQL|PostgreSQL|MongoDB|Redis|Elasticsearch',
+        r'Docker|Kubernetes|AWS|Azure|GCP',
+        r'机器学习|深度学习|NLP|计算机视觉|数据分析',
+        r'Git|Linux|Nginx|Apache',
+        r'HTML|CSS|SQL|NoSQL',
+        r'TensorFlow|PyTorch|Keras|Scikit-learn|Pandas|NumPy'
+    ]
+    
+    skills = set()
+    for pattern in skill_patterns:
+        matches = re.findall(pattern, resume_text, re.IGNORECASE)
+        skills.update(matches)
+    
+    skill_list = list(skills)
+    logger.info(f"技能提取完成 | 找到 {len(skill_list)} 个技能")
+    return skill_list
 
 
 @tool
 def parse_resume_file(file_path: str) -> str:
     """
     解析简历文件（支持PDF和DOCX格式）
-
+    
     Args:
         file_path: 简历文件路径
-
+        
     Returns:
         简历文本内容
     """
+    logger.info(f"开始解析简历文件 | 路径: {file_path}")
+    
     parser = FileParser()
-
+    
     if file_path.endswith('.pdf'):
-        return parser.parse_pdf(file_path)
+        text = parser.parse_pdf(file_path)
     elif file_path.endswith('.docx'):
-        return parser.parse_docx(file_path)
+        text = parser.parse_docx(file_path)
     else:
+        logger.error(f"不支持的文件格式: {file_path}")
         return f"不支持的文件格式：{file_path}"
+    
+    logger.info(f"文件解析完成 | 文本长度: {len(text)}")
+    return text
 
 
-@tool
-def extract_personal_info(resume_text: str) -> Dict[str, Any]:
-    """
-    从简历文本中提取个人信息
-
-    Args:
-        resume_text: 简历文本内容
-
-    Returns:
-        包含个人信息的字典
-    """
-    import re
-
-    info = {
-        "name": None,
-        "phone": None,
-        "email": None,
-        "location": None
-    }
-
-    phone_pattern = r'1[3-9]\d{9}'
-    email_pattern = r'[\w\.-]+@[\w\.-]+\.\w+'
-
-    phone_match = re.search(phone_pattern, resume_text)
-    if phone_match:
-        info["phone"] = phone_match.group()
-
-    email_match = re.search(email_pattern, resume_text)
-    if email_match:
-        info["email"] = email_match.group()
-
-    return info
-
-
-@tool
-def calculate_resume_score(resume_text: str) -> int:
-    """
-    计算简历评分（基于简单规则）
-
-    Args:
-        resume_text: 简历文本内容
-
-    Returns:
-        简历评分（0-100）
-    """
-    score = 50
-
-    if len(resume_text) > 500:
-        score += 10
-    if len(resume_text) > 1000:
-        score += 10
-
-    keywords = ['项目', '经验', '技能', '教育', '工作']
-    for keyword in keywords:
-        if keyword in resume_text:
-            score += 5
-
-    return min(score, 100)
-
-
-@tool
-def format_analysis_result(
-    score: int,
-    personal_info: Dict[str, Any],
-    highlights: list,
-    issues: list,
-    suggestions: list
-) -> str:
-    """
-    格式化简历分析结果为可读文本
-
-    Args:
-        score: 简历评分
-        personal_info: 个人信息
-        highlights: 亮点列表
-        issues: 问题列表
-        suggestions: 建议列表
-
-    Returns:
-        格式化后的分析结果文本
-    """
-    result = f"""简历分析报告
-{'='*50}
-综合评分：{score}/100
-
-个人信息：
-  姓名：{personal_info.get('name', '未提取')}
-  电话：{personal_info.get('phone', '未提取')}
-  邮箱：{personal_info.get('email', '未提取')}
-
-简历亮点：
-"""
-
-    for i, highlight in enumerate(highlights, 1):
-        result += f"  {i}. {highlight}\n"
-
-    result += "\n待改进项：\n"
-    for i, issue in enumerate(issues, 1):
-        result += f"  {i}. {issue}\n"
-
-    result += "\n优化建议：\n"
-    for suggestion in suggestions:
-        result += f"  [{suggestion.get('category', '其他')}] {suggestion.get('title', '')}\n"
-        result += f"    {suggestion.get('content', '')}\n"
-
-    return result
-
-
+# 导出工具列表
 RESUME_TOOLS = [
-    parse_resume_file,
-    extract_personal_info,
-    calculate_resume_score,
-    format_analysis_result
+    search_similar_resumes,
+    extract_skills_from_resume,
+    parse_resume_file
 ]

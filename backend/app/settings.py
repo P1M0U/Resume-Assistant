@@ -46,7 +46,7 @@ VECTOR_STORE = config.get('VECTOR_STORE', {})
 ZHIPU_API_KEY = os.getenv('ZHIPU_API_KEY', ZHIPU['API_KEY'])
 ZHIPU_MODEL_NAME = os.getenv('ZHIPU_MODEL_NAME', ZHIPU.get('MODEL_NAME', 'glm-4'))
 ZHIPU_TEMPERATURE = float(os.getenv('ZHIPU_TEMPERATURE', ZHIPU.get('TEMPERATURE', 0.7)))
-ZHIPU_MAX_TOKENS = int(os.getenv('ZHIPU_MAX_TOKENS', ZHIPU.get('MAX_TOKENS', 2000)))
+ZHIPU_MAX_TOKENS = int(os.getenv('ZHIPU_MAX_TOKENS', ZHIPU.get('MAX_TOKENS', 4096)))
 
 # 应用配置（环境变量优先）
 APP_DEBUG = os.getenv('APP_DEBUG', str(APP.get('DEBUG', True))).lower() == 'true'

@@ -4,6 +4,6 @@
    - 岗位建议：用户输入期望岗位名称，项目会根据期望的岗位名称，给出符合期望岗位要求的简历更改建议。
 3. 这个项目的技术栈包括：
    - 前端：Vue3 + TypeScript + ElementPlus
-   - 后端：FastAPI + Langchain
+   - 后端：FastAPI (Version 0.136.0)+ Langchain (Version 1.2.15) + zai-sdk (Version 0.2.2)
    - 数据库：关系型数据库（MySQL） + 向量数据库（ChromaDB）
    - Python包管理器：UV

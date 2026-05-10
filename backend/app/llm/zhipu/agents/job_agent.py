@@ -1,11 +1,11 @@
 # 岗位推荐智能体
 from langchain.agents import create_agent
+from langchain_community.chat_message_histories import ChatMessageHistory
+from langchain_core.messages import HumanMessage, AIMessage
 from llm.zhipu.chat import zhipu_config
 from llm.zhipu.prompts.job_prompt import JOB_SYSTEM_PROMPT
-from llm.zhipu.tools.job_tools import JOB_TOOLS
-from llm.zhipu.tools.web_tools import WEB_TOOLS
+from llm.zhipu.tools import JOB_TOOLS
 from llm.zhipu.schemas.resume_schema import JobMatchResult, JobRecommendation, Suggestion
-from llm.zhipu.rag.vector_store import JobVectorStore, ResumeVectorStore
 from loguru import logger
 from typing import List, Dict, Any, Optional
 import json
@@ -13,24 +13,24 @@ import re
 
 
 class JobRecommenderAgent:
-    """岗位推荐智能体"""
+    """岗位推荐智能体（带记忆）"""
 
     def __init__(self):
         """初始化岗位推荐智能体"""
         self.llm = zhipu_config.get_chat_model()
-        self.system_prompt = JOB_SYSTEM_PROMPT
-        self.tools = JOB_TOOLS + WEB_TOOLS
-
-        try:
-            self.agent = create_agent(
-                model=self.llm,
-                tools=self.tools,
-                system_prompt=self.system_prompt
-            )
-            logger.info("Agent 初始化成功")
-        except Exception as e:
-            logger.warning(f"Agent 初始化失败: {e}，将使用直接 LLM 模式")
-            self.agent = None
+        self.tools = JOB_TOOLS
+        
+        # 初始化对话记忆
+        self.chat_history = ChatMessageHistory()
+        
+        # 使用 create_agent 创建 Agent
+        self.agent = create_agent(
+            model=self.llm,
+            tools=self.tools,
+            system_prompt=JOB_SYSTEM_PROMPT
+        )
+        
+        logger.info("岗位推荐 Agent 初始化成功（带记忆）")
 
     async def recommend_structured(
         self,
@@ -49,28 +49,6 @@ class JobRecommenderAgent:
         """
         logger.info(f"开始生成岗位推荐 | 目标岗位: {target_job}")
 
-        if self.agent:
-            return await self._recommend_with_agent(resume_text, target_job)
-        else:
-            return await self._recommend_with_llm(resume_text, target_job)
-
-    async def _recommend_with_agent(
-        self,
-        resume_text: str,
-        target_job: str
-    ) -> JobMatchResult:
-        """
-        使用 Agent 进行岗位推荐
-
-        Args:
-            resume_text: 简历文本内容
-            target_job: 期望岗位名称
-
-        Returns:
-            JobMatchResult: 结构化的岗位匹配结果
-        """
-        logger.info("使用 Agent 模式")
-
         input_text = f"""请根据以下信息生成岗位推荐：
 
 简历内容：
@@ -78,148 +56,55 @@ class JobRecommenderAgent:
 
 期望岗位：{target_job}
 
-请分析简历与期望岗位的匹配度，并推荐相关岗位。"""
+请使用工具搜索相关岗位，分析市场趋势，然后给出推荐结果。"""
 
         try:
+            # 使用带记忆的 Agent
             result = await self.agent.ainvoke(
                 {"messages": [("user", input_text)]}
             )
-
-            output_text = result.get(
-                "messages", [])[-1].content if result.get("messages") else ""
-
-            logger.info(f"Agent 返回结果: {output_text[:200]}...")
-
-            json_data = self._extract_json(output_text)
-
-            if json_data:
-                logger.success("成功解析 Agent 返回的 JSON 数据")
-                return self._build_result(json_data, target_job)
+            
+            # 提取最后一条消息
+            messages = result.get("messages", [])
+            if messages:
+                output = messages[-1].content
+                logger.info(f"Agent 返回结果: {output[:200]}...")
+                
+                # 保存对话到记忆
+                self.chat_history.add_user_message(input_text)
+                self.chat_history.add_ai_message(output)
+                
+                json_data = self._extract_json(output)
+                
+                if json_data:
+                    logger.success("成功解析 Agent 返回的 JSON 数据")
+                    return self._build_result(json_data, target_job)
         except Exception as e:
             logger.error(f"Agent 执行失败: {e}")
 
-        logger.warning("Agent 模式失败，切换到直接 LLM 模式")
-        return await self._recommend_with_llm(resume_text, target_job)
-
-    async def _recommend_with_llm(
-        self,
-        resume_text: str,
-        target_job: str
-    ) -> JobMatchResult:
+        logger.warning("Agent 模式失败，返回默认结果")
+        return self._get_default_result(target_job)
+    
+    def clear_memory(self):
+        """清空对话记忆"""
+        self.chat_history.clear()
+        logger.info("对话记忆已清空")
+    
+    def get_memory_history(self) -> List[Dict[str, str]]:
         """
-        使用 RAG + LLM 进行岗位推荐，先从向量库检索相关岗位信息作为上下文
-
-        Args:
-            resume_text: 简历文本内容
-            target_job: 期望岗位名称
-
+        获取对话历史
+        
         Returns:
-            JobMatchResult: 结构化的岗位匹配结果
+            对话历史列表
         """
-        logger.info("使用 RAG + LLM 模式")
-
-        # RAG 检索：从岗位向量库中获取相关岗位信息
-        rag_context = self._get_rag_context(resume_text, target_job)
-
-        # RAG 检索：从简历向量库中获取相似简历信息
-        similar_resumes = self._get_similar_resumes(resume_text)
-
-        # 构建增强的输入文本
-        input_text = f"""请根据以下信息生成岗位推荐：
-
-简历内容：
-{resume_text}
-
-期望岗位：{target_job}
-
-参考岗位信息（来自知识库）：
-{rag_context}
-
-相似简历参考（来自知识库）：
-{similar_resumes}
-
-请结合参考信息，分析简历与期望岗位的匹配度，并推荐相关岗位。"""
-
-        messages = [
-            ("system", self.system_prompt),
-            ("user", input_text)
-        ]
-
-        result = await self.llm.ainvoke(messages)
-        output_text = result.content
-
-        logger.info(f"RAG + LLM 返回结果: {output_text[:200]}...")
-
-        json_data = self._extract_json(output_text)
-
-        if json_data:
-            logger.success("成功解析 RAG + LLM 返回的 JSON 数据")
-            return self._build_result(json_data, target_job)
-        else:
-            logger.warning("JSON 解析失败，使用默认值")
-            return self._get_default_result(target_job)
-
-    def _get_rag_context(self, resume_text: str, target_job: str) -> str:
-        """
-        从岗位向量库中检索与简历和目标岗位相关的岗位信息
-
-        Args:
-            resume_text: 简历文本
-            target_job: 目标岗位
-
-        Returns:
-            格式化后的岗位上下文信息
-        """
-        job_store = JobVectorStore()
-        job_count = job_store.get_collection_count()
-
-        if job_count == 0:
-            return "暂无岗位知识库数据"
-
-        # 用目标岗位和简历内容分别检索
-        job_results = job_store.similarity_search(target_job, k=2)
-        resume_job_results = job_store.similarity_search(resume_text[:500], k=2)
-
-        all_results = job_results + resume_job_results
-        seen = set()
-        unique_results = []
-        for doc in all_results:
-            content_key = doc.page_content[:100]
-            if content_key not in seen:
-                seen.add(content_key)
-                unique_results.append(doc)
-
-        context_parts = []
-        for doc in unique_results:
-            job_title = doc.metadata.get('job_title', '未知岗位')
-            context_parts.append(f"- {job_title}: {doc.page_content}")
-
-        return "\n".join(context_parts) if context_parts else "暂无相关岗位信息"
-
-    def _get_similar_resumes(self, resume_text: str) -> str:
-        """
-        从简历向量库中检索与当前简历相似的简历信息
-
-        Args:
-            resume_text: 当前简历文本
-
-        Returns:
-            格式化后的相似简历上下文信息
-        """
-        resume_store = ResumeVectorStore()
-        resume_count = resume_store.get_collection_count()
-
-        if resume_count == 0:
-            return "暂无简历知识库数据"
-
-        similar_docs = resume_store.similarity_search(resume_text[:500], k=2)
-
-        context_parts = []
-        for doc in similar_docs:
-            file_name = doc.metadata.get('file_name', '未知文件')
-            context_parts.append(f"- [{file_name}]: {doc.page_content[:300]}...")
-
-        return "\n".join(context_parts) if context_parts else "暂无相似简历信息"
+        messages = self.chat_history.messages
+        history = []
+        for msg in messages:
+            if isinstance(msg, HumanMessage):
+                history.append({"role": "user", "content": msg.content})
+            elif isinstance(msg, AIMessage):
+                history.append({"role": "assistant", "content": msg.content})
+        return history
 
     def _extract_json(self, text: str) -> Optional[Dict[str, Any]]:
         """
