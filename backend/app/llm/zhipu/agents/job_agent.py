@@ -19,17 +19,17 @@ class JobRecommenderAgent:
         """初始化岗位推荐智能体"""
         self.llm = zhipu_config.get_chat_model()
         self.tools = JOB_TOOLS
-        
+
         # 初始化对话记忆
         self.chat_history = ChatMessageHistory()
-        
+
         # 使用 create_agent 创建 Agent
         self.agent = create_agent(
             model=self.llm,
             tools=self.tools,
             system_prompt=JOB_SYSTEM_PROMPT
         )
-        
+
         logger.info("岗位推荐 Agent 初始化成功（带记忆）")
 
     async def recommend_structured(
@@ -63,19 +63,19 @@ class JobRecommenderAgent:
             result = await self.agent.ainvoke(
                 {"messages": [("user", input_text)]}
             )
-            
+
             # 提取最后一条消息
             messages = result.get("messages", [])
             if messages:
                 output = messages[-1].content
                 logger.info(f"Agent 返回结果: {output[:200]}...")
-                
+
                 # 保存对话到记忆
                 self.chat_history.add_user_message(input_text)
                 self.chat_history.add_ai_message(output)
-                
+
                 json_data = self._extract_json(output)
-                
+
                 if json_data:
                     logger.success("成功解析 Agent 返回的 JSON 数据")
                     return self._build_result(json_data, target_job)
@@ -84,16 +84,16 @@ class JobRecommenderAgent:
 
         logger.warning("Agent 模式失败，返回默认结果")
         return self._get_default_result(target_job)
-    
+
     def clear_memory(self):
         """清空对话记忆"""
         self.chat_history.clear()
         logger.info("对话记忆已清空")
-    
+
     def get_memory_history(self) -> List[Dict[str, str]]:
         """
         获取对话历史
-        
+
         Returns:
             对话历史列表
         """

@@ -33,7 +33,8 @@ class ChromaVectorStore:
             embedding_function=self.embeddings,
             persist_directory=self.persist_directory
         )
-        logger.info(f"向量存储初始化完成 | 集合: {self.collection_name} | 目录: {self.persist_directory}")
+        logger.info(
+            f"向量存储初始化完成 | 集合: {self.collection_name} | 目录: {self.persist_directory}")
 
     def add_documents(self, documents: List[Document]) -> List[str]:
         """
@@ -102,7 +103,8 @@ class ChromaVectorStore:
         Returns:
             (文档, 分数) 元组列表，分数越小越相似
         """
-        results = self.vectorstore.similarity_search_with_score(query=query, k=k)
+        results = self.vectorstore.similarity_search_with_score(
+            query=query, k=k)
         logger.info(f"带分数相似度搜索 | 查询: {query[:50]}... | 结果数: {len(results)}")
         return results
 

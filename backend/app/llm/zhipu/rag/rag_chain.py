@@ -230,7 +230,8 @@ class RAGService:
         Returns:
             存储的文档数量
         """
-        self.job_store.add_job(job_title, job_description, requirements, source)
+        self.job_store.add_job(
+            job_title, job_description, requirements, source)
         logger.info(f"岗位已存入向量存储 | 岗位: {job_title}")
         return 1
 

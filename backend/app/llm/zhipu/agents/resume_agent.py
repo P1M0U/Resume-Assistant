@@ -19,17 +19,17 @@ class ResumeAnalyzerAgent:
         """初始化简历分析智能体"""
         self.llm = zhipu_config.get_chat_model()
         self.tools = RESUME_TOOLS
-        
+
         # 初始化对话记忆
         self.chat_history = ChatMessageHistory()
-        
+
         # 使用 create_agent 创建 Agent
         self.agent = create_agent(
             model=self.llm,
             tools=self.tools,
             system_prompt=RESUME_SYSTEM_PROMPT
         )
-        
+
         logger.info("简历分析 Agent 初始化成功（带记忆）")
 
     async def analyze(self, file_path: str) -> ResumeAnalysisResult:
@@ -43,7 +43,7 @@ class ResumeAnalyzerAgent:
             ResumeAnalysisResult: 分析结果
         """
         logger.info(f"开始分析简历文件 | 路径: {file_path}")
-        
+
         input_text = f"""请分析简历文件：{file_path}
 
 请使用工具解析文件，提取技能，搜索相似简历，然后给出分析结果。"""
@@ -53,19 +53,19 @@ class ResumeAnalyzerAgent:
             result = await self.agent.ainvoke(
                 {"messages": [("user", input_text)]}
             )
-            
+
             # 提取最后一条消息
             messages = result.get("messages", [])
             if messages:
                 output = messages[-1].content
                 logger.info(f"Agent 返回结果: {output[:200]}...")
-                
+
                 # 保存对话到记忆
                 self.chat_history.add_user_message(input_text)
                 self.chat_history.add_ai_message(output)
-                
+
                 json_data = self._extract_json(output)
-                
+
                 if json_data:
                     logger.success("成功解析 Agent 返回的 JSON 数据")
                     return ResumeAnalysisResult(**json_data)
@@ -104,19 +104,19 @@ class ResumeAnalyzerAgent:
             result = await self.agent.ainvoke(
                 {"messages": [("user", input_text)]}
             )
-            
+
             # 提取最后一条消息
             messages = result.get("messages", [])
             if messages:
                 output = messages[-1].content
                 logger.info(f"Agent 返回结果: {output[:200]}...")
-                
+
                 # 保存对话到记忆
                 self.chat_history.add_user_message(input_text)
                 self.chat_history.add_ai_message(output)
-                
+
                 json_data = self._extract_json(output)
-                
+
                 if json_data:
                     logger.success("成功解析 Agent 返回的 JSON 数据")
                     return ResumeAnalysisResult(**json_data)
@@ -131,16 +131,16 @@ class ResumeAnalyzerAgent:
             issues=[],
             suggestions=[]
         )
-    
+
     def clear_memory(self):
         """清空对话记忆"""
         self.chat_history.clear()
         logger.info("对话记忆已清空")
-    
+
     def get_memory_history(self) -> List[Dict[str, str]]:
         """
         获取对话历史
-        
+
         Returns:
             对话历史列表
         """

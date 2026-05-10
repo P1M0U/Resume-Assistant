@@ -70,9 +70,9 @@ const handleRegister = (): void => {
               <el-icon><Briefcase /></el-icon>
               <span>岗位推荐</span>
             </el-menu-item>
-            <el-menu-item index="history">
-              <el-icon><Clock /></el-icon>
-              <span>历史记录</span>
+            <el-menu-item index="ai-chat">
+              <el-icon><ChatDotRound /></el-icon>
+              <span>AI对话</span>
             </el-menu-item>
             <el-menu-item index="settings">
               <el-icon><Setting /></el-icon>

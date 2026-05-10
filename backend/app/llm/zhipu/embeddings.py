@@ -79,7 +79,8 @@ class ZhipuAIEmbeddings(Embeddings, BaseModel):
                 last_error = e
                 if e.response.status_code == 429:
                     wait_time = self.retry_delay * (attempt + 1) * 2
-                    logger.warning(f"触发限流，等待 {wait_time} 秒后重试 (尝试 {attempt + 1}/{self.max_retries})")
+                    logger.warning(
+                        f"触发限流，等待 {wait_time} 秒后重试 (尝试 {attempt + 1}/{self.max_retries})")
                     time.sleep(wait_time)
                 else:
                     raise

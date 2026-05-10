@@ -28,7 +28,8 @@ class ResumeTextSplitter:
             separators=["\n\n", "\n", "。", "；", "，", " ", ""],
             length_function=len
         )
-        logger.info(f"文本分块器初始化 | 块大小: {self.chunk_size} | 重叠: {self.chunk_overlap}")
+        logger.info(
+            f"文本分块器初始化 | 块大小: {self.chunk_size} | 重叠: {self.chunk_overlap}")
 
     def split_text(self, text: str) -> List[str]:
         """

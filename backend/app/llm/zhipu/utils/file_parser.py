@@ -50,7 +50,8 @@ class FileParser:
         for i, para in enumerate(doc.paragraphs, 1):
             para_text = para.text
             if para_text:
-                logger.debug(f"段落 {i}: 长度={len(para_text)}, 内容预览={para_text[:50]}...")
+                logger.debug(
+                    f"段落 {i}: 长度={len(para_text)}, 内容预览={para_text[:50]}...")
                 text += para_text + "\n"
             else:
                 logger.debug(f"段落 {i}: 空段落")

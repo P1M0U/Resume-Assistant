@@ -1,5 +1,6 @@
 # 智能体模块初始化
 from llm.zhipu.agents.resume_agent import ResumeAnalyzerAgent
 from llm.zhipu.agents.job_agent import JobRecommenderAgent
+from llm.zhipu.agents.chat_agent import AIChatAgent
 
-__all__ = ['ResumeAnalyzerAgent', 'JobRecommenderAgent']
+__all__ = ['ResumeAnalyzerAgent', 'JobRecommenderAgent', 'AIChatAgent']

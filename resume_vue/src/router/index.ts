@@ -19,9 +19,9 @@ const router = createRouter({
       component: () => import('@/views/JobRecommendView.vue'),
     },
     {
-      path: '/history',
-      name: 'history',
-      component: () => import('@/views/HistoryView.vue'),
+      path: '/ai-chat',
+      name: 'ai-chat',
+      component: () => import('@/views/AiChatView.vue'),
     },
     {
       path: '/settings',

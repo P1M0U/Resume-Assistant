@@ -18,7 +18,7 @@ from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.responses import JSONResponse
 from loguru import logger
 
-from routers.main_router import router
+from routers.v1.main_router import router
 from settings import ZHIPU_API_KEY, APP_DEBUG
 
 # 配置日志
@@ -39,8 +39,6 @@ def setup_logger():
         colorize=True,
         enqueue=True
     )
-
-
 
 
 # 初始化日志

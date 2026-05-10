@@ -1,4 +1,4 @@
-import { get, post, uploadFile } from './main_api'
+import { get, post, uploadFile } from './index'
 
 /**
  * 个人信息接口
