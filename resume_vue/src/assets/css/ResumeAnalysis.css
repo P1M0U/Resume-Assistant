@@ -10,13 +10,17 @@
   margin: 0 0 8px 0;
   font-size: 28px;
   font-weight: 600;
-  color: #303133;
+  background: linear-gradient(135deg, #00bcd4 0%, #0097a7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 30px rgba(0, 188, 212, 0.3);
 }
 
 .page-header p {
   margin: 0;
   font-size: 14px;
-  color: #909399;
+  color: #546e7a;
 }
 
 .upload-card {
@@ -27,33 +31,40 @@
   padding: 60px 20px;
   text-align: center;
   cursor: pointer;
-  border: 2px dashed rgba(0, 212, 255, 0.4);
+  border: 2px dashed rgba(0, 188, 212, 0.4);
   border-radius: 12px;
-  transition: all 0.3s ease;
-  background: linear-gradient(135deg, #ffffff 0%, #f8fbff 100%);
+  transition: all 0.4s ease;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(248, 250, 255, 0.6) 100%);
+  backdrop-filter: blur(20px);
 }
 
 .upload-area:hover {
-  border-color: #00d4ff;
-  background: linear-gradient(135deg, #e3f2fd 0%, #f0f8ff 100%);
-  box-shadow: 0 8px 24px rgba(0, 102, 255, 0.15);
+  border-color: #00bcd4;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(248, 250, 255, 0.8) 100%);
+  box-shadow: 0 12px 36px rgba(0, 188, 212, 0.25);
+  transform: scale(1.02);
 }
 
 .upload-area h3 {
   margin: 16px 0 8px 0;
   font-size: 18px;
   font-weight: 600;
-  color: #303133;
+  color: #00838f;
+  text-shadow: 0 0 20px rgba(0, 188, 212, 0.3);
 }
 
 .upload-area p {
   margin: 0;
   font-size: 14px;
-  color: #909399;
+  color: #546e7a;
 }
 
 .file-info-card {
   margin-bottom: 20px;
+  border: 1px solid rgba(0, 188, 212, 0.2);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 255, 0.9) 100%);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 8px 32px rgba(0, 188, 212, 0.15);
 }
 
 .file-info {
@@ -70,13 +81,14 @@
   margin: 0 0 4px 0;
   font-size: 16px;
   font-weight: 600;
-  color: #303133;
+  color: #00838f;
+  text-shadow: 0 0 20px rgba(0, 188, 212, 0.3);
 }
 
 .file-details p {
   margin: 0;
   font-size: 14px;
-  color: #909399;
+  color: #546e7a;
 }
 
 .analysis-result {
@@ -85,9 +97,10 @@
 
 .result-card {
   margin-bottom: 20px;
-  border: 1px solid rgba(0, 212, 255, 0.2);
-  background: linear-gradient(135deg, #ffffff 0%, #f8fbff 100%);
-  box-shadow: 0 4px 16px rgba(0, 102, 255, 0.08);
+  border: 1px solid rgba(0, 188, 212, 0.2);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 255, 0.9) 100%);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 8px 32px rgba(0, 188, 212, 0.15);
 }
 
 .card-header {
@@ -100,7 +113,8 @@
   margin: 0;
   font-size: 18px;
   font-weight: 600;
-  color: #303133;
+  color: #00838f;
+  text-shadow: 0 0 20px rgba(0, 188, 212, 0.3);
 }
 
 .result-content {
@@ -122,14 +136,16 @@
   margin: 0 0 8px 0;
   font-size: 18px;
   font-weight: 600;
-  color: #303133;
+  color: #00838f;
+  text-shadow: 0 0 20px rgba(0, 188, 212, 0.3);
 }
 
 .score-text p {
   margin: 0;
   font-size: 14px;
-  color: #00d4a0;
+  color: #00a085;
   font-weight: 500;
+  text-shadow: 0 0 20px rgba(0, 160, 133, 0.3);
 }
 
 .detail-section {
@@ -140,7 +156,8 @@
   margin: 0 0 12px 0;
   font-size: 16px;
   font-weight: 600;
-  color: #303133;
+  color: #00838f;
+  text-shadow: 0 0 20px rgba(0, 188, 212, 0.3);
 }
 
 .tag-item {
@@ -154,6 +171,9 @@
 
 .suggestions-card {
   margin-bottom: 20px;
+  border: 1px solid rgba(0, 188, 212, 0.2);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 255, 0.9) 100%);
+  backdrop-filter: blur(20px);
 }
 
 .suggestion-item {
@@ -164,22 +184,22 @@
   margin: 0 0 8px 0;
   font-size: 15px;
   font-weight: 600;
-  color: #303133;
+  color: #00838f;
+  text-shadow: 0 0 20px rgba(0, 188, 212, 0.3);
 }
 
 .suggestion-item p {
   margin: 0;
   font-size: 14px;
-  color: #606266;
+  color: #37474f;
   line-height: 1.6;
 }
 
 .el-timeline-item__timestamp {
-  color: #00d4ff !important;
+  color: #00bcd4 !important;
   font-weight: 500;
 }
 
-/* AI对话框样式 */
 .ai-dialog-content {
   max-height: 70vh;
   overflow-y: auto;
@@ -187,6 +207,7 @@
 
 .dialog-card {
   border: none;
+  background: transparent;
 }
 
 .dialog-header {
@@ -195,7 +216,8 @@
   gap: 12px;
   font-size: 18px;
   font-weight: 600;
-  color: #303133;
+  color: #00838f;
+  text-shadow: 0 0 20px rgba(0, 188, 212, 0.3);
 }
 
 .highlight-tags,
@@ -211,19 +233,22 @@
 
 .suggestion-card {
   margin: 0;
+  border: 1px solid rgba(0, 188, 212, 0.15);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.7) 0%, rgba(248, 250, 255, 0.7) 100%);
 }
 
 .suggestion-card h4 {
   margin: 0 0 8px 0;
   font-size: 15px;
   font-weight: 600;
-  color: #303133;
+  color: #00838f;
+  text-shadow: 0 0 20px rgba(0, 188, 212, 0.3);
 }
 
 .suggestion-card p {
   margin: 0;
   font-size: 14px;
-  color: #606266;
+  color: #37474f;
   line-height: 1.6;
 }
 
@@ -241,38 +266,44 @@
 
 .el-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 102, 255, 0.3);
+  box-shadow: 0 8px 24px rgba(0, 188, 212, 0.3);
 }
 
 .el-button--primary {
-  background: linear-gradient(135deg, #0066ff 0%, #00d4ff 100%);
+  background: linear-gradient(135deg, #00bcd4 0%, #0097a7 100%);
   border: none;
+  box-shadow: 0 4px 16px rgba(0, 188, 212, 0.25);
 }
 
 .el-button--primary:hover {
-  background: linear-gradient(135deg, #0052cc 0%, #00b8e6 100%);
+  background: linear-gradient(135deg, #00acc1 0%, #00838f 100%);
+  box-shadow: 0 8px 32px rgba(0, 188, 212, 0.4);
 }
 
 .el-tag--success {
-  background: linear-gradient(135deg, #e6fff9 0%, #ccfbef 100%);
-  border-color: #00d4a0;
-  color: #00a080;
+  background: linear-gradient(135deg, rgba(0, 160, 133, 0.15) 0%, rgba(0, 133, 110, 0.15) 100%);
+  border-color: #00a085;
+  color: #00a085;
+  box-shadow: 0 0 20px rgba(0, 160, 133, 0.2);
 }
 
 .el-tag--warning {
-  background: linear-gradient(135deg, #fff9e6 0%, #fff3cc 100%);
-  border-color: #ffb84d;
-  color: #cc9200;
+  background: linear-gradient(135deg, rgba(255, 152, 0, 0.15) 0%, rgba(230, 138, 0, 0.15) 100%);
+  border-color: #ff9800;
+  color: #e65100;
+  box-shadow: 0 0 20px rgba(255, 152, 0, 0.2);
 }
 
 .el-tag--danger {
-  background: linear-gradient(135deg, #ffe6e6 0%, #ffcccc 100%);
-  border-color: #ff6b6b;
-  color: #cc5555;
+  background: linear-gradient(135deg, rgba(244, 67, 54, 0.15) 0%, rgba(229, 57, 53, 0.15) 100%);
+  border-color: #f44336;
+  color: #d32f2f;
+  box-shadow: 0 0 20px rgba(244, 67, 54, 0.2);
 }
 
 .el-tag--info {
-  background: linear-gradient(135deg, #e6f9ff 0%, #ccf2ff 100%);
-  border-color: #00d4ff;
-  color: #0099cc;
+  background: linear-gradient(135deg, rgba(0, 188, 212, 0.15) 0%, rgba(0, 150, 136, 0.15) 100%);
+  border-color: #00bcd4;
+  color: #00838f;
+  box-shadow: 0 0 20px rgba(0, 188, 212, 0.2);
 }

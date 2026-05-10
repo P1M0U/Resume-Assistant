@@ -11,22 +11,27 @@
 
 .page-header h2 {
   font-size: 28px;
-  color: #303133;
+  background: linear-gradient(135deg, #00bcd4 0%, #0097a7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 30px rgba(0, 188, 212, 0.3);
   margin-bottom: 10px;
 }
 
 .page-header p {
   font-size: 14px;
-  color: #909399;
+  color: #546e7a;
 }
 
 .input-card,
 .result-card,
 .recommendations-card {
   margin-bottom: 20px;
-  border: 1px solid rgba(0, 212, 255, 0.2);
-  background: linear-gradient(135deg, #ffffff 0%, #f8fbff 100%);
-  box-shadow: 0 4px 16px rgba(0, 102, 255, 0.08);
+  border: 1px solid rgba(0, 188, 212, 0.2);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 255, 0.9) 100%);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 8px 32px rgba(0, 188, 212, 0.15);
 }
 
 .card-header {
@@ -38,7 +43,8 @@
 .card-header h3 {
   margin: 0;
   font-size: 18px;
-  color: #303133;
+  color: #00838f;
+  text-shadow: 0 0 20px rgba(0, 188, 212, 0.3);
 }
 
 .input-section {
@@ -53,25 +59,26 @@
   width: 100%;
   height: 48px;
   font-size: 16px;
-  background: linear-gradient(135deg, #0066ff 0%, #00d4ff 100%);
+  background: linear-gradient(135deg, #00bcd4 0%, #0097a7 100%);
   border: none;
   border-radius: 12px;
   font-weight: 500;
   transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(0, 188, 212, 0.25);
 }
 
 .recommend-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 102, 255, 0.3);
-  background: linear-gradient(135deg, #0052cc 0%, #00b8e6 100%);
+  box-shadow: 0 8px 32px rgba(0, 188, 212, 0.4);
+  background: linear-gradient(135deg, #00acc1 0%, #00838f 100%);
 }
 
 .resume-summary {
   padding: 20px;
-  background: linear-gradient(135deg, #e3f2fd 0%, #f0f8ff 100%);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.7) 0%, rgba(248, 250, 255, 0.7) 100%);
   border-radius: 12px;
   margin-bottom: 20px;
-  border: 1px solid rgba(0, 212, 255, 0.2);
+  border: 1px solid rgba(0, 188, 212, 0.2);
 }
 
 .summary-header {
@@ -84,7 +91,8 @@
 .summary-header h4 {
   margin: 0;
   font-size: 16px;
-  color: #303133;
+  color: #00838f;
+  text-shadow: 0 0 20px rgba(0, 188, 212, 0.3);
 }
 
 .score-badge {
@@ -107,12 +115,12 @@
 
 .summary-item label {
   font-size: 12px;
-  color: #909399;
+  color: #78909c;
 }
 
 .summary-item span {
   font-size: 14px;
-  color: #303133;
+  color: #37474f;
   font-weight: 500;
 }
 
@@ -139,12 +147,13 @@
 .score-text h4 {
   font-size: 20px;
   margin: 0 0 5px 0;
-  color: #303133;
+  color: #00838f;
+  text-shadow: 0 0 20px rgba(0, 188, 212, 0.3);
 }
 
 .score-text p {
   font-size: 14px;
-  color: #909399;
+  color: #546e7a;
   margin: 0;
 }
 
@@ -154,7 +163,8 @@
 
 .skills-section h4 {
   font-size: 16px;
-  color: #303133;
+  color: #00838f;
+  text-shadow: 0 0 20px rgba(0, 188, 212, 0.3);
   margin-bottom: 10px;
 }
 
@@ -175,17 +185,18 @@
 }
 
 .recommendation-item {
-  border: 1px solid rgba(0, 212, 255, 0.2);
+  border: 1px solid rgba(0, 188, 212, 0.2);
   border-radius: 12px;
   padding: 15px;
-  transition: all 0.3s ease;
-  background: linear-gradient(135deg, #ffffff 0%, #f8fbff 100%);
+  transition: all 0.4s ease;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.7) 0%, rgba(248, 250, 255, 0.7) 100%);
+  backdrop-filter: blur(20px);
 }
 
 .recommendation-item:hover {
-  box-shadow: 0 8px 32px rgba(0, 102, 255, 0.15);
-  transform: translateY(-4px);
-  border-color: #00d4ff;
+  box-shadow: 0 12px 40px rgba(0, 188, 212, 0.25);
+  transform: translateY(-4px) scale(1.02);
+  border-color: #00bcd4;
 }
 
 .recommendation-header {
@@ -198,12 +209,13 @@
 .recommendation-header h5 {
   margin: 0;
   font-size: 16px;
-  color: #303133;
+  color: #00838f;
+  text-shadow: 0 0 20px rgba(0, 188, 212, 0.3);
 }
 
 .recommendation-reason {
   font-size: 14px;
-  color: #606266;
+  color: #37474f;
   line-height: 1.6;
   margin-bottom: 10px;
 }
@@ -220,28 +232,30 @@
 
 .optimization-section h4 {
   font-size: 16px;
-  color: #303133;
+  color: #00838f;
+  text-shadow: 0 0 20px rgba(0, 188, 212, 0.3);
   margin-bottom: 15px;
 }
 
 .suggestion-item {
   margin-bottom: 15px;
   padding: 15px;
-  background: linear-gradient(135deg, #e3f2fd 0%, #f0f8ff 100%);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.7) 0%, rgba(248, 250, 255, 0.7) 100%);
   border-radius: 12px;
-  border: 1px solid rgba(0, 212, 255, 0.2);
+  border: 1px solid rgba(0, 188, 212, 0.15);
 }
 
 .suggestion-item h5 {
   margin: 0 0 8px 0;
   font-size: 14px;
-  color: #303133;
+  color: #00838f;
+  text-shadow: 0 0 20px rgba(0, 188, 212, 0.3);
 }
 
 .suggestion-item p {
   margin: 0;
   font-size: 13px;
-  color: #606266;
+  color: #37474f;
   line-height: 1.6;
 }
 
@@ -251,6 +265,7 @@
 
 .dialog-card {
   border: none;
+  background: transparent;
 }
 
 .dialog-header {
@@ -259,6 +274,8 @@
   gap: 10px;
   font-size: 16px;
   font-weight: bold;
+  color: #00838f;
+  text-shadow: 0 0 20px rgba(0, 188, 212, 0.3);
 }
 
 .detail-dialog-content {
@@ -267,6 +284,7 @@
 
 .detail-card {
   border: none;
+  background: transparent;
 }
 
 .detail-tags {
@@ -281,42 +299,45 @@
 
 .suggestion-card {
   margin-bottom: 10px;
+  border: 1px solid rgba(0, 188, 212, 0.15);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.7) 0%, rgba(248, 250, 255, 0.7) 100%);
 }
 
 .suggestion-card h4 {
   margin: 0 0 8px 0;
   font-size: 14px;
-  color: #303133;
+  color: #00838f;
+  text-shadow: 0 0 20px rgba(0, 188, 212, 0.3);
 }
 
 .suggestion-card p {
   margin: 0;
   font-size: 13px;
-  color: #606266;
+  color: #37474f;
   line-height: 1.6;
 }
 
 .result-card {
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.4s ease;
 }
 
 .result-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 32px rgba(0, 102, 255, 0.2);
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 12px 40px rgba(0, 188, 212, 0.25);
 }
 
 .job-result-card {
   margin-top: 20px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  border: 1px solid rgba(230, 162, 60, 0.3);
-  background: linear-gradient(135deg, #ffffff 0%, #fff9e6 100%);
+  transition: all 0.4s ease;
+  border: 1px solid rgba(255, 152, 0, 0.3);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 248, 240, 0.7) 100%);
 }
 
 .job-result-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 32px rgba(230, 162, 60, 0.3);
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 12px 40px rgba(255, 152, 0, 0.25);
 }
 
 .job-result-summary {
@@ -337,13 +358,14 @@
 .result-info h4 {
   margin: 0 0 5px 0;
   font-size: 18px;
-  color: #303133;
+  color: #00838f;
+  text-shadow: 0 0 20px rgba(0, 188, 212, 0.3);
 }
 
 .result-info p {
   margin: 0;
   font-size: 14px;
-  color: #909399;
+  color: #546e7a;
 }
 
 .result-skills {
@@ -356,7 +378,7 @@
 .skill-section h5 {
   margin: 0 0 10px 0;
   font-size: 14px;
-  color: #606266;
+  color: #546e7a;
 }
 
 .skill-tags-mini {
@@ -368,7 +390,7 @@
 .result-recommendations h5 {
   margin: 0 0 10px 0;
   font-size: 14px;
-  color: #606266;
+  color: #546e7a;
 }
 
 .recommendation-tags {
@@ -388,13 +410,13 @@
 
 .empty-state h3 {
   font-size: 18px;
-  color: #909399;
+  color: #546e7a;
   margin-bottom: 10px;
 }
 
 .empty-state p {
   font-size: 14px;
-  color: #c0c4cc;
+  color: #78909c;
 }
 
 @media (max-width: 768px) {
