@@ -1,17 +1,11 @@
 from typing import List, Optional
-from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.documents import Document
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
 from loguru import logger
-from settings import (
-    ZHIPU_API_KEY,
-    ZHIPU_MODEL_NAME,
-    ZHIPU_TEMPERATURE,
-    ZHIPU_MAX_TOKENS,
-    RAG_TOP_K
-)
+from settings import RAG_TOP_K
+from llm.zhipu.chat import zhipu_config
 from llm.zhipu.rag.vector_store import ResumeVectorStore, JobVectorStore
 from llm.zhipu.rag.text_splitter import ResumeTextSplitter
 
@@ -49,14 +43,7 @@ class BaseRAGChain:
         self.vector_store = vector_store
         self.prompt_template = prompt_template
         self.top_k = RAG_TOP_K
-
-        self.llm = ChatOpenAI(
-            model=ZHIPU_MODEL_NAME,
-            temperature=ZHIPU_TEMPERATURE,
-            max_tokens=ZHIPU_MAX_TOKENS,
-            openai_api_key=ZHIPU_API_KEY,
-            openai_api_base="https://open.bigmodel.cn/api/paas/v4/"
-        )
+        self.llm = zhipu_config.get_chat_model()
 
         self.chain = (
             {"context": self._retrieve, "question": RunnablePassthrough()}

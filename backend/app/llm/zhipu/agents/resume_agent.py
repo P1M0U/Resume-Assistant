@@ -1,12 +1,7 @@
 # 简历分析智能体
 from langchain.agents import create_agent
-from langchain_openai import ChatOpenAI
-from settings import (
-    ZHIPU_API_KEY,
-    ZHIPU_MODEL_NAME,
-    ZHIPU_TEMPERATURE,
-    ZHIPU_MAX_TOKENS
-)
+from llm.zhipu.chat import zhipu_config
+from llm.zhipu.prompts.resume_prompt import RESUME_SYSTEM_PROMPT
 from llm.zhipu.tools.resume_tools import RESUME_TOOLS
 from llm.zhipu.schemas.resume_schema import ResumeAnalysisResult
 from loguru import logger
@@ -19,46 +14,8 @@ class ResumeAnalyzerAgent:
 
     def __init__(self):
         """初始化简历分析智能体"""
-        self.llm = ChatOpenAI(
-            model=ZHIPU_MODEL_NAME,
-            temperature=ZHIPU_TEMPERATURE,
-            max_tokens=ZHIPU_MAX_TOKENS,
-            openai_api_key=ZHIPU_API_KEY,
-            openai_api_base="https://open.bigmodel.cn/api/paas/v4/"
-        )
-
-        self.system_prompt = """你是一位专业的简历分析专家。请分析用户提供的简历内容。
-
-请严格按照以下 JSON 格式返回分析结果，不要添加任何其他文字说明：
-
-{
-    "score": 78,
-    "personal_info": {
-        "name": "姓名",
-        "phone": "电话",
-        "email": "邮箱",
-        "location": "地点"
-    },
-    "highlights": ["亮点1", "亮点2", "亮点3"],
-    "issues": ["问题1", "问题2", "问题3"],
-    "suggestions": [
-        {
-            "category": "分类",
-            "title": "建议标题",
-            "content": "建议内容"
-        }
-    ]
-}
-
-分析要求：
-1. score: 综合评分（0-100分）
-2. personal_info: 提取的个人信息
-3. highlights: 3-5个简历亮点
-4. issues: 3-5个待改进项
-5. suggestions: 分类给出优化建议
-
-请直接返回 JSON 对象，不要使用代码块包裹。"""
-
+        self.llm = zhipu_config.get_chat_model()
+        self.system_prompt = RESUME_SYSTEM_PROMPT
         self.agent = create_agent(
             model=self.llm,
             tools=RESUME_TOOLS,
