@@ -1,6 +1,6 @@
 from fastapi import APIRouter, File, UploadFile, HTTPException
 from fastapi.responses import JSONResponse
-from llm.zhipu.resume_analyzer import ResumeAnalyzer
+from llm.zhipu.agents.resume_agent import ResumeAnalyzerAgent
 from llm.zhipu.rag.rag_chain import RAGService
 from llm.zhipu.utils.file_parser import FileParser
 from settings import VECTOR_STORE_ENABLED
@@ -59,7 +59,7 @@ async def upload_resume(file: UploadFile = File(...)):
 
         # 调用智能体分析
         logger.info("开始调用智能体分析")
-        analyzer = ResumeAnalyzer()
+        analyzer = ResumeAnalyzerAgent()
         result = await analyzer.analyze_text(resume_text)
 
         logger.info(f"分析完成，评分：{result.score}")

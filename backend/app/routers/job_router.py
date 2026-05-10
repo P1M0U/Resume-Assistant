@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import JSONResponse
-from llm.zhipu.job_recommender import JobRecommender
+from llm.zhipu.agents.job_agent import JobRecommenderAgent
 from llm.zhipu.schemas.resume_schema import JobRecommendRequest
 from loguru import logger
 
@@ -20,9 +20,9 @@ async def get_job_recommendation(request: JobRecommendRequest):
     """
     logger.info(f"收到岗位推荐请求 | 目标岗位: {request.target_job}")
 
-    recommender = JobRecommender()
+    recommender = JobRecommenderAgent()
 
-    result = await recommender.recommend_jobs_structured(
+    result = await recommender.recommend_structured(
         resume_text=request.resume_text or "",
         target_job=request.target_job
     )
