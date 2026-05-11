@@ -89,12 +89,7 @@ onUnmounted(() => {
         <div class="header-content">
           <div class="logo">
             <!-- 移动端菜单按钮 -->
-            <el-button
-              v-if="isMobile"
-              class="mobile-menu-btn"
-              @click="toggleSidebar"
-              circle
-            >
+            <el-button v-if="isMobile" class="mobile-menu-btn" @click="toggleSidebar" circle>
               <el-icon :size="20">
                 <component :is="sidebarVisible ? 'Close' : 'Menu'" />
               </el-icon>
@@ -110,12 +105,12 @@ onUnmounted(() => {
       </el-header>
       <el-container>
         <!-- 移动端遮罩层 -->
-        <div
-          v-if="isMobile && sidebarVisible"
-          class="sidebar-overlay"
-          @click="toggleSidebar"
-        ></div>
-        <el-aside :width="sidebarWidth" class="aside" :class="{ 'mobile-hidden': isMobile && !sidebarVisible }">
+        <div v-if="isMobile && sidebarVisible" class="sidebar-overlay" @click="toggleSidebar"></div>
+        <el-aside
+          :width="sidebarWidth"
+          class="aside"
+          :class="{ 'mobile-hidden': isMobile && !sidebarVisible }"
+        >
           <el-menu :default-active="activeMenu" class="aside-menu" @select="handleMenuSelect">
             <el-menu-item index="home">
               <el-icon><HomeFilled /></el-icon>

@@ -1,6 +1,6 @@
 // d:\Study_or_work\CQIE_Python\resume_assistant\resume_vue\src\assets\ts\AiChatView.ts
 
-import { ref, nextTick, computed, onMounted, type Ref } from 'vue'
+import { ref, nextTick, computed, onMounted, onUnmounted, type Ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import {
   sendMessage as sendChatMessage,
@@ -51,6 +51,119 @@ const getCurrentTime = (): string => {
 }
 
 /**
+ * 移动端键盘适配组合式函数
+ * 处理键盘唤起时的布局调整
+ */
+function useKeyboardAdapter() {
+  const originalHeight = ref(0)
+  let resizeTimeout: number | null = null
+
+  /**
+   * 处理视口高度变化
+   */
+  const handleResize = (): void => {
+    if (resizeTimeout) {
+      clearTimeout(resizeTimeout)
+    }
+
+    resizeTimeout = window.setTimeout(() => {
+      const currentHeight = window.innerHeight
+      const heightDiff = originalHeight.value - currentHeight
+
+      // 如果高度差大于150px，认为是键盘打开
+      if (heightDiff > 150) {
+        const chatInput = document.querySelector('.chat-input') as HTMLElement
+        if (chatInput) {
+          chatInput.classList.add('keyboard-open')
+        }
+      } else {
+        const chatInput = document.querySelector('.chat-input') as HTMLElement
+        if (chatInput) {
+          chatInput.classList.remove('keyboard-open')
+        }
+      }
+    }, 100) as unknown as number
+  }
+
+  /**
+   * 使用 visualViewport API（推荐）
+   */
+  const setupVisualViewport = (): void => {
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener('resize', handleResize)
+      window.visualViewport.addEventListener('scroll', handleResize)
+    }
+  }
+
+  /**
+   * 清理 visualViewport 监听器
+   */
+  const cleanupVisualViewport = (): void => {
+    if (window.visualViewport) {
+      window.visualViewport.removeEventListener('resize', handleResize)
+      window.visualViewport.removeEventListener('scroll', handleResize)
+    }
+  }
+
+  /**
+   * 初始化键盘适配
+   */
+  const initKeyboardAdapter = (): void => {
+    originalHeight.value = window.innerHeight
+
+    // 使用 visualViewport API（现代浏览器）
+    if (window.visualViewport) {
+      setupVisualViewport()
+    } else {
+      // 降级方案：使用 resize 事件
+      window.addEventListener('resize', handleResize)
+    }
+
+    // 监听输入框焦点事件
+    const inputElement = document.querySelector('.chat-input textarea') as HTMLTextAreaElement
+    if (inputElement) {
+      inputElement.addEventListener('focus', () => {
+        setTimeout(() => {
+          const chatInput = document.querySelector('.chat-input') as HTMLElement
+          if (chatInput) {
+            chatInput.classList.add('keyboard-open')
+          }
+        }, 300)
+      })
+
+      inputElement.addEventListener('blur', () => {
+        setTimeout(() => {
+          const chatInput = document.querySelector('.chat-input') as HTMLElement
+          if (chatInput) {
+            chatInput.classList.remove('keyboard-open')
+          }
+        }, 100)
+      })
+    }
+  }
+
+  /**
+   * 清理键盘适配
+   */
+  const cleanupKeyboardAdapter = (): void => {
+    if (window.visualViewport) {
+      cleanupVisualViewport()
+    } else {
+      window.removeEventListener('resize', handleResize)
+    }
+
+    if (resizeTimeout) {
+      clearTimeout(resizeTimeout)
+    }
+  }
+
+  return {
+    initKeyboardAdapter,
+    cleanupKeyboardAdapter,
+  }
+}
+
+/**
  * AI对话组合式函数
  * @returns 响应式数据和方法
  */
@@ -59,6 +172,9 @@ export function useAiChat(): UseAiChatReturn {
   const messages = ref<Message[]>([])
   const inputMessage = ref('')
   const isLoading = ref(false)
+
+  // 使用键盘适配
+  const { initKeyboardAdapter, cleanupKeyboardAdapter } = useKeyboardAdapter()
 
   /**
    * 用户首字母
@@ -168,10 +284,21 @@ export function useAiChat(): UseAiChatReturn {
   }
 
   /**
-   * 组件挂载时加载对话历史
+   * 组件挂载时加载对话历史并初始化键盘适配
    */
   onMounted(() => {
     loadChatHistory()
+    // 初始化键盘适配
+    setTimeout(() => {
+      initKeyboardAdapter()
+    }, 100)
+  })
+
+  /**
+   * 组件卸载时清理键盘适配
+   */
+  onUnmounted(() => {
+    cleanupKeyboardAdapter()
   })
 
   return {

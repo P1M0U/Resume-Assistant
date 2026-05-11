@@ -176,78 +176,6 @@
 /* 移动端适配 */
 @media (max-width: 768px) {
   .welcome-section {
-    margin-bottom: 16px;
-  }
-
-  .welcome-card :deep(.el-card__body) {
-    padding: 20px;
-  }
-
-  .welcome-content h2 {
-    font-size: 24px;
-  }
-
-  .welcome-content p {
-    font-size: 14px;
-  }
-
-  .feature-section {
-    margin-bottom: 16px;
-  }
-
-  .feature-card {
-    margin-bottom: 12px;
-  }
-
-  .feature-card :deep(.el-card__body) {
-    padding: 16px;
-  }
-
-  .feature-icon {
-    width: 56px;
-    height: 56px;
-  }
-
-  .feature-card h3 {
-    font-size: 16px;
-  }
-
-  .feature-card p {
-    font-size: 13px;
-  }
-
-  .quick-actions {
-    margin-top: 24px;
-  }
-
-  .quick-actions h3 {
-    font-size: 18px;
-    margin-bottom: 12px;
-  }
-
-  .action-card {
-    margin-bottom: 12px;
-  }
-
-  .action-card :deep(.el-card__body) {
-    padding: 16px;
-  }
-
-  .action-content {
-    gap: 12px;
-  }
-
-  .action-text h4 {
-    font-size: 14px;
-  }
-
-  .action-text p {
-    font-size: 13px;
-  }
-}
-
-@media (max-width: 480px) {
-  .welcome-section {
     margin-bottom: 12px;
   }
 
@@ -256,7 +184,7 @@
   }
 
   .welcome-content h2 {
-    font-size: 20px;
+    font-size: 22px;
     margin-bottom: 8px;
   }
 
@@ -270,6 +198,7 @@
 
   .feature-card {
     margin-bottom: 8px;
+    padding: 12px;
   }
 
   .feature-card :deep(.el-card__body) {
@@ -279,19 +208,21 @@
   .feature-icon {
     width: 48px;
     height: 48px;
+    margin-bottom: 8px;
   }
 
   .feature-icon .el-icon {
-    font-size: 32px !important;
+    font-size: 36px !important;
   }
 
   .feature-card h3 {
     font-size: 15px;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
   }
 
   .feature-card p {
     font-size: 12px;
+    line-height: 1.4;
   }
 
   .quick-actions {
@@ -326,5 +257,91 @@
 
   .action-text p {
     font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .welcome-section {
+    margin-bottom: 8px;
+  }
+
+  .welcome-card :deep(.el-card__body) {
+    padding: 12px;
+  }
+
+  .welcome-content h2 {
+    font-size: 18px;
+    margin-bottom: 6px;
+  }
+
+  .welcome-content p {
+    font-size: 12px;
+  }
+
+  .feature-section {
+    margin-bottom: 8px;
+  }
+
+  .feature-card {
+    margin-bottom: 6px;
+    padding: 8px;
+  }
+
+  .feature-card :deep(.el-card__body) {
+    padding: 10px;
+  }
+
+  .feature-icon {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 6px;
+  }
+
+  .feature-icon .el-icon {
+    font-size: 28px !important;
+  }
+
+  .feature-card h3 {
+    font-size: 14px;
+    margin-bottom: 4px;
+  }
+
+  .feature-card p {
+    font-size: 11px;
+    line-height: 1.3;
+  }
+
+  .quick-actions {
+    margin-top: 12px;
+  }
+
+  .quick-actions h3 {
+    font-size: 14px;
+    margin-bottom: 6px;
+  }
+
+  .action-card {
+    margin-bottom: 6px;
+  }
+
+  .action-card :deep(.el-card__body) {
+    padding: 10px;
+  }
+
+  .action-content {
+    gap: 8px;
+  }
+
+  .action-content .el-icon {
+    font-size: 28px !important;
+  }
+
+  .action-text h4 {
+    font-size: 12px;
+    margin-bottom: 3px;
+  }
+
+  .action-text p {
+    font-size: 11px;
   }
 }
