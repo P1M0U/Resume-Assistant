@@ -62,66 +62,67 @@
 
 ```
 resume_assistant/
+├── .trae/                      # Trae配置目录
+│   └── rules/                  # 规则配置
+│       └── resume-assistant-agents.md  # 项目规则
 ├── backend/                    # 后端应用
-│   └── app/                    # 应用主目录
-│       ├── llm/                # LLM相关模块
-│       │   └── zhipu/          # 智谱AI模块
-│       │       ├── agents/     # 智能体
-│       │       │   ├── chat_agent.py     # AI对话智能体
-│       │       │   ├── job_agent.py      # 岗位推荐智能体
-│       │       │   └── resume_agent.py   # 简历分析智能体
-│       │       ├── chains/     # 链式调用
-│       │       │   ├── job_recommend_chain.py    # 岗位推荐链
-│       │       │   └── resume_analyzer_chain.py # 简历分析链
-│       │       ├── memory/     # 记忆模块
-│       │       │   ├── conversation_memory.py # 对话记忆
-│       │       │   └── vectory_memory.py    # 向量记忆
-│       │       ├── prompts/    # 提示词模板
-│       │       │   ├── job_prompt.py    # 岗位推荐提示词
-│       │       │   └── resume_prompt.py # 简历分析提示词
-│       │       ├── rag/        # RAG模块
-│       │       │   ├── rag_chain.py      # RAG链
-│       │       │   ├── text_splitter.py # 文本分块
-│       │       │   └── vector_store.py  # 向量存储
-│       │       ├── schemas/    # 数据模型
-│       │       │   └── resume_schema.py # 简历相关数据模型
-│       │       ├── tools/      # 工具集
-│       │       │   ├── job_tools.py    # 岗位相关工具
-│       │       │   ├── resume_tools.py # 简历相关工具
-│       │       │   └── web_tools.py    # 网络搜索工具
-│       │       ├── utils/      # 工具函数
-│       │       │   ├── file_parser.py    # 文件解析
-│       │       │   └── text_processor.py # 文本处理
-│       │       ├── chat.py              # 聊天模块
-│       │       ├── embeddings.py        # 向量化模块
-│       │       ├── job_recommender.py   # 岗位推荐主应用
-│       │       └── resume_analyzer.py   # 简历分析主应用
-│       ├── routers/            # API路由
-│       │   └── v1/              # API版本1
-│       │       ├── chat_router.py      # AI对话路由
-│       │       ├── job_router.py       # 岗位推荐路由
-│       │       ├── main_router.py      # 主路由聚合
-│       │       ├── rag_router.py       # RAG功能路由
-│       │       └── resume_router.py    # 简历分析路由
-│       ├── main.py             # 应用入口
-│       ├── settings.py         # 配置管理
-│       └── config.yaml         # 配置文件
+│   ├── app/                    # 应用主目录
+│   │   ├── llm/                # LLM相关模块
+│   │   │   └── zhipu/          # 智谱AI模块
+│   │   │       ├── agents/     # 智能体
+│   │   │       │   ├── __init__.py      # 模块初始化
+│   │   │       │   ├── chat_agent.py    # AI对话智能体
+│   │   │       │   ├── job_agent.py     # 岗位推荐智能体
+│   │   │       │   └── resume_agent.py  # 简历分析智能体
+│   │   │       ├── prompts/    # 提示词模板
+│   │   │       │   ├── job_prompt.py    # 岗位推荐提示词
+│   │   │       │   └── resume_prompt.py # 简历分析提示词
+│   │   │       ├── rag/        # RAG模块
+│   │   │       │   ├── __init__.py      # 模块初始化
+│   │   │       │   ├── rag_chain.py     # RAG链
+│   │   │       │   ├── text_splitter.py # 文本分块
+│   │   │       │   └── vector_store.py  # 向量存储
+│   │   │       ├── schemas/    # 数据模型
+│   │   │       │   └── resume_schema.py  # 简历相关数据模型
+│   │   │       ├── tools/      # 工具集
+│   │   │       │   ├── __init__.py      # 模块初始化
+│   │   │       │   ├── job_tools.py     # 岗位相关工具
+│   │   │       │   └── resume_tools.py  # 简历相关工具
+│   │   │       ├── utils/      # 工具函数
+│   │   │       │   ├── file_parser.py    # 文件解析
+│   │   │       │   └── text_processor.py # 文本处理
+│   │   │       ├── chat.py              # 聊天模块
+│   │   │       └── embeddings.py        # 向量化模块
+│   │   ├── routers/            # API路由
+│   │   │   └── v1/              # API版本1
+│   │   │       ├── chat_router.py      # AI对话路由
+│   │   │       ├── job_router.py       # 岗位推荐路由
+│   │   │       ├── main_router.py      # 主路由聚合
+│   │   │       ├── rag_router.py       # RAG功能路由
+│   │   │       └── resume_router.py    # 简历分析路由
+│   │   ├── main.py             # 应用入口
+│   │   └── settings.py         # 配置管理
+│   └── Dockerfile              # Docker镜像构建文件
 ├── resume_vue/                 # 前端应用
 │   ├── public/                 # 静态资源
+│   │   └── favicon.ico         # 网站图标
 │   ├── src/                    # 源代码
+│   │   ├── __tests__/          # 测试文件
+│   │   │   └── App.spec.ts     # App组件测试
 │   │   ├── assets/             # 资源文件
 │   │   │   ├── css/             # 样式文件
 │   │   │   │   ├── AiChatView.css        # AI对话样式
-│   │   │   │   ├── HomeView.css          # 首页样式
-│   │   │   │   ├── JobRecommend.css      # 岗位推荐样式
-│   │   │   │   ├── ResumeAnalysis.css    # 简历分析样式
-│   │   │   │   └── SettingsView.css      # 设置样式
+│   │   │   │   ├── App.css              # 应用全局样式
+│   │   │   │   ├── HomeView.css         # 首页样式
+│   │   │   │   ├── JobRecommend.css     # 岗位推荐样式
+│   │   │   │   ├── ResumeAnalysis.css   # 简历分析样式
+│   │   │   │   └── SettingsView.css     # 设置样式
 │   │   │   └── ts/              # TypeScript逻辑
 │   │   │       ├── AiChatView.ts        # AI对话逻辑
-│   │   │       ├── HomeView.ts          # 首页逻辑
-│   │   │       ├── JobRecommend.ts      # 岗位推荐逻辑
-│   │   │       ├── ResumeAnalysis.ts    # 简历分析逻辑
-│   │   │       └── SettingsView.ts      # 设置逻辑
+│   │   │       ├── HomeView.ts         # 首页逻辑
+│   │   │       ├── JobRecommend.ts     # 岗位推荐逻辑
+│   │   │       ├── ResumeAnalysis.ts   # 简历分析逻辑
+│   │   │       └── SettingsView.ts     # 设置逻辑
 │   │   ├── components/         # Vue组件
 │   │   │   ├── JobRecommend.vue        # 岗位推荐组件
 │   │   │   └── ResumeAnalysis.vue      # 简历分析组件
@@ -142,10 +143,25 @@ resume_assistant/
 │   │   │   └── SettingsView.vue        # 设置页面
 │   │   ├── App.vue             # 根组件
 │   │   └── main.ts             # 应用入口
+│   ├── .gitignore              # Git忽略文件
+│   ├── .prettierrc.json        # Prettier配置
+│   ├── Dockerfile              # Docker镜像构建文件
+│   ├── README.md               # 前端项目说明
+│   ├── env.d.ts                # 环境变量类型定义
+│   ├── index.html              # HTML入口文件
+│   ├── nginx.conf              # Nginx配置文件
+│   ├── package-lock.json       # 依赖锁定文件
 │   ├── package.json            # 项目配置
+│   ├── tsconfig.app.json       # 应用TypeScript配置
+│   ├── tsconfig.json           # TypeScript主配置
+│   ├── tsconfig.node.json      # Node TypeScript配置
+│   ├── tsconfig.vitest.json    # Vitest TypeScript配置
 │   ├── vite.config.ts          # Vite配置
-│   └── tsconfig.json           # TypeScript配置
+│   └── vitest.config.ts        # Vitest配置
+├── .gitattributes              # Git属性配置
 ├── .gitignore                  # Git忽略文件
+├── docker-compose.yml          # Docker Compose配置
+├── LICENSE                     # 许可证文件
 ├── requirements.txt            # Python依赖列表
 ├── README.md                   # 项目说明文档
 └── README-EN.md                # 英文说明文档

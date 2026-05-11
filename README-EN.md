@@ -62,66 +62,67 @@
 
 ```
 resume_assistant/
+├── .trae/                      # Trae Configuration Directory
+│   └── rules/                  # Rules Configuration
+│       └── resume-assistant-agents.md  # Project Rules
 ├── backend/                    # Backend Application
-│   └── app/                    # Main Application Directory
-│       ├── llm/                # LLM Related Modules
-│       │   └── zhipu/          # Zhipu AI Module
-│       │       ├── agents/     # Agents
-│       │       │   ├── chat_agent.py     # AI Chat Agent
-│       │       │   ├── job_agent.py      # Job Recommendation Agent
-│       │       │   └── resume_agent.py   # Resume Analysis Agent
-│       │       ├── chains/     # Chain Calls
-│       │       │   ├── job_recommend_chain.py    # Job Recommendation Chain
-│       │       │   └── resume_analyzer_chain.py # Resume Analysis Chain
-│       │       ├── memory/     # Memory Modules
-│       │       │   ├── conversation_memory.py # Conversation Memory
-│       │       │   └── vectory_memory.py    # Vector Memory
-│       │       ├── prompts/    # Prompt Templates
-│       │       │   ├── job_prompt.py    # Job Recommendation Prompts
-│       │       │   └── resume_prompt.py # Resume Analysis Prompts
-│       │       ├── rag/        # RAG Module
-│       │       │   ├── rag_chain.py      # RAG Chain
-│       │       │   ├── text_splitter.py # Text Splitter
-│       │       │   └── vector_store.py  # Vector Store
-│       │       ├── schemas/    # Data Models
-│       │       │   └── resume_schema.py # Resume Related Data Models
-│       │       ├── tools/      # Tool Sets
-│       │       │   ├── job_tools.py    # Job Related Tools
-│       │       │   ├── resume_tools.py # Resume Related Tools
-│       │       │   └── web_tools.py    # Web Search Tools
-│       │       ├── utils/      # Utility Functions
-│       │       │   ├── file_parser.py    # File Parsing
-│       │       │   └── text_processor.py # Text Processing
-│       │       ├── chat.py              # Chat Module
-│       │       ├── embeddings.py        # Vectorization Module
-│       │       ├── job_recommender.py   # Job Recommendation Main App
-│       │       └── resume_analyzer.py   # Resume Analysis Main App
-│       ├── routers/            # API Routes
-│       │   └── v1/              # API Version 1
-│       │       ├── chat_router.py      # AI Chat Route
-│       │       ├── job_router.py       # Job Recommendation Route
-│       │       ├── main_router.py      # Main Route Aggregation
-│       │       ├── rag_router.py       # RAG Feature Route
-│       │       └── resume_router.py    # Resume Analysis Route
-│       ├── main.py             # Application Entry
-│       ├── settings.py         # Configuration Management
-│       └── config.yaml         # Configuration File
+│   ├── app/                    # Main Application Directory
+│   │   ├── llm/                # LLM Related Modules
+│   │   │   └── zhipu/          # Zhipu AI Module
+│   │   │       ├── agents/     # Agents
+│   │   │       │   ├── __init__.py      # Module Initialization
+│   │   │       │   ├── chat_agent.py    # AI Chat Agent
+│   │   │       │   ├── job_agent.py     # Job Recommendation Agent
+│   │   │       │   └── resume_agent.py  # Resume Analysis Agent
+│   │   │       ├── prompts/    # Prompt Templates
+│   │   │       │   ├── job_prompt.py    # Job Recommendation Prompts
+│   │   │       │   └── resume_prompt.py # Resume Analysis Prompts
+│   │   │       ├── rag/        # RAG Module
+│   │   │       │   ├── __init__.py      # Module Initialization
+│   │   │       │   ├── rag_chain.py     # RAG Chain
+│   │   │       │   ├── text_splitter.py # Text Splitter
+│   │   │       │   └── vector_store.py  # Vector Store
+│   │   │       ├── schemas/    # Data Models
+│   │   │       │   └── resume_schema.py  # Resume Related Data Models
+│   │   │       ├── tools/      # Tool Sets
+│   │   │       │   ├── __init__.py      # Module Initialization
+│   │   │       │   ├── job_tools.py     # Job Related Tools
+│   │   │       │   └── resume_tools.py  # Resume Related Tools
+│   │   │       ├── utils/      # Utility Functions
+│   │   │       │   ├── file_parser.py    # File Parsing
+│   │   │       │   └── text_processor.py # Text Processing
+│   │   │       ├── chat.py              # Chat Module
+│   │   │       └── embeddings.py        # Vectorization Module
+│   │   ├── routers/            # API Routes
+│   │   │   └── v1/              # API Version 1
+│   │   │       ├── chat_router.py      # AI Chat Route
+│   │   │       ├── job_router.py       # Job Recommendation Route
+│   │   │       ├── main_router.py      # Main Route Aggregation
+│   │   │       ├── rag_router.py       # RAG Feature Route
+│   │   │       └── resume_router.py    # Resume Analysis Route
+│   │   ├── main.py             # Application Entry
+│   │   └── settings.py         # Configuration Management
+│   └── Dockerfile              # Docker Image Build File
 ├── resume_vue/                 # Frontend Application
 │   ├── public/                 # Static Assets
+│   │   └── favicon.ico         # Website Icon
 │   ├── src/                    # Source Code
+│   │   ├── __tests__/          # Test Files
+│   │   │   └── App.spec.ts     # App Component Test
 │   │   ├── assets/             # Asset Files
 │   │   │   ├── css/             # Style Files
 │   │   │   │   ├── AiChatView.css        # AI Chat Styles
-│   │   │   │   ├── HomeView.css          # Home View Styles
-│   │   │   │   ├── JobRecommend.css      # Job Recommendation Styles
-│   │   │   │   ├── ResumeAnalysis.css    # Resume Analysis Styles
-│   │   │   │   └── SettingsView.css      # Settings Styles
+│   │   │   │   ├── App.css              # Application Global Styles
+│   │   │   │   ├── HomeView.css         # Home View Styles
+│   │   │   │   ├── JobRecommend.css     # Job Recommendation Styles
+│   │   │   │   ├── ResumeAnalysis.css   # Resume Analysis Styles
+│   │   │   │   └── SettingsView.css     # Settings Styles
 │   │   │   └── ts/              # TypeScript Logic
 │   │   │       ├── AiChatView.ts        # AI Chat Logic
-│   │   │       ├── HomeView.ts          # Home View Logic
-│   │   │       ├── JobRecommend.ts      # Job Recommendation Logic
-│   │   │       ├── ResumeAnalysis.ts    # Resume Analysis Logic
-│   │   │       └── SettingsView.ts      # Settings Logic
+│   │   │       ├── HomeView.ts         # Home View Logic
+│   │   │       ├── JobRecommend.ts     # Job Recommendation Logic
+│   │   │       ├── ResumeAnalysis.ts   # Resume Analysis Logic
+│   │   │       └── SettingsView.ts     # Settings Logic
 │   │   ├── components/         # Vue Components
 │   │   │   ├── JobRecommend.vue        # Job Recommendation Component
 │   │   │   └── ResumeAnalysis.vue      # Resume Analysis Component
@@ -142,10 +143,25 @@ resume_assistant/
 │   │   │   └── SettingsView.vue        # Settings Page
 │   │   ├── App.vue             # Root Component
 │   │   └── main.ts             # Application Entry
+│   ├── .gitignore              # Git Ignore File
+│   ├── .prettierrc.json        # Prettier Configuration
+│   ├── Dockerfile              # Docker Image Build File
+│   ├── README.md               # Frontend Project Documentation
+│   ├── env.d.ts                # Environment Variable Type Definitions
+│   ├── index.html              # HTML Entry File
+│   ├── nginx.conf              # Nginx Configuration File
+│   ├── package-lock.json       # Dependency Lock File
 │   ├── package.json            # Project Configuration
+│   ├── tsconfig.app.json       # Application TypeScript Configuration
+│   ├── tsconfig.json           # Main TypeScript Configuration
+│   ├── tsconfig.node.json      # Node TypeScript Configuration
+│   ├── tsconfig.vitest.json    # Vitest TypeScript Configuration
 │   ├── vite.config.ts          # Vite Configuration
-│   └── tsconfig.json           # TypeScript Configuration
+│   └── vitest.config.ts        # Vitest Configuration
+├── .gitattributes              # Git Attributes Configuration
 ├── .gitignore                  # Git Ignore File
+├── docker-compose.yml          # Docker Compose Configuration
+├── LICENSE                     # License File
 ├── requirements.txt            # Python Dependencies
 ├── README.md                   # Project Documentation (Chinese)
 └── README-EN.md                # Project Documentation (English)
