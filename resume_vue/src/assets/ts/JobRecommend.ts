@@ -46,12 +46,17 @@ export function useJobRecommend(): UseJobRecommendReturn {
   })
 
   /**
-   * 组件挂载时从store加载简历分析结果
+   * 组件挂载时从store加载简历分析结果和岗位推荐结果
    */
   onMounted(() => {
     const result = resumeStore.getAnalysisResult()
     if (result) {
       resumeResult.value = result
+    }
+
+    const jobResult = resumeStore.getJobMatchResult()
+    if (jobResult) {
+      jobMatchResult.value = jobResult
     }
   })
 
@@ -64,6 +69,19 @@ export function useJobRecommend(): UseJobRecommendReturn {
       if (newResult && newResult !== resumeResult.value) {
         resumeResult.value = newResult
         ElMessage.success('检测到新的简历分析结果，已自动更新')
+      }
+    },
+    { deep: true },
+  )
+
+  /**
+   * 监听store中的岗位推荐结果变化
+   */
+  watch(
+    () => resumeStore.jobMatchResult,
+    (newResult) => {
+      if (newResult && newResult !== jobMatchResult.value) {
+        jobMatchResult.value = newResult
       }
     },
     { deep: true },
@@ -120,6 +138,9 @@ export function useJobRecommend(): UseJobRecommendReturn {
 
       jobMatchResult.value = result
       dialogVisible.value = true
+
+      // 将岗位推荐结果存储到 store 中
+      resumeStore.setJobMatchResult(result)
 
       if (!targetJob.value.trim()) {
         ElMessage.success('AI 已根据您的简历自动推荐岗位')

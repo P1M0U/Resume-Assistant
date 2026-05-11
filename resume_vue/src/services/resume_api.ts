@@ -79,7 +79,7 @@ export class ResumeApiService {
    * @returns 简历分析结果
    */
   static async uploadAndAnalyze(params: UploadResumeParams): Promise<ResumeAnalysisResult> {
-    return uploadFile<ResumeAnalysisResult>('/api/resume/upload', params.file, params.onProgress)
+    return uploadFile<ResumeAnalysisResult>('/resume/upload', params.file, params.onProgress)
   }
 
   /**
@@ -90,7 +90,7 @@ export class ResumeApiService {
   static async uploadResume(
     params: UploadResumeParams,
   ): Promise<{ file_id: string; file_path: string }> {
-    return uploadFile('/api/resume/upload-file', params.file, params.onProgress)
+    return uploadFile('/resume/upload-file', params.file, params.onProgress)
   }
 
   /**
@@ -99,7 +99,7 @@ export class ResumeApiService {
    * @returns 简历分析结果
    */
   static async analyzeResume(fileId: string): Promise<ResumeAnalysisResult> {
-    return post('/api/resume/analyze', { file_id: fileId })
+    return post('/resume/analyze', { file_id: fileId })
   }
 
   /**
@@ -108,7 +108,7 @@ export class ResumeApiService {
    * @returns 岗位匹配结果
    */
   static async getJobRecommendation(params: JobRecommendParams): Promise<JobMatchResult> {
-    return post('/api/resume/job-recommend', params)
+    return post('/resume/job-recommend', params)
   }
 
   /**
@@ -129,7 +129,7 @@ export class ResumeApiService {
       created_at: string
     }>
   }> {
-    return get('/api/resume/history', { params: { page, page_size: pageSize } })
+    return get('/resume/history', { params: { page, page_size: pageSize } })
   }
 
   /**
@@ -138,7 +138,7 @@ export class ResumeApiService {
    * @returns 分析结果详情
    */
   static async getAnalysisDetail(analysisId: string): Promise<ResumeAnalysisResult> {
-    return get(`/api/resume/analysis/${analysisId}`)
+    return get(`/resume/analysis/${analysisId}`)
   }
 
   /**
@@ -147,7 +147,7 @@ export class ResumeApiService {
    * @returns 删除结果
    */
   static async deleteAnalysis(analysisId: string): Promise<{ success: boolean; message: string }> {
-    return post(`/api/resume/analysis/${analysisId}/delete`)
+    return post(`/resume/analysis/${analysisId}/delete`)
   }
 }
 

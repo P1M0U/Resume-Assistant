@@ -5,6 +5,7 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from typing import Optional, List
 from llm.zhipu.agents.chat_agent import AIChatAgent
+from llm.zhipu.schemas.resume_schema import ResumeAnalysisResult, JobMatchResult
 from loguru import logger
 
 chat_router = APIRouter(prefix="/chat", tags=["AI对话"])
@@ -16,6 +17,8 @@ chat_agent = AIChatAgent()
 class ChatRequest(BaseModel):
     """对话请求"""
     message: str
+    resume_analysis_result: Optional[ResumeAnalysisResult] = None
+    job_match_result: Optional[JobMatchResult] = None
 
 
 class ChatResponse(BaseModel):
@@ -35,7 +38,7 @@ async def send_message(request: ChatRequest):
     发送消息给AI助手
 
     Args:
-        request: 对话请求
+        request: 对话请求（包含消息和可选的简历分析结果、岗位推荐结果）
 
     Returns:
         AI回复
@@ -46,8 +49,12 @@ async def send_message(request: ChatRequest):
         raise HTTPException(status_code=400, detail="消息不能为空")
 
     try:
-        # 调用 AI Agent 进行对话
-        ai_response = await chat_agent.chat(request.message)
+        # 调用 AI Agent 进行对话，传递上下文信息
+        ai_response = await chat_agent.chat(
+            user_message=request.message,
+            resume_analysis_result=request.resume_analysis_result,
+            job_match_result=request.job_match_result
+        )
 
         # 获取当前时间戳
         from datetime import datetime

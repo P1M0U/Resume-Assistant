@@ -405,7 +405,7 @@
       description="暂无简历数据，请先上传并分析简历"
       :image-size="200"
     >
-      <el-button type="primary" @click="$router.push('/resume-analysis')"> 前往简历分析 </el-button>
+      <el-button type="primary" @click="$router.push('/resume-analyze')"> 前往简历分析 </el-button>
     </el-empty>
   </div>
 </template>

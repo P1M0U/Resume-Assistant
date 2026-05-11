@@ -2,8 +2,9 @@
 from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain_core.messages import HumanMessage, AIMessage
 from llm.zhipu.chat import zhipu_config
+from llm.zhipu.schemas.resume_schema import ResumeAnalysisResult, JobMatchResult
 from loguru import logger
-from typing import List, Dict
+from typing import List, Dict, Optional
 
 
 class AIChatAgent:
@@ -16,8 +17,8 @@ class AIChatAgent:
         # 初始化对话记忆
         self.chat_history = ChatMessageHistory()
 
-        # 系统提示词
-        self.system_prompt = """你是一个专业的简历助手AI，专注于帮助用户优化简历、提供职业发展建议、面试技巧和薪资谈判指导。
+        # 基础系统提示词
+        self.base_system_prompt = """你是一个专业的简历助手AI，专注于帮助用户优化简历、提供职业发展建议、面试技巧和薪资谈判指导。
 
 你的职责：
 1. 帮助用户优化简历内容和格式
@@ -30,22 +31,127 @@ class AIChatAgent:
 
         logger.info("AI对话 Agent 初始化成功（带记忆）")
 
-    async def chat(self, user_message: str) -> str:
+    def _build_context_prompt(
+        self,
+        resume_analysis_result: Optional[ResumeAnalysisResult] = None,
+        job_match_result: Optional[JobMatchResult] = None
+    ) -> str:
+        """
+        构建上下文相关的系统提示词
+
+        Args:
+            resume_analysis_result: 简历分析结果
+            job_match_result: 岗位推荐结果
+
+        Returns:
+            完整的系统提示词
+        """
+        context_parts = [self.base_system_prompt]
+
+        # 如果有简历分析结果，添加简历上下文
+        if resume_analysis_result:
+            context_parts.append("\n\n## 当前用户的简历分析结果：")
+            context_parts.append(f"\n综合评分：{resume_analysis_result.score}分")
+
+            if resume_analysis_result.personal_info:
+                info = resume_analysis_result.personal_info
+                context_parts.append(f"\n姓名：{info.name or '未识别'}")
+                if info.phone:
+                    context_parts.append(f"\n电话：{info.phone}")
+                if info.email:
+                    context_parts.append(f"\n邮箱：{info.email}")
+
+            if resume_analysis_result.highlights:
+                context_parts.append("\n\n简历亮点：")
+                for highlight in resume_analysis_result.highlights:
+                    context_parts.append(f"\n- {highlight}")
+
+            if resume_analysis_result.issues:
+                context_parts.append("\n\n待改进项：")
+                for issue in resume_analysis_result.issues:
+                    context_parts.append(f"\n- {issue}")
+
+            if resume_analysis_result.suggestions:
+                context_parts.append("\n\n优化建议：")
+                for suggestion in resume_analysis_result.suggestions:
+                    context_parts.append(
+                        f"\n- [{suggestion.category}] {suggestion.title}: {suggestion.content}"
+                    )
+
+        # 如果有岗位推荐结果，添加岗位上下文
+        if job_match_result:
+            context_parts.append("\n\n## 当前用户的岗位推荐结果：")
+            context_parts.append(
+                f"\n目标岗位：{job_match_result.target_job}"
+            )
+            context_parts.append(
+                f"\n匹配度：{job_match_result.match_score}%"
+            )
+
+            if job_match_result.matched_skills:
+                context_parts.append("\n\n匹配技能：")
+                for skill in job_match_result.matched_skills:
+                    context_parts.append(f"\n- {skill}")
+
+            if job_match_result.missing_skills:
+                context_parts.append("\n\n缺失技能：")
+                for skill in job_match_result.missing_skills:
+                    context_parts.append(f"\n- {skill}")
+
+            if job_match_result.recommendations:
+                context_parts.append("\n\n推荐岗位：")
+                for rec in job_match_result.recommendations:
+                    context_parts.append(
+                        f"\n- {rec.job_title} (匹配度: {rec.match_score}%)"
+                    )
+
+            if job_match_result.optimization_suggestions:
+                context_parts.append("\n\n岗位优化建议：")
+                for suggestion in job_match_result.optimization_suggestions:
+                    context_parts.append(
+                        f"\n- [{suggestion.category}] {suggestion.title}: {suggestion.content}"
+                    )
+
+        # 添加指导说明
+        if resume_analysis_result or job_match_result:
+            context_parts.append(
+                "\n\n## 指导说明：\n"
+                "请根据上述用户的简历分析结果和岗位推荐结果，提供针对性的建议。\n"
+                "如果用户询问简历优化问题，请结合简历亮点和待改进项给出具体建议。\n"
+                "如果用户询问岗位相关问题，请结合匹配技能和缺失技能给出指导。\n"
+                "如果用户询问职业规划，请结合推荐岗位给出建议。"
+            )
+
+        return "".join(context_parts)
+
+    async def chat(
+        self,
+        user_message: str,
+        resume_analysis_result: Optional[ResumeAnalysisResult] = None,
+        job_match_result: Optional[JobMatchResult] = None
+    ) -> str:
         """
         与用户对话
 
         Args:
             user_message: 用户消息
+            resume_analysis_result: 简历分析结果（可选）
+            job_match_result: 岗位推荐结果（可选）
 
         Returns:
             AI回复内容
         """
         logger.info(f"收到用户消息: {user_message[:50]}...")
 
+        # 构建上下文相关的系统提示词
+        system_prompt = self._build_context_prompt(
+            resume_analysis_result, job_match_result
+        )
+
         try:
             # 构建消息列表
             messages = [
-                {"role": "system", "content": self.system_prompt}
+                {"role": "system", "content": system_prompt}
             ]
 
             # 添加历史对话
