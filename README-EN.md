@@ -62,333 +62,183 @@
 
 ```
 resume_assistant/
-├── .trae/                      # Trae Configuration Directory
-│   └── rules/                  # Rules Configuration
-│       └── resume-assistant-agents.md  # Project Rules
-├── backend/                    # Backend Application
-│   ├── app/                    # Main Application Directory
-│   │   ├── llm/                # LLM Related Modules
-│   │   │   └── zhipu/          # Zhipu AI Module
-│   │   │       ├── agents/     # Agents
-│   │   │       │   ├── __init__.py      # Module Initialization
-│   │   │       │   ├── chat_agent.py    # AI Chat Agent
-│   │   │       │   ├── job_agent.py     # Job Recommendation Agent
-│   │   │       │   └── resume_agent.py  # Resume Analysis Agent
-│   │   │       ├── prompts/    # Prompt Templates
-│   │   │       │   ├── job_prompt.py    # Job Recommendation Prompts
-│   │   │       │   └── resume_prompt.py # Resume Analysis Prompts
-│   │   │       ├── rag/        # RAG Module
-│   │   │       │   ├── __init__.py      # Module Initialization
-│   │   │       │   ├── rag_chain.py     # RAG Chain
-│   │   │       │   ├── text_splitter.py # Text Splitter
-│   │   │       │   └── vector_store.py  # Vector Store
-│   │   │       ├── schemas/    # Data Models
-│   │   │       │   └── resume_schema.py  # Resume Related Data Models
-│   │   │       ├── tools/      # Tool Sets
-│   │   │       │   ├── __init__.py      # Module Initialization
-│   │   │       │   ├── job_tools.py     # Job Related Tools
-│   │   │       │   └── resume_tools.py  # Resume Related Tools
-│   │   │       ├── utils/      # Utility Functions
-│   │   │       │   ├── file_parser.py    # File Parsing
-│   │   │       │   └── text_processor.py # Text Processing
-│   │   │       ├── chat.py              # Chat Module
-│   │   │       └── embeddings.py        # Vectorization Module
-│   │   ├── routers/            # API Routes
-│   │   │   └── v1/              # API Version 1
-│   │   │       ├── chat_router.py      # AI Chat Route
-│   │   │       ├── job_router.py       # Job Recommendation Route
-│   │   │       ├── main_router.py      # Main Route Aggregation
-│   │   │       ├── rag_router.py       # RAG Feature Route
-│   │   │       └── resume_router.py    # Resume Analysis Route
-│   │   ├── main.py             # Application Entry
-│   │   └── settings.py         # Configuration Management
-│   └── Dockerfile              # Docker Image Build File
-├── resume_vue/                 # Frontend Application
-│   ├── public/                 # Static Assets
-│   │   └── favicon.ico         # Website Icon
-│   ├── src/                    # Source Code
-│   │   ├── __tests__/          # Test Files
-│   │   │   └── App.spec.ts     # App Component Test
-│   │   ├── assets/             # Asset Files
-│   │   │   ├── css/             # Style Files
-│   │   │   │   ├── AiChatView.css        # AI Chat Styles
-│   │   │   │   ├── App.css              # Application Global Styles
-│   │   │   │   ├── HomeView.css         # Home View Styles
-│   │   │   │   ├── JobRecommend.css     # Job Recommendation Styles
-│   │   │   │   ├── ResumeAnalysis.css   # Resume Analysis Styles
-│   │   │   │   └── SettingsView.css     # Settings Styles
-│   │   │   └── ts/              # TypeScript Logic
-│   │   │       ├── AiChatView.ts        # AI Chat Logic
-│   │   │       ├── HomeView.ts         # Home View Logic
-│   │   │       ├── JobRecommend.ts     # Job Recommendation Logic
-│   │   │       ├── ResumeAnalysis.ts   # Resume Analysis Logic
-│   │   │       └── SettingsView.ts     # Settings Logic
-│   │   ├── components/         # Vue Components
-│   │   │   ├── JobRecommend.vue        # Job Recommendation Component
-│   │   │   └── ResumeAnalysis.vue      # Resume Analysis Component
-│   │   ├── router/             # Route Configuration
-│   │   │   └── index.ts        # Route Definition
-│   │   ├── services/           # API Services
-│   │   │   ├── chat_api.ts      # AI Chat API Service
-│   │   │   ├── index.ts         # Main API Service
-│   │   │   └── resume_api.ts    # Resume API Service
-│   │   ├── stores/             # Pinia State Management
-│   │   │   ├── counter.ts      # Counter Example
-│   │   │   └── resume.ts       # Resume State Management
-│   │   ├── views/              # Page Components
-│   │   │   ├── AiChatView.vue          # AI Chat Page
-│   │   │   ├── HomeView.vue            # Home Page
-│   │   │   ├── JobRecommendView.vue    # Job Recommendation Page
-│   │   │   ├── ResumeAnalysisView.vue  # Resume Analysis Page
-│   │   │   └── SettingsView.vue        # Settings Page
-│   │   ├── App.vue             # Root Component
-│   │   └── main.ts             # Application Entry
-│   ├── .gitignore              # Git Ignore File
-│   ├── .prettierrc.json        # Prettier Configuration
-│   ├── Dockerfile              # Docker Image Build File
-│   ├── README.md               # Frontend Project Documentation
-│   ├── env.d.ts                # Environment Variable Type Definitions
-│   ├── index.html              # HTML Entry File
-│   ├── nginx.conf              # Nginx Configuration File
-│   ├── package-lock.json       # Dependency Lock File
-│   ├── package.json            # Project Configuration
-│   ├── tsconfig.app.json       # Application TypeScript Configuration
-│   ├── tsconfig.json           # Main TypeScript Configuration
-│   ├── tsconfig.node.json      # Node TypeScript Configuration
-│   ├── tsconfig.vitest.json    # Vitest TypeScript Configuration
-│   ├── vite.config.ts          # Vite Configuration
-│   └── vitest.config.ts        # Vitest Configuration
-├── .gitattributes              # Git Attributes Configuration
-├── .gitignore                  # Git Ignore File
-├── docker-compose.yml          # Docker Compose Configuration
-├── LICENSE                     # License File
-├── requirements.txt            # Python Dependencies
-├── README.md                   # Project Documentation (Chinese)
-└── README-EN.md                # Project Documentation (English)
+├── backend/app/           # Backend Application
+│   ├── llm/zhipu/        # Zhipu AI Module (Agents, Prompts, RAG, Tools)
+│   ├── routers/v1/       # API Routes (Resume, Job, Chat, RAG)
+│   ├── main.py           # Application Entry
+│   └── settings.py       # Configuration Management
+├── resume_vue/           # Frontend Application
+│   └── src/
+│       ├── components/   # Vue Components
+│       ├── views/        # Page Components
+│       ├── stores/       # State Management
+│       └── services/     # API Services
+└── requirements.txt      # Python Dependencies
 ```
 
 ## ⚙️ Quick Start
 
 ### Requirements
 
-- **Frontend**: Node.js ^20.19.0 || >=22.12.0
-- **Backend**: Python 3.13+
-- **Database**: MySQL 8.0+
-- **Package Managers**: UV (Python), npm (Node.js)
+- Node.js ^20.19.0 || >=22.12.0
+- Python 3.13+
+- MySQL 8.0+
 
-### Frontend Installation and Running
+### Frontend Setup
 
-1. Navigate to frontend directory
 ```bash
 cd resume_vue
-```
-
-2. Install dependencies
-```bash
 npm install
-```
-
-3. Start development server
-```bash
 npm run dev
 ```
 
-4. Build production version
-```bash
-npm run build
-```
+### Backend Setup
 
-### Backend Installation and Running
-
-1. Navigate to backend directory
 ```bash
 cd backend/app
-```
 
-2. Install dependencies using UV (Recommended)
-```bash
-# Install UV package manager
+# Install dependencies (UV recommended)
 pip install uv
-
-# Install dependencies using UV
 uv pip install -r ../../requirements.txt
+
+# Configure Zhipu AI and Database
+# Edit config.yaml file, fill in API_KEY and database info
+
+# Start service
+uvicorn main:app --reload
 ```
 
-Or use traditional method:
-```bash
-pip install -r ../../requirements.txt
-```
+### Configuration
 
-3. Configure Zhipu AI and Database
+Edit `backend/app/config.yaml`:
 
-Edit `backend/app/config.yaml` file:
 ```yaml
 ZHIPU:
   API_KEY: "your_zhipu_api_key_here"
-  MODEL_NAME: "glm-4"
-  TEMPERATURE: 0.7
-  MAX_TOKENS: 2000
-
-APP:
-  DEBUG: true
-  LOG_LEVEL: "INFO"
+  MODEL_NAME: "glm-4-flash-250414"
 
 MYSQL:
   HOST: "localhost"
   PORT: 3306
-  USER: "your_username"
+  USER: "root"
   PASSWORD: "your_password"
-  DB: "resume_assistant"
-```
-
-4. Start backend service
-```bash
-uvicorn main:app --reload
+  DB: "resume_db"
 ```
 
 ## 🔗 API Documentation
 
-After starting the backend service, you can access the auto-generated API documentation at:
-
-- **Swagger UI**: http://localhost:8000/docs
-- **ReDoc**: http://localhost:8000/redoc
+After starting backend service, access:
+- Swagger UI: http://localhost:8000/docs
+- ReDoc: http://localhost:8000/redoc
 
 ### Main API Endpoints
 
-#### AI Chat
-- `POST /api/v1/chat/send` - Send message to AI assistant
+**AI Chat**
+- `POST /api/v1/chat/send` - Send message
 - `GET /api/v1/chat/history` - Get chat history
-- `POST /api/v1/chat/clear` - Clear chat history
 
-#### Resume Analysis
+**Resume Analysis**
 - `POST /api/v1/resume/upload` - Upload and analyze resume
-- `POST /api/v1/resume/analyze` - Analyze uploaded resume
-- `GET /api/v1/resume/history` - Get analysis history
 
-#### Job Recommendation
+**Job Recommendation**
 - `POST /api/v1/job/recommend` - Get job recommendations
 
-#### RAG Features
+**RAG Features**
 - `POST /api/v1/rag/store-resume` - Store resume to vector database
 - `POST /api/v1/rag/search-resumes` - Search similar resumes
-- `POST /api/v1/rag/store-job` - Store job information to vector database
-- `POST /api/v1/rag/search-jobs` - Search similar jobs
-- `POST /api/v1/rag/chat` - RAG-enhanced chat
 
-#### System Information
-- `GET /health` - Health check
-- `GET /welcome` - Welcome message
+## 📊 Core Data Models
 
-## 📊 Data Models
+**Resume Analysis Result**
+- `score` - Overall score (0-100)
+- `personal_info` - Personal information
+- `highlights` - Resume highlights
+- `suggestions` - Optimization suggestions
 
-### Resume Analysis Result (ResumeAnalysisResult)
-- `score`: Overall score (0-100)
-- `personal_info`: Personal information (name, phone, email, location)
-- `highlights`: Resume highlights list
-- `issues`: Areas for improvement list
-- `suggestions`: Optimization suggestions list
-
-### Job Match Result (JobMatchResult)
-- `target_job`: Target position
-- `match_score`: Match score (0-100)
-- `matched_skills`: Matched skills list
-- `missing_skills`: Missing skills list
-- `recommendations`: Recommended positions list
-- `optimization_suggestions`: Optimization suggestions list
+**Job Match Result**
+- `target_job` - Target position
+- `match_score` - Match score (0-100)
+- `matched_skills` - Matched skills
+- `missing_skills` - Missing skills
+- `recommendations` - Recommended positions
 
 ## 🔧 System Configuration
 
-### Frontend Configuration
+### Configuration Priority
 
-Frontend is configured through environment variables, create `.env` file in project root:
-```env
-# Development Environment
-VITE_API_BASE_URL=http://localhost:8000
-
-# Production Environment
-# VITE_API_BASE_URL=https://api.yourdomain.com
+```
+Environment Variables > config.yaml
 ```
 
-### Backend Configuration
+### Main Configuration Items
 
-Backend is configured through `config.yaml` file, mainly including:
+**Zhipu AI**
+- `ZHIPU_API_KEY` - API Key
+- `ZHIPU_MODEL_NAME` - Model Name (Default: glm-4-flash-250414)
 
-- **Zhipu AI Configuration**: API key, model name, temperature parameters, etc.
-- **Application Configuration**: Debug mode, log level
-- **Database Configuration**: MySQL connection information
+**MySQL**
+- `MYSQL_HOST` - Database Host
+- `MYSQL_PASSWORD` - Database Password
+- `MYSQL_DB` - Database Name
+
+**ChromaDB**
+- `CHROMA_PERSIST_DIR` - Vector Database Storage Directory
+
+### Frontend Configuration
+
+Create `.env` file:
+```env
+VITE_API_BASE_URL=http://localhost:8000
+```
 
 ## 📝 Development Guide
 
 ### Code Style
-
-- **Frontend**: Follow Vue official style guide, use Prettier for code formatting
-- **Backend**: Follow PEP 8 specification
+- Frontend: Follow Vue official style guide, use Prettier for formatting
+- Backend: Follow PEP 8 specification
 
 ### Commit Convention
 
-Use semantic versioning, commit message format:
-
+Use semantic commits:
 ```
-type: description
-
-Detailed description (optional)
+feat: new feature
+fix: bug fix
+docs: documentation update
+refactor: code refactoring
 ```
-
-Types include:
-- `feat`: New feature
-- `fix`: Bug fix
-- `docs`: Documentation update
-- `style`: Code style adjustment
-- `refactor`: Code refactoring
-- `test`: Test related
-- `chore`: Build or configuration changes
 
 ## 🎯 Core Features
 
-### 1. Intelligent Resume Analysis
-- Support PDF and DOCX format resume upload
-- Automatically extract personal information, education background, work experience, etc.
-- Intelligently identify resume highlights and areas for improvement
+### Intelligent Resume Analysis
+- Support PDF and DOCX formats
+- Automatically extract personal information, education background, work experience
+- Intelligently identify highlights and areas for improvement
 - Provide professional optimization suggestions
 
-### 2. Precise Job Recommendation
-- Support entering desired position for precise recommendation
-- Support not entering desired position, AI automatically recommends
+### Precise Job Recommendation
+- Support entering desired position or AI automatic recommendation
 - Analyze skill matching degree and missing skills
 - Recommend multiple related positions
 
-### 3. AI Intelligent Chat
-- Real-time conversation with AI assistant
-- Get resume optimization suggestions
-- Provide career planning guidance
-- Share interview tips and salary negotiation strategies
-- Chat history memory function
+### AI Intelligent Chat
+- Real-time conversation for optimization suggestions
+- Career planning guidance
+- Chat history memory
 
-### 4. Temporary Data Storage
-- Analysis results are only retained in current session
-- Automatically reset data after page refresh
-- Protect user privacy and security
-
-### 5. Result Export
-- Support exporting resume analysis report (JSON format)
-- Support exporting job recommendation report (JSON format)
-
-### 6. RAG Retrieval Enhancement
+### RAG Retrieval Enhancement
 - Vector storage based on ChromaDB
-- Intelligent text chunking and vectorization
 - Similar resume and job retrieval
-- RAG-enhanced intelligent conversation
-- Graceful degradation mechanism (vector storage failure does not affect core functionality)
+- Graceful degradation mechanism
 
 ## 🤝 Contributing Guide
 
-Welcome to contribute to this project! Please follow these steps:
+Welcome to contribute! Please follow these steps:
 
 1. Fork this repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'feat: add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+2. Create feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit changes (`git commit -m 'feat: add amazing feature'`)
+4. Push to branch (`git push origin feature/amazing-feature`)
+5. Open Pull Request
 
 ## 📜 License
 
@@ -396,23 +246,21 @@ This project uses MIT license
 
 ## 📧 Contact
 
-- Project Maintainer: PIMOU(Gitee)/P1M0U(Github)
-- Project URL: [Github-P1M0U](https://github.com/P1M0U/resume-assistant)
+- Project Maintainer: PIMOU(Gitee) / P1M0U(Github)
+- Project URL: [Github](https://github.com/P1M0U/resume-assistant)
 - Email: `p1m0u@foxmail.com`
-- If you find this useful, please give me a star ⭐
+- If you find this useful, please give a star ⭐
 
 ---
 
 ## 🎯 Future Optimization Directions
 
-1. ✅ ~~Add database persistent storage for analysis results~~
-2. 🔐 Add user authentication and permission management
-3. 📱 Optimize mobile responsive experience
-4. 🌐 Support more resume formats (such as image resume OCR recognition)
-5. 🤖 Integrate more AI models (such as OpenAI GPT, Wenxin Yiyan, etc.)
-6. 📊 Add resume score history trend analysis
-7. 🔍 Add job search and filtering functions
-8. 💾 Support resume template generation and download
-9. 🚀 Use local Embedding model instead of API calls (avoid rate limiting)
+1. 🔐 Add user authentication and permission management
+2. 📱 Optimize mobile responsive experience
+3. 🌐 Support more resume formats (OCR recognition)
+4. 🤖 Integrate more AI models
+5. 📊 Add resume score history trend analysis
+6. 🔍 Add job search and filtering functions
+7. 💾 Support resume template generation and download
 
 Thank you for using AI Resume Assistant!🎉
