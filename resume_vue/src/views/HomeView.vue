@@ -11,7 +11,7 @@
 
     <div class="feature-section">
       <el-row :gutter="20">
-        <el-col :span="8" v-for="feature in features" :key="feature.id">
+        <el-col :xs="24" :sm="12" :md="8" v-for="feature in features" :key="feature.id">
           <el-card class="feature-card" shadow="hover" @click="handleFeatureClick(feature.id)">
             <div class="feature-icon">
               <el-icon :size="48" :color="feature.color">
@@ -28,7 +28,7 @@
     <div class="quick-actions">
       <h3>快速开始</h3>
       <el-row :gutter="20">
-        <el-col :span="12">
+        <el-col :xs="24" :sm="12" :md="12">
           <el-card class="action-card" shadow="hover" @click="handleUpload">
             <div class="action-content">
               <el-icon :size="40" color="#409EFF"><Upload /></el-icon>
@@ -39,7 +39,7 @@
             </div>
           </el-card>
         </el-col>
-        <el-col :span="12">
+        <el-col :xs="24" :sm="12" :md="12">
           <el-card class="action-card" shadow="hover" @click="handleInputJob">
             <div class="action-content">
               <el-icon :size="40" color="#67C23A"><Edit /></el-icon>

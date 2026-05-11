@@ -107,7 +107,7 @@
     <el-dialog
       v-model="detailDialogVisible"
       title="简历分析详情"
-      width="80%"
+      :width="dialogWidth"
       :close-on-click-modal="false"
     >
       <div v-if="resumeResult" class="detail-dialog-content">
@@ -119,7 +119,7 @@
             </div>
           </template>
 
-          <el-descriptions :column="2" border>
+          <el-descriptions :column="descriptionColumn" border>
             <el-descriptions-item label="综合评分">
               <el-tag :type="getScoreTagType(resumeResult.score)" size="large">
                 {{ resumeResult.score }} 分
@@ -192,7 +192,7 @@
     <el-dialog
       v-model="dialogVisible"
       title="岗位推荐报告"
-      width="80%"
+      :width="dialogWidth"
       :close-on-click-modal="false"
     >
       <div v-if="jobMatchResult" class="dialog-content">
@@ -206,17 +206,17 @@
 
           <div class="match-result">
             <div class="match-score-section">
-              <div class="score-circle">
-                <el-progress
-                  type="circle"
-                  :percentage="jobMatchResult.match_score"
-                  :width="150"
-                  :color="getMatchScoreColor(jobMatchResult.match_score)"
-                />
-              </div>
-              <div class="score-text">
-                <h4>{{ jobMatchResult.target_job }}</h4>
-                <p>{{ getMatchScoreLevel(jobMatchResult.match_score) }}</p>
+              <div class="score-display">
+                <div class="score-number">
+                  <span class="number">{{ jobMatchResult.match_score }}</span>
+                  <span class="unit">%</span>
+                </div>
+                <div class="score-info">
+                  <h4>{{ jobMatchResult.target_job }}</h4>
+                  <el-tag :type="getMatchTagType(jobMatchResult.match_score)" size="large">
+                    {{ getMatchScoreLevel(jobMatchResult.match_score) }}
+                  </el-tag>
+                </div>
               </div>
             </div>
 
@@ -328,17 +328,17 @@
 
           <div class="job-result-summary">
             <div class="result-header">
-              <div class="result-score">
-                <el-progress
-                  type="circle"
-                  :percentage="jobMatchResult.match_score"
-                  :width="80"
-                  :color="getMatchScoreColor(jobMatchResult.match_score)"
-                />
-              </div>
-              <div class="result-info">
-                <h4>{{ jobMatchResult.target_job }}</h4>
-                <p>{{ getMatchScoreLevel(jobMatchResult.match_score) }}</p>
+              <div class="score-display">
+                <div class="score-number">
+                  <span class="number">{{ jobMatchResult.match_score }}</span>
+                  <span class="unit">%</span>
+                </div>
+                <div class="score-info">
+                  <h4>{{ jobMatchResult.target_job }}</h4>
+                  <el-tag :type="getMatchTagType(jobMatchResult.match_score)">
+                    {{ getMatchScoreLevel(jobMatchResult.match_score) }}
+                  </el-tag>
+                </div>
               </div>
             </div>
 
@@ -411,7 +411,10 @@
 </template>
 
 <script setup lang="ts">
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useJobRecommend } from '../assets/ts/JobRecommend'
+
+const windowWidth = ref(window.innerWidth)
 
 const {
   targetJob,
@@ -422,11 +425,24 @@ const {
   hasResumeData,
   detailDialogVisible,
   handleJobRecommend,
-  getMatchScoreColor,
   getMatchScoreLevel,
   exportRecommendation,
   showResumeDetail,
 } = useJobRecommend()
+
+/**
+ * 计算对话框宽度
+ */
+const dialogWidth = computed(() => {
+  return windowWidth.value <= 768 ? '95%' : '80%'
+})
+
+/**
+ * 计算描述列数
+ */
+const descriptionColumn = computed(() => {
+  return windowWidth.value <= 768 ? 1 : 2
+})
 
 /**
  * 根据分数获取标签类型
@@ -447,6 +463,21 @@ const getMatchTagType = (score: number): string => {
   if (score >= 70) return 'warning'
   return 'danger'
 }
+
+/**
+ * 监听窗口大小变化
+ */
+const handleResize = () => {
+  windowWidth.value = window.innerWidth
+}
+
+onMounted(() => {
+  window.addEventListener('resize', handleResize)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', handleResize)
+})
 </script>
 
 <style src="../assets/css/JobRecommend.css"></style>

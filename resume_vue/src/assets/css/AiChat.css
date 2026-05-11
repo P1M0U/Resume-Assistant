@@ -243,3 +243,119 @@
   background: linear-gradient(135deg, #00acc1 0%, #00838f 100%);
   box-shadow: 0 8px 32px rgba(0, 188, 212, 0.4);
 }
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+  .chat-header {
+    padding: 16px 20px;
+  }
+
+  .chat-header h2 {
+    font-size: 20px;
+  }
+
+  .chat-header .subtitle {
+    font-size: 12px;
+  }
+
+  .chat-messages {
+    padding: 16px;
+  }
+
+  .message-avatar {
+    margin: 0 8px;
+  }
+
+  .message-content {
+    max-width: 80%;
+  }
+
+  .message-text {
+    padding: 10px 14px;
+    font-size: 14px;
+  }
+
+  .chat-input {
+    padding: 16px;
+  }
+
+  .input-actions {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .quick-questions {
+    justify-content: center;
+  }
+
+  .quick-question {
+    font-size: 12px;
+    padding: 4px 10px;
+  }
+
+  .action-buttons {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .action-buttons .el-button {
+    flex: 1;
+  }
+}
+
+@media (max-width: 480px) {
+  .chat-header {
+    padding: 12px 16px;
+  }
+
+  .chat-header h2 {
+    font-size: 18px;
+  }
+
+  .chat-header .subtitle {
+    font-size: 11px;
+  }
+
+  .chat-messages {
+    padding: 12px;
+  }
+
+  .message-avatar {
+    margin: 0 6px;
+  }
+
+  .message-content {
+    max-width: 85%;
+  }
+
+  .message-text {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
+  .message-time {
+    font-size: 11px;
+  }
+
+  .chat-input {
+    padding: 12px;
+  }
+
+  .quick-questions {
+    gap: 6px;
+  }
+
+  .quick-question {
+    font-size: 11px;
+    padding: 3px 8px;
+  }
+
+  .action-buttons {
+    gap: 8px;
+  }
+
+  .action-buttons .el-button {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+}

@@ -59,12 +59,16 @@
             </template>
             <div class="result-content">
               <div class="score-section">
-                <div class="score-circle">
-                  <el-progress type="circle" :percentage="analysisResult.score" :width="120" />
-                </div>
-                <div class="score-text">
-                  <h4>综合评分</h4>
-                  <p>{{ getScoreLevel(analysisResult.score) }}</p>
+                <div class="score-display">
+                  <div class="score-number">
+                    <span class="number">{{ analysisResult.score }}</span>
+                    <span class="unit">分</span>
+                  </div>
+                  <div class="score-level">
+                    <el-tag :type="getScoreTagType(analysisResult.score)" size="large">
+                      {{ getScoreLevel(analysisResult.score) }}
+                    </el-tag>
+                  </div>
                 </div>
               </div>
 
@@ -131,7 +135,7 @@
     <el-dialog
       v-model="dialogVisible"
       title="AI简历分析报告"
-      width="80%"
+      :width="dialogWidth"
       :close-on-click-modal="false"
     >
       <div v-if="analysisResult" class="ai-dialog-content">
@@ -143,7 +147,7 @@
             </div>
           </template>
 
-          <el-descriptions :column="2" border>
+          <el-descriptions :column="descriptionColumn" border>
             <el-descriptions-item label="综合评分">
               <el-tag :type="getScoreTagType(analysisResult.score)" size="large">
                 {{ analysisResult.score }} 分 - {{ getScoreLevel(analysisResult.score) }}
@@ -214,10 +218,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useResumeAnalysis } from '../assets/ts/ResumeAnalysis'
 
 const fileInputRef = ref<HTMLInputElement | null>(null)
+const windowWidth = ref(window.innerWidth)
 
 const {
   uploadedFile,
@@ -231,6 +236,20 @@ const {
   formatFileSize,
   getScoreLevel,
 } = useResumeAnalysis(fileInputRef)
+
+/**
+ * 计算对话框宽度
+ */
+const dialogWidth = computed(() => {
+  return windowWidth.value <= 768 ? '95%' : '80%'
+})
+
+/**
+ * 计算描述列数
+ */
+const descriptionColumn = computed(() => {
+  return windowWidth.value <= 768 ? 1 : 2
+})
 
 /**
  * 根据分数获取标签类型
@@ -265,6 +284,21 @@ const exportReport = () => {
   a.click()
   URL.revokeObjectURL(url)
 }
+
+/**
+ * 监听窗口大小变化
+ */
+const handleResize = () => {
+  windowWidth.value = window.innerWidth
+}
+
+onMounted(() => {
+  window.addEventListener('resize', handleResize)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('resize', handleResize)
+})
 </script>
 
 <style src="../assets/css/ResumeAnalysis.css"></style>

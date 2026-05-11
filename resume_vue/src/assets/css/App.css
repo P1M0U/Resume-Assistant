@@ -136,3 +136,128 @@ body,
   background: linear-gradient(135deg, #00acc1 0%, #00838f 100%);
   box-shadow: 0 8px 32px rgba(0, 188, 212, 0.4);
 }
+
+/* 移动端菜单按钮 */
+.mobile-menu-btn {
+  margin-right: 8px;
+  border: none;
+  background: linear-gradient(135deg, rgba(0, 188, 212, 0.1) 0%, rgba(0, 150, 136, 0.1) 100%);
+  color: #00838f;
+}
+
+.mobile-menu-btn:hover {
+  background: linear-gradient(135deg, #00bcd4 0%, #0097a7 100%);
+  color: white;
+}
+
+/* 移动端遮罩层 */
+.sidebar-overlay {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  z-index: 999;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* 移动端侧边栏隐藏状态 */
+.aside.mobile-hidden {
+  width: 0 !important;
+  overflow: hidden;
+  border: none;
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+  .header {
+    padding: 0 16px;
+  }
+
+  .logo {
+    gap: 8px;
+  }
+
+  .logo h1 {
+    font-size: 20px;
+  }
+
+  .header-actions {
+    gap: 8px;
+  }
+
+  .header-actions .el-button {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
+  .aside {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    height: calc(100vh - 60px);
+    z-index: 1000;
+    transition: width 0.3s ease, transform 0.3s ease;
+    box-shadow: 4px 0 16px rgba(0, 0, 0, 0.1);
+  }
+
+  .aside-menu .el-menu-item {
+    height: 48px;
+    line-height: 48px;
+    font-size: 14px;
+  }
+
+  .main {
+    padding: 16px;
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    padding: 0 12px;
+  }
+
+  .logo {
+    gap: 6px;
+  }
+
+  .logo h1 {
+    font-size: 18px;
+  }
+
+  .header-actions {
+    gap: 6px;
+  }
+
+  .header-actions .el-button {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+
+  .aside {
+    top: 60px;
+    height: calc(100vh - 60px);
+  }
+
+  .aside-menu .el-menu-item {
+    height: 44px;
+    line-height: 44px;
+    font-size: 13px;
+  }
+
+  .main {
+    padding: 12px;
+  }
+}

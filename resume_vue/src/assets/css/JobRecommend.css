@@ -134,27 +134,61 @@
   justify-content: center;
   gap: 30px;
   margin-bottom: 30px;
+  padding: 20px 0;
 }
 
-.score-circle {
-  position: relative;
-}
-
-.score-text {
+.score-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
   text-align: center;
 }
 
-.score-text h4 {
-  font-size: 20px;
-  margin: 0 0 5px 0;
+.score-number {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 6px;
+}
+
+.score-number .number {
+  font-size: 64px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #00bcd4 0%, #0097a7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 30px rgba(0, 188, 212, 0.3);
+  line-height: 1;
+}
+
+.score-number .unit {
+  font-size: 28px;
+  font-weight: 600;
   color: #00838f;
   text-shadow: 0 0 20px rgba(0, 188, 212, 0.3);
 }
 
-.score-text p {
-  font-size: 14px;
-  color: #546e7a;
+.score-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.score-info h4 {
+  font-size: 20px;
   margin: 0;
+  color: #00838f;
+  text-shadow: 0 0 20px rgba(0, 188, 212, 0.3);
+  line-height: 1.4;
+}
+
+.score-info .el-tag {
+  font-size: 16px;
+  padding: 8px 20px;
+  border-radius: 20px;
 }
 
 .skills-section {
@@ -347,25 +381,63 @@
 .result-header {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 20px;
   margin-bottom: 20px;
+  padding: 10px 0;
 }
 
-.result-score {
-  flex-shrink: 0;
+.result-header .score-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
 }
 
-.result-info h4 {
-  margin: 0 0 5px 0;
-  font-size: 18px;
+.result-header .score-number {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 4px;
+}
+
+.result-header .score-number .number {
+  font-size: 48px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #00bcd4 0%, #0097a7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 30px rgba(0, 188, 212, 0.3);
+  line-height: 1;
+}
+
+.result-header .score-number .unit {
+  font-size: 22px;
+  font-weight: 600;
   color: #00838f;
   text-shadow: 0 0 20px rgba(0, 188, 212, 0.3);
 }
 
-.result-info p {
+.result-header .score-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.result-header .score-info h4 {
   margin: 0;
+  font-size: 18px;
+  color: #00838f;
+  text-shadow: 0 0 20px rgba(0, 188, 212, 0.3);
+  line-height: 1.4;
+}
+
+.result-header .score-info .el-tag {
   font-size: 14px;
-  color: #546e7a;
+  padding: 6px 16px;
+  border-radius: 16px;
 }
 
 .result-skills {
@@ -421,25 +493,614 @@
 
 @media (max-width: 768px) {
   .job-recommend-view {
-    padding: 10px;
+    padding: 12px;
+  }
+
+  .page-header {
+    margin-bottom: 20px;
   }
 
   .page-header h2 {
     font-size: 24px;
   }
 
-  .match-score-section {
-    flex-direction: column;
-    gap: 20px;
+  .page-header p {
+    font-size: 13px;
+  }
+
+  .input-card,
+  .result-card,
+  .recommendations-card {
+    margin-bottom: 12px;
+  }
+
+  .card-header {
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .card-header .el-icon {
+    font-size: 20px !important;
+  }
+
+  .card-header h3 {
+    font-size: 16px;
+  }
+
+  .card-header .el-tag {
+    margin-left: 0 !important;
+    margin-top: 4px;
+  }
+
+  .input-section {
+    padding: 16px 0;
+  }
+
+  .job-input {
+    margin-bottom: 16px;
+  }
+
+  .recommend-button {
+    height: 44px;
+    font-size: 15px;
+  }
+
+  .resume-summary {
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+
+  .summary-header {
+    margin-bottom: 12px;
+  }
+
+  .summary-header h4 {
+    font-size: 15px;
   }
 
   .summary-content {
     grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .summary-item label {
+    font-size: 11px;
+  }
+
+  .summary-item span {
+    font-size: 13px;
+  }
+
+  .match-result {
+    padding: 16px 0;
+  }
+
+  .match-score-section {
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 24px;
+    padding: 16px 0;
+  }
+
+  .score-display {
+    gap: 16px;
+  }
+
+  .score-number .number {
+    font-size: 56px;
+  }
+
+  .score-number .unit {
+    font-size: 24px;
+  }
+
+  .score-info {
+    gap: 10px;
+  }
+
+  .score-info h4 {
+    font-size: 18px;
+  }
+
+  .score-info .el-tag {
+    font-size: 14px;
+    padding: 6px 16px;
+  }
+
+  .el-divider {
+    margin: 20px 0;
+  }
+
+  .skills-section {
+    margin-bottom: 16px;
+  }
+
+  .skills-section h4 {
+    font-size: 15px;
+    margin-bottom: 8px;
+  }
+
+  .skill-tags {
+    gap: 6px;
+  }
+
+  .skill-tag {
+    font-size: 12px;
+  }
+
+  .recommendation-list {
+    gap: 12px;
+  }
+
+  .recommendation-item {
+    padding: 12px;
   }
 
   .recommendation-header {
     flex-direction: column;
     align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .recommendation-header h5 {
+    font-size: 15px;
+  }
+
+  .recommendation-reason {
+    font-size: 13px;
+    margin-bottom: 8px;
+  }
+
+  .requirements-tags {
+    gap: 4px;
+  }
+
+  .requirements-tags .el-tag {
+    font-size: 11px;
+  }
+
+  .optimization-section {
+    margin-top: 16px;
+  }
+
+  .optimization-section h4 {
+    font-size: 15px;
+    margin-bottom: 12px;
+  }
+
+  .suggestion-item {
+    padding: 12px;
+    margin-bottom: 12px;
+  }
+
+  .suggestion-item h5 {
+    font-size: 13px;
+    margin-bottom: 6px;
+  }
+
+  .suggestion-item p {
+    font-size: 12px;
+  }
+
+  .dialog-content,
+  .detail-dialog-content {
+    padding: 16px 0;
+  }
+
+  .dialog-header {
+    font-size: 15px;
+    gap: 8px;
+  }
+
+  .dialog-header .el-icon {
+    font-size: 20px !important;
+  }
+
+  .detail-tags {
+    gap: 8px;
+  }
+
+  .detail-tag {
+    font-size: 12px;
+  }
+
+  .suggestion-card {
+    margin-bottom: 8px;
+  }
+
+  .suggestion-card h4 {
+    font-size: 13px;
+  }
+
+  .suggestion-card p {
+    font-size: 12px;
+  }
+
+  .job-result-card {
+    margin-top: 12px;
+  }
+
+  .job-result-summary {
+    padding: 8px 0;
+  }
+
+  .result-header {
+    gap: 16px;
+    margin-bottom: 16px;
+    padding: 8px 0;
+  }
+
+  .result-header .score-display {
+    gap: 12px;
+  }
+
+  .result-header .score-number .number {
+    font-size: 40px;
+  }
+
+  .result-header .score-number .unit {
+    font-size: 18px;
+  }
+
+  .result-header .score-info {
+    gap: 6px;
+  }
+
+  .result-header .score-info h4 {
+    font-size: 16px;
+  }
+
+  .result-header .score-info .el-tag {
+    font-size: 13px;
+    padding: 5px 12px;
+  }
+
+  .result-skills {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .skill-section h5 {
+    font-size: 13px;
+    margin-bottom: 8px;
+  }
+
+  .skill-tags-mini {
+    gap: 4px;
+  }
+
+  .skill-tags-mini .el-tag {
+    font-size: 11px;
+  }
+
+  .result-recommendations h5 {
+    font-size: 13px;
+    margin-bottom: 8px;
+  }
+
+  .recommendation-tags {
+    gap: 6px;
+  }
+
+  .recommendation-tags .el-tag {
+    font-size: 11px;
+  }
+
+  .el-descriptions {
+    font-size: 13px;
+  }
+
+  .el-descriptions__label {
+    font-size: 12px;
+  }
+
+  .el-descriptions__content {
+    font-size: 12px;
+  }
+
+  .el-timeline-item__timestamp {
+    font-size: 12px !important;
+  }
+
+  .dialog-footer {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .dialog-footer .el-button {
+    width: 100%;
+    margin: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .job-recommend-view {
+    padding: 8px;
+  }
+
+  .page-header {
+    margin-bottom: 16px;
+  }
+
+  .page-header h2 {
+    font-size: 20px;
+  }
+
+  .page-header p {
+    font-size: 12px;
+  }
+
+  .input-card,
+  .result-card,
+  .recommendations-card {
+    margin-bottom: 8px;
+  }
+
+  .card-header .el-icon {
+    font-size: 18px !important;
+  }
+
+  .card-header h3 {
+    font-size: 15px;
+  }
+
+  .input-section {
+    padding: 12px 0;
+  }
+
+  .job-input {
+    margin-bottom: 12px;
+  }
+
+  .recommend-button {
+    height: 40px;
+    font-size: 14px;
+  }
+
+  .resume-summary {
+    padding: 12px;
+    margin-bottom: 12px;
+  }
+
+  .summary-header {
+    margin-bottom: 10px;
+  }
+
+  .summary-header h4 {
+    font-size: 14px;
+  }
+
+  .summary-content {
     gap: 10px;
+  }
+
+  .summary-item label {
+    font-size: 10px;
+  }
+
+  .summary-item span {
+    font-size: 12px;
+  }
+
+  .match-result {
+    padding: 12px 0;
+  }
+
+  .match-score-section {
+    gap: 16px;
+    margin-bottom: 20px;
+    padding: 12px 0;
+  }
+
+  .score-display {
+    gap: 12px;
+  }
+
+  .score-number .number {
+    font-size: 48px;
+  }
+
+  .score-number .unit {
+    font-size: 20px;
+  }
+
+  .score-info {
+    gap: 8px;
+  }
+
+  .score-info h4 {
+    font-size: 16px;
+  }
+
+  .score-info .el-tag {
+    font-size: 13px;
+    padding: 5px 12px;
+  }
+
+  .el-divider {
+    margin: 16px 0;
+  }
+
+  .skills-section {
+    margin-bottom: 12px;
+  }
+
+  .skills-section h4 {
+    font-size: 14px;
+    margin-bottom: 6px;
+  }
+
+  .skill-tags {
+    gap: 4px;
+  }
+
+  .skill-tag {
+    font-size: 11px;
+    padding: 2px 8px;
+  }
+
+  .recommendation-list {
+    gap: 10px;
+  }
+
+  .recommendation-item {
+    padding: 10px;
+  }
+
+  .recommendation-header h5 {
+    font-size: 14px;
+  }
+
+  .recommendation-reason {
+    font-size: 12px;
+    margin-bottom: 6px;
+  }
+
+  .requirements-tags .el-tag {
+    font-size: 10px;
+    padding: 1px 6px;
+  }
+
+  .optimization-section {
+    margin-top: 12px;
+  }
+
+  .optimization-section h4 {
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+
+  .suggestion-item {
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+
+  .suggestion-item h5 {
+    font-size: 12px;
+    margin-bottom: 4px;
+  }
+
+  .suggestion-item p {
+    font-size: 11px;
+  }
+
+  .dialog-content,
+  .detail-dialog-content {
+    padding: 12px 0;
+  }
+
+  .dialog-header {
+    font-size: 14px;
+  }
+
+  .dialog-header .el-icon {
+    font-size: 18px !important;
+  }
+
+  .detail-tags {
+    gap: 6px;
+  }
+
+  .detail-tag {
+    font-size: 11px;
+    padding: 2px 6px;
+  }
+
+  .suggestion-card {
+    margin-bottom: 6px;
+  }
+
+  .suggestion-card h4 {
+    font-size: 12px;
+  }
+
+  .suggestion-card p {
+    font-size: 11px;
+  }
+
+  .job-result-card {
+    margin-top: 8px;
+  }
+
+  .result-header {
+    gap: 12px;
+    margin-bottom: 12px;
+    padding: 6px 0;
+  }
+
+  .result-header .score-display {
+    gap: 10px;
+  }
+
+  .result-header .score-number .number {
+    font-size: 36px;
+  }
+
+  .result-header .score-number .unit {
+    font-size: 16px;
+  }
+
+  .result-header .score-info {
+    gap: 4px;
+  }
+
+  .result-header .score-info h4 {
+    font-size: 15px;
+  }
+
+  .result-header .score-info .el-tag {
+    font-size: 12px;
+    padding: 4px 10px;
+  }
+
+  .result-skills {
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .skill-section h5 {
+    font-size: 12px;
+    margin-bottom: 6px;
+  }
+
+  .skill-tags-mini {
+    gap: 3px;
+  }
+
+  .skill-tags-mini .el-tag {
+    font-size: 10px;
+    padding: 1px 6px;
+  }
+
+  .result-recommendations h5 {
+    font-size: 12px;
+    margin-bottom: 6px;
+  }
+
+  .recommendation-tags {
+    gap: 4px;
+  }
+
+  .recommendation-tags .el-tag {
+    font-size: 10px;
+    padding: 1px 6px;
+  }
+
+  .el-descriptions {
+    font-size: 12px;
+  }
+
+  .el-descriptions__label {
+    font-size: 11px;
+  }
+
+  .el-descriptions__content {
+    font-size: 11px;
+  }
+
+  .el-timeline-item__timestamp {
+    font-size: 11px !important;
   }
 }
