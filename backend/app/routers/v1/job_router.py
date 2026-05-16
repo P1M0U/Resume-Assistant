@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import JSONResponse
+from schemas import JobRecommendRequest
 from llm.zhipu.agents.job_agent import JobRecommenderAgent
-from llm.zhipu.schemas.resume_schema import JobRecommendRequest
 from loguru import logger
 
 job_router = APIRouter(prefix="/resume", tags=["岗位推荐"])

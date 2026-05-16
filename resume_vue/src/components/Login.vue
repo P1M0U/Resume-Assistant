@@ -58,9 +58,9 @@
 import { UserFilled, User, Lock } from '@element-plus/icons-vue'
 import { useLogin } from '../assets/ts/Login'
 
-defineEmits(['close', 'switch-to-register'])
+const emit = defineEmits(['close', 'switch-to-register'])
 
-const { loginForm, loading, handleLogin, handleForgotPassword } = useLogin()
+const { loginForm, loading, handleLogin, handleForgotPassword } = useLogin(emit)
 </script>
 
 <style scoped>

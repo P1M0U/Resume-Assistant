@@ -5,7 +5,7 @@ from langchain_core.messages import HumanMessage, AIMessage
 from llm.zhipu.chat import zhipu_config
 from llm.zhipu.prompts.job_prompt import JOB_SYSTEM_PROMPT
 from llm.zhipu.tools import JOB_TOOLS
-from llm.zhipu.schemas.resume_schema import JobMatchResult, JobRecommendation, Suggestion
+from schemas import JobMatchResult, JobRecommendation, Suggestion
 from loguru import logger
 from typing import List, Dict, Any, Optional
 import json

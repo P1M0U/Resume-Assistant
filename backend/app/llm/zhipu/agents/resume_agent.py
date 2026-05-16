@@ -5,7 +5,7 @@ from langchain_core.messages import HumanMessage, AIMessage
 from llm.zhipu.chat import zhipu_config
 from llm.zhipu.prompts.resume_prompt import RESUME_SYSTEM_PROMPT
 from llm.zhipu.tools import RESUME_TOOLS
-from llm.zhipu.schemas.resume_schema import ResumeAnalysisResult
+from schemas import ResumeAnalysisResult
 from loguru import logger
 from typing import Dict, Any, Optional, List
 import json

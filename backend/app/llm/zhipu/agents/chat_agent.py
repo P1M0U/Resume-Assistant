@@ -2,7 +2,7 @@
 from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain_core.messages import HumanMessage, AIMessage
 from llm.zhipu.chat import zhipu_config
-from llm.zhipu.schemas.resume_schema import ResumeAnalysisResult, JobMatchResult
+from schemas import ResumeAnalysisResult, JobMatchResult
 from loguru import logger
 from typing import List, Dict, Optional
 

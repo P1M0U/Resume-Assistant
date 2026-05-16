@@ -2,6 +2,7 @@
 
 import { ref, type Ref } from 'vue'
 import { ElMessage } from 'element-plus'
+import { register as registerApi } from '@/services/auth_api'
 
 /**
  * 注册表单接口定义
@@ -26,9 +27,10 @@ interface UseRegisterReturn {
 
 /**
  * 注册组合式函数
+ * @param emit - emit函数
  * @returns 响应式数据和方法
  */
-export function useRegister(): UseRegisterReturn {
+export function useRegister(emit: (event: 'close' | 'switch-to-login') => void): UseRegisterReturn {
   const registerForm = ref<RegisterForm>({
     username: '',
     email: '',
@@ -71,8 +73,8 @@ export function useRegister(): UseRegisterReturn {
       return
     }
 
-    if (registerForm.value.password.length < 6) {
-      ElMessage.warning('密码长度至少为6位')
+    if (registerForm.value.password.length < 4) {
+      ElMessage.warning('密码长度至少为4位')
       return
     }
 
@@ -89,13 +91,17 @@ export function useRegister(): UseRegisterReturn {
     loading.value = true
 
     try {
-      // 模拟注册请求
-      await new Promise((resolve) => setTimeout(resolve, 1000))
+      await registerApi({
+        name: registerForm.value.username,
+        email: registerForm.value.email,
+        password: registerForm.value.password,
+      })
 
-      ElMessage.success('注册成功')
-      // TODO: 实际注册逻辑
+      ElMessage.success('注册成功，请登录')
+
+      emit('switch-to-login')
     } catch (error) {
-      ElMessage.error('注册失败，请重试')
+      console.error('注册失败:', error)
     } finally {
       loading.value = false
     }

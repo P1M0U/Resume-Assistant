@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { ref, watch, computed, onMounted, onUnmounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import { ElMessage, ElMessageBox } from 'element-plus'
 import Login from './components/Login.vue'
 import Register from './components/Register.vue'
+import { useUserStore } from './stores/user'
 
 const router = useRouter()
 const route = useRoute()
+const userStore = useUserStore()
 const activeMenu = ref('home')
 const sidebarVisible = ref(false)
 const isMobile = ref(false)
@@ -105,6 +108,24 @@ const switchToLogin = (): void => {
   showLogin.value = true
 }
 
+/**
+ * 处理退出登录
+ */
+const handleLogout = async (): Promise<void> => {
+  try {
+    await ElMessageBox.confirm('确定要退出登录吗？', '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    })
+    userStore.logout()
+    ElMessage.success('退出登录成功')
+    router.push('/')
+  } catch {
+    // 用户取消操作
+  }
+}
+
 onMounted(() => {
   checkMobile()
   window.addEventListener('resize', checkMobile)
@@ -131,14 +152,26 @@ onUnmounted(() => {
             <h1>AI简历助手</h1>
           </div>
           <div class="header-actions">
-            <el-button class="login-btn" @click="handleLogin">
-              <el-icon><User /></el-icon>
-              <span>登录</span>
-            </el-button>
-            <el-button class="register-btn" type="primary" @click="handleRegister">
-              <el-icon><UserFilled /></el-icon>
-              <span>注册</span>
-            </el-button>
+            <template v-if="userStore.isLoggedIn && userStore.userInfo">
+              <div class="user-info">
+                <el-icon><UserFilled /></el-icon>
+                <span class="username">{{ userStore.userInfo.name }}</span>
+              </div>
+              <el-button class="logout-btn" @click="handleLogout">
+                <el-icon><SwitchButton /></el-icon>
+                <span>退出登录</span>
+              </el-button>
+            </template>
+            <template v-else>
+              <el-button class="login-btn" @click="handleLogin">
+                <el-icon><User /></el-icon>
+                <span>登录</span>
+              </el-button>
+              <el-button class="register-btn" type="primary" @click="handleRegister">
+                <el-icon><UserFilled /></el-icon>
+                <span>注册</span>
+              </el-button>
+            </template>
           </div>
         </div>
       </el-header>

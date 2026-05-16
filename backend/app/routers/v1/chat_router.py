@@ -2,34 +2,14 @@
 
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import JSONResponse
-from pydantic import BaseModel
-from typing import Optional, List
+from schemas import ChatRequest, ChatResponse, ChatHistoryResponse
 from llm.zhipu.agents.chat_agent import AIChatAgent
-from llm.zhipu.schemas.resume_schema import ResumeAnalysisResult, JobMatchResult
 from loguru import logger
 
 chat_router = APIRouter(prefix="/chat", tags=["AI对话"])
 
 # 全局 AI 对话 Agent 实例
 chat_agent = AIChatAgent()
-
-
-class ChatRequest(BaseModel):
-    """对话请求"""
-    message: str
-    resume_analysis_result: Optional[ResumeAnalysisResult] = None
-    job_match_result: Optional[JobMatchResult] = None
-
-
-class ChatResponse(BaseModel):
-    """对话响应"""
-    response: str
-    timestamp: str
-
-
-class ChatHistoryResponse(BaseModel):
-    """对话历史响应"""
-    history: List[dict]
 
 
 @chat_router.post("/send", response_model=ChatResponse)

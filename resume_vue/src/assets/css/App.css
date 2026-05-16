@@ -74,6 +74,80 @@ body,
   gap: 16px;
 }
 
+/* 用户信息样式 */
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: linear-gradient(135deg, rgba(0, 188, 212, 0.1) 0%, rgba(0, 150, 136, 0.1) 100%);
+  border-radius: 20px;
+  color: #00838f;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.user-info:hover {
+  background: linear-gradient(135deg, rgba(0, 188, 212, 0.15) 0%, rgba(0, 150, 136, 0.15) 100%);
+  transform: translateY(-2px);
+}
+
+.user-info .el-icon {
+  font-size: 18px;
+}
+
+.user-info .username {
+  font-size: 15px;
+}
+
+/* 退出登录按钮样式 */
+.logout-btn {
+  position: relative;
+  background: linear-gradient(135deg, rgba(244, 67, 54, 0.1) 0%, rgba(211, 47, 47, 0.1) 100%);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  color: #d32f2f;
+  font-weight: 600;
+  padding: 10px 20px;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.logout-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
+  z-index: -1;
+  border-radius: 12px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.logout-btn:hover {
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(244, 67, 54, 0.4);
+  border-color: transparent;
+}
+
+.logout-btn:hover::before {
+  opacity: 1;
+}
+
+.logout-btn .el-icon {
+  margin-right: 6px;
+  font-size: 16px;
+  transition: transform 0.3s ease;
+}
+
+.logout-btn:hover .el-icon {
+  transform: scale(1.1);
+}
+
 /* 登录按钮样式 */
 .login-btn {
   position: relative;

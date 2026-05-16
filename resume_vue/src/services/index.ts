@@ -6,16 +6,6 @@ import axios, {
 } from 'axios'
 import { ElMessage } from 'element-plus'
 
-interface ApiResponse<T = any> {
-  success: boolean
-  data: T
-  message?: string
-  error?: {
-    type: string
-    code: number
-    message: string
-  }
-}
 /* 创建Axios实例 */
 const createAxiosInstance = (): AxiosInstance => {
   const instance = axios.create({
@@ -31,6 +21,12 @@ const createAxiosInstance = (): AxiosInstance => {
    */
   instance.interceptors.request.use(
     (config: InternalAxiosRequestConfig) => {
+      // 添加Token到请求头
+      const token = localStorage.getItem('token')
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`
+      }
+
       console.log(`[API Request] ${config.method?.toUpperCase()} ${config.url}`)
       return config
     },
@@ -44,25 +40,30 @@ const createAxiosInstance = (): AxiosInstance => {
    * 响应拦截器
    */
   instance.interceptors.response.use(
-    (response: AxiosResponse<ApiResponse>) => {
+    (response: AxiosResponse) => {
       console.log(
         `[API Response] ${response.config.method?.toUpperCase()} ${response.config.url}`,
         response.data,
       )
 
-      if (response.data.success) {
-        return response
-      } else {
-        ElMessage.error(response.data.message || '请求失败')
-        return Promise.reject(new Error(response.data.message || '请求失败'))
-      }
+      return response
     },
     (error) => {
       console.error('[API Response Error]', error)
 
       if (error.response) {
         const status = error.response.status
-        const message = error.response.data?.message || error.response.data?.detail || '服务器错误'
+        const errorData = error.response.data
+
+        let message = '服务器错误'
+
+        if (errorData.detail) {
+          message = errorData.detail
+        } else if (errorData.message) {
+          message = errorData.message
+        } else if (errorData.error?.message) {
+          message = errorData.error.message
+        }
 
         switch (status) {
           case 400:
@@ -76,6 +77,9 @@ const createAxiosInstance = (): AxiosInstance => {
             break
           case 404:
             ElMessage.error('请求的资源不存在')
+            break
+          case 422:
+            ElMessage.error(`参数验证失败: ${message}`)
             break
           case 500:
             ElMessage.error(`服务器错误: ${message}`)
@@ -106,8 +110,8 @@ const apiClient = createAxiosInstance()
  * @returns Promise
  */
 export const get = async <T = any>(url: string, config?: AxiosRequestConfig): Promise<T> => {
-  const response = await apiClient.get<ApiResponse<T>>(url, config)
-  return response.data.data
+  const response = await apiClient.get<T>(url, config)
+  return response.data
 }
 
 /**
@@ -122,8 +126,8 @@ export const post = async <T = any>(
   data?: any,
   config?: AxiosRequestConfig,
 ): Promise<T> => {
-  const response = await apiClient.post<ApiResponse<T>>(url, data, config)
-  return response.data.data
+  const response = await apiClient.post<T>(url, data, config)
+  return response.data
 }
 
 /**
@@ -138,8 +142,8 @@ export const put = async <T = any>(
   data?: any,
   config?: AxiosRequestConfig,
 ): Promise<T> => {
-  const response = await apiClient.put<ApiResponse<T>>(url, data, config)
-  return response.data.data
+  const response = await apiClient.put<T>(url, data, config)
+  return response.data
 }
 
 /**
@@ -149,8 +153,8 @@ export const put = async <T = any>(
  * @returns Promise
  */
 export const del = async <T = any>(url: string, config?: AxiosRequestConfig): Promise<T> => {
-  const response = await apiClient.delete<ApiResponse<T>>(url, config)
-  return response.data.data
+  const response = await apiClient.delete<T>(url, config)
+  return response.data
 }
 
 /**
@@ -180,8 +184,8 @@ export const uploadFile = async <T = any>(
     },
   }
 
-  const response = await apiClient.post<ApiResponse<T>>(url, formData, config)
-  return response.data.data
+  const response = await apiClient.post<T>(url, formData, config)
+  return response.data
 }
 
 export default apiClient

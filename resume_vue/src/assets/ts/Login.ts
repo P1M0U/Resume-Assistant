@@ -2,6 +2,8 @@
 
 import { ref, type Ref } from 'vue'
 import { ElMessage } from 'element-plus'
+import { login as loginApi } from '@/services/auth_api'
+import { useUserStore } from '@/stores/user'
 
 /**
  * 登录表单接口定义
@@ -25,9 +27,10 @@ interface UseLoginReturn {
 
 /**
  * 登录组合式函数
+ * @param emit - emit函数
  * @returns 响应式数据和方法
  */
-export function useLogin(): UseLoginReturn {
+export function useLogin(emit: (event: 'close') => void): UseLoginReturn {
   const loginForm = ref<LoginForm>({
     username: '',
     password: '',
@@ -35,6 +38,7 @@ export function useLogin(): UseLoginReturn {
   })
 
   const loading = ref(false)
+  const userStore = useUserStore()
 
   /**
    * 处理登录
@@ -53,13 +57,19 @@ export function useLogin(): UseLoginReturn {
     loading.value = true
 
     try {
-      // 模拟登录请求
-      await new Promise((resolve) => setTimeout(resolve, 1000))
+      const response = await loginApi({
+        name: loginForm.value.username,
+        password: loginForm.value.password,
+      })
+
+      userStore.setToken(response.access_token)
+      userStore.setUserInfo(response.user)
 
       ElMessage.success('登录成功')
-      // TODO: 实际登录逻辑
+
+      emit('close')
     } catch (error) {
-      ElMessage.error('登录失败，请重试')
+      console.error('登录失败:', error)
     } finally {
       loading.value = false
     }

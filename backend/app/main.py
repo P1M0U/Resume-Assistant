@@ -64,6 +64,11 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     else:
         logger.warning("未配置智谱AI API密钥")
 
+    # 初始化数据库
+    from dbs.mysql.database import init_db
+    init_db()
+    logger.info("数据库初始化完成")
+
     logger.info("应用资源初始化完成")
     logger.info("="*50)
 

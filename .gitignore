@@ -69,14 +69,7 @@ Backend/app/alembic/versions/*
 *.pyd
 
 # 忽略__init__.py文件（如果需要）
-__init__.py
-**/__init__.py
-!backend/app/llm/zhipu/memory/__init__.py
-!backend/app/llm/zhipu/agents/__init__.py
-!backend/app/llm/zhipu/tools/__init__.py
-!backend/app/llm/zhipu/rag/__init__.py
-
-
+!**/__init__.py
 
 # -----------------------------
 # 其他忽略规则
