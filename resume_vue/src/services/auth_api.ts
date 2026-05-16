@@ -12,6 +12,13 @@ export interface RegisterRequest {
   email: string
 }
 
+export interface AdminUpdateRequest {
+  name?: string
+  password?: string
+  email?: string
+  is_admin?: boolean
+}
+
 export interface TokenResponse {
   access_token: string
   token_type: string
@@ -45,7 +52,7 @@ export const getAllUsers = async (skip: number = 0, limit: number = 100): Promis
 
 export const updateUserByAdmin = async (
   userId: number,
-  data: Partial<RegisterRequest>,
+  data: Partial<AdminUpdateRequest>,
 ): Promise<UserInfo> => {
   return await put<UserInfo>(`/user/${userId}`, data)
 }

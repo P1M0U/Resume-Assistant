@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useUserStore } from '@/stores/user'
+import { ElMessage } from 'element-plus'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -52,16 +53,21 @@ const router = createRouter({
  * 路由守卫
  * 检查用户是否已登录，未登录用户无法访问需要认证的页面
  */
-router.beforeEach((to, _from, next) => {
+router.beforeEach((to, _from) => {
   const userStore = useUserStore()
 
   if (to.meta.requiresAuth && !userStore.isLoggedIn) {
-    next({ name: 'home' })
-  } else if (to.meta.requiresAdmin && !userStore.userInfo?.is_admin) {
-    next({ name: 'home' })
-  } else {
-    next()
+    ElMessage.warning('请先登录后再访问该功能')
+    userStore.openLoginDialog()
+    return { name: 'home' }
   }
+
+  if (to.meta.requiresAdmin && !userStore.userInfo?.is_admin) {
+    ElMessage.error('权限不足，只有管理员才能访问该页面')
+    return { name: 'home' }
+  }
+
+  return true
 })
 
 export default router

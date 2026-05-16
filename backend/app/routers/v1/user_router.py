@@ -324,6 +324,9 @@ async def update_user_by_admin(
     if update_data.password:
         user.password = get_password_hash(update_data.password)
     
+    if update_data.is_admin is not None:
+        user.is_admin = update_data.is_admin
+    
     db.commit()
     db.refresh(user)
     

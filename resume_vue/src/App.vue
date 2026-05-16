@@ -25,6 +25,15 @@ watch(
   { immediate: true },
 )
 
+watch(
+  () => userStore.showLoginDialog,
+  (newValue) => {
+    if (newValue) {
+      showLogin.value = true
+    }
+  },
+)
+
 /**
  * 计算侧边栏宽度
  */
@@ -83,6 +92,7 @@ const handleRegister = (): void => {
  */
 const closeLogin = (): void => {
   showLogin.value = false
+  userStore.closeLoginDialog()
 }
 
 /**
@@ -136,6 +146,7 @@ const goToPersonal = (): void => {
 onMounted(() => {
   checkMobile()
   window.addEventListener('resize', checkMobile)
+  userStore.initializeUser()
 })
 
 onUnmounted(() => {
