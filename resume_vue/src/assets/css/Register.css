@@ -1,0 +1,269 @@
+.register-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.register-container {
+  width: 100%;
+  max-width: 440px;
+  margin: 20px;
+  animation: slideUp 0.4s ease;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.register-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(240, 248, 255, 0.98) 100%);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(0, 188, 212, 0.2);
+  border-radius: 20px;
+  box-shadow: 0 16px 64px rgba(0, 188, 212, 0.25);
+  overflow: hidden;
+}
+
+.register-card :deep(.el-card__body) {
+  padding: 40px;
+}
+
+.register-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.register-header .logo-icon {
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(135deg, rgba(0, 188, 212, 0.1) 0%, rgba(0, 150, 136, 0.1) 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px;
+  box-shadow: 0 0 30px rgba(0, 188, 212, 0.2);
+}
+
+.register-header .logo-icon .el-icon {
+  font-size: 32px;
+  color: #00bcd4;
+}
+
+.register-header h2 {
+  margin: 0 0 8px 0;
+  font-size: 24px;
+  font-weight: 600;
+  background: linear-gradient(135deg, #00bcd4 0%, #0097a7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.register-header p {
+  margin: 0;
+  font-size: 14px;
+  color: #546e7a;
+}
+
+.register-form {
+  margin-bottom: 24px;
+}
+
+.register-form :deep(.el-form-item) {
+  margin-bottom: 20px;
+}
+
+.register-form :deep(.el-input__wrapper) {
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(0, 188, 212, 0.2);
+  border-radius: 12px;
+  box-shadow: none;
+  transition: all 0.3s ease;
+}
+
+.register-form :deep(.el-input__wrapper:hover) {
+  border-color: #00bcd4;
+}
+
+.register-form :deep(.el-input__wrapper.is-focus) {
+  border-color: #00bcd4;
+  box-shadow: 0 0 0 2px rgba(0, 188, 212, 0.1);
+}
+
+.register-form :deep(.el-input__inner) {
+  color: #1a237e;
+}
+
+.register-form :deep(.el-input__prefix) {
+  color: #00bcd4;
+}
+
+.terms-checkbox :deep(.el-checkbox__label) {
+  color: #546e7a;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.terms-link {
+  color: #00bcd4;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.terms-link:hover {
+  color: #00838f;
+}
+
+.register-button {
+  width: 100%;
+  height: 48px;
+  background: linear-gradient(135deg, #00bcd4 0%, #0097a7 100%);
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(0, 188, 212, 0.3);
+}
+
+.register-button:hover {
+  background: linear-gradient(135deg, #00acc1 0%, #00838f 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0, 188, 212, 0.5);
+}
+
+.register-footer {
+  text-align: center;
+  padding-top: 24px;
+  border-top: 1px solid rgba(0, 188, 212, 0.1);
+}
+
+.register-footer p {
+  margin: 0;
+  font-size: 14px;
+  color: #546e7a;
+}
+
+.register-footer .login-link {
+  color: #00bcd4;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.register-footer .login-link:hover {
+  color: #00838f;
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+  .register-container {
+    margin: 16px;
+    max-width: 100%;
+  }
+
+  .register-card :deep(.el-card__body) {
+    padding: 32px 24px;
+  }
+
+  .register-header .logo-icon {
+    width: 56px;
+    height: 56px;
+  }
+
+  .register-header .logo-icon .el-icon {
+    font-size: 28px;
+  }
+
+  .register-header h2 {
+    font-size: 22px;
+  }
+
+  .register-header p {
+    font-size: 13px;
+  }
+
+  .register-form :deep(.el-form-item) {
+    margin-bottom: 16px;
+  }
+
+  .register-button {
+    height: 44px;
+    font-size: 15px;
+  }
+
+  .register-footer p {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .register-container {
+    margin: 12px;
+  }
+
+  .register-card :deep(.el-card__body) {
+    padding: 24px 20px;
+  }
+
+  .register-header .logo-icon {
+    width: 48px;
+    height: 48px;
+  }
+
+  .register-header .logo-icon .el-icon {
+    font-size: 24px;
+  }
+
+  .register-header h2 {
+    font-size: 20px;
+  }
+
+  .register-header p {
+    font-size: 12px;
+  }
+
+  .register-form :deep(.el-form-item) {
+    margin-bottom: 14px;
+  }
+
+  .register-button {
+    height: 42px;
+    font-size: 14px;
+  }
+
+  .terms-checkbox :deep(.el-checkbox__label) {
+    font-size: 12px;
+  }
+
+  .register-footer p {
+    font-size: 12px;
+  }
+}

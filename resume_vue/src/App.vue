@@ -1,13 +1,16 @@
 <script setup lang="ts">
 import { ref, watch, computed, onMounted, onUnmounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { ElMessage } from 'element-plus'
+import Login from './components/Login.vue'
+import Register from './components/Register.vue'
 
 const router = useRouter()
 const route = useRoute()
 const activeMenu = ref('home')
 const sidebarVisible = ref(false)
 const isMobile = ref(false)
+const showLogin = ref(false)
+const showRegister = ref(false)
 
 watch(
   () => route.name,
@@ -62,14 +65,44 @@ const handleMenuSelect = (index: string): void => {
  * 处理登录按钮点击
  */
 const handleLogin = (): void => {
-  ElMessage.info('即将进入登录页面')
+  showLogin.value = true
 }
 
 /**
  * 处理注册按钮点击
  */
 const handleRegister = (): void => {
-  ElMessage.info('即将进入注册页面')
+  showRegister.value = true
+}
+
+/**
+ * 关闭登录弹窗
+ */
+const closeLogin = (): void => {
+  showLogin.value = false
+}
+
+/**
+ * 关闭注册弹窗
+ */
+const closeRegister = (): void => {
+  showRegister.value = false
+}
+
+/**
+ * 切换到注册页面
+ */
+const switchToRegister = (): void => {
+  showLogin.value = false
+  showRegister.value = true
+}
+
+/**
+ * 切换到登录页面
+ */
+const switchToLogin = (): void => {
+  showRegister.value = false
+  showLogin.value = true
 }
 
 onMounted(() => {
@@ -98,8 +131,14 @@ onUnmounted(() => {
             <h1>AI简历助手</h1>
           </div>
           <div class="header-actions">
-            <el-button @click="handleLogin"> 登录 </el-button>
-            <el-button type="primary" @click="handleRegister"> 注册 </el-button>
+            <el-button class="login-btn" @click="handleLogin">
+              <el-icon><User /></el-icon>
+              <span>登录</span>
+            </el-button>
+            <el-button class="register-btn" type="primary" @click="handleRegister">
+              <el-icon><UserFilled /></el-icon>
+              <span>注册</span>
+            </el-button>
           </div>
         </div>
       </el-header>
@@ -139,6 +178,12 @@ onUnmounted(() => {
         </el-main>
       </el-container>
     </el-container>
+
+    <!-- 登录弹窗 -->
+    <Login v-if="showLogin" @close="closeLogin" @switch-to-register="switchToRegister" />
+
+    <!-- 注册弹窗 -->
+    <Register v-if="showRegister" @close="closeRegister" @switch-to-login="switchToLogin" />
   </div>
 </template>
 
