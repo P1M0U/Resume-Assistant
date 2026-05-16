@@ -2,7 +2,7 @@
 
 [中文简体](README.md) | [English](README-EN.md)
 
-![Project Status](https://img.shields.io/badge/status-active-brightgreen) ![Python](https://img.shields.io/badge/python-3.13-blue) ![Vue](https://img.shields.io/badge/vue-3.5%2B-green) ![TypeScript](https://img.shields.io/badge/typescript-6.0%2B-blue) ![FastAPI](https://img.shields.io/badge/fastapi-0.136%2B-red) ![MySQL](https://img.shields.io/badge/mysql-8.0%2B-blue) ![LangChain](https://img.shields.io/badge/langchain-1.2%2B-orange) ![Element Plus](https://img.shields.io/badge/element--plus-2.13%2B-blue) ![Vite](https://img.shields.io/badge/vite-8.0%2B-yellow) ![Zhipu AI](https://img.shields.io/badge/zhipu--ai-glm--4-purple)
+![Project Status](https://img.shields.io/badge/status-active-brightgreen) ![Version](https://img.shields.io/badge/version-1.1.0-blue) ![Python](https://img.shields.io/badge/python-3.13-blue) ![Vue](https://img.shields.io/badge/vue-3.5%2B-green) ![TypeScript](https://img.shields.io/badge/typescript-6.0%2B-blue) ![FastAPI](https://img.shields.io/badge/fastapi-0.136%2B-red) ![MySQL](https://img.shields.io/badge/mysql-8.0%2B-blue) ![LangChain](https://img.shields.io/badge/langchain-1.2%2B-orange) ![Element Plus](https://img.shields.io/badge/element--plus-2.13%2B-blue) ![Vite](https://img.shields.io/badge/vite-8.0%2B-yellow) ![Zhipu AI](https://img.shields.io/badge/zhipu--ai-glm--4-purple)
 
 ## 🚀 Project Introduction
 
@@ -13,6 +13,10 @@
 - 📄 **Intelligent Resume Analysis**: Upload PDF/DOCX format resumes, AI automatically parses and provides professional optimization suggestions
 - 💼 **Intelligent Job Recommendation**: Recommend highly matching positions based on resume content and desired position
 - 🤖 **AI Intelligent Chat**: Real-time conversation with AI assistant for resume optimization advice and career planning guidance
+- 🔐 **User Authentication System**: Complete user registration, login, and JWT authentication functionality
+- 👤 **Personal Information Management**: View and edit personal profile, change password
+- 🎛️ **Admin Management System**: Administrator user management and permission control (admin only)
+- 🛡️ **Route Permission Guard**: Unauthenticated users cannot access protected features
 - 🎯 **Skill Matching Assessment**: Analyze the matching degree between resume skills and job requirements
 - 💡 **Optimization Suggestion Generation**: Provide personalized resume optimization suggestions
 - 📊 **Analysis Result Export**: Support exporting resume analysis reports and job recommendation reports
@@ -47,6 +51,9 @@
 | Loguru | 0.7.3 | Log Management |
 | ChromaDB | - | Vector Database |
 | httpx | - | HTTP Client |
+| python-jose | 3.4.0 | JWT Token |
+| bcrypt | 4.1.2 | Password Hashing |
+| email-validator | 2.2.0 | Email Validation |
 
 ### AI Tech Stack
 
@@ -133,6 +140,15 @@ After starting backend service, access:
 
 ### Main API Endpoints
 
+**User Authentication**
+- `POST /api/v1/user/register` - User registration
+- `POST /api/v1/user/login` - User login
+- `GET /api/v1/user/me` - Get current user info
+- `PUT /api/v1/user/me` - Update current user info
+- `GET /api/v1/user/` - Get all users list (Admin)
+- `PUT /api/v1/user/{user_id}` - Update user info (Admin)
+- `DELETE /api/v1/user/{user_id}` - Delete user (Admin)
+
 **AI Chat**
 - `POST /api/v1/chat/send` - Send message
 - `GET /api/v1/chat/history` - Get chat history
@@ -147,88 +163,50 @@ After starting backend service, access:
 - `POST /api/v1/rag/store-resume` - Store resume to vector database
 - `POST /api/v1/rag/search-resumes` - Search similar resumes
 
+## 🔐 User Authentication & Management
+
+- User registration, login, JWT authentication
+- Personal information viewing and editing
+- Admin management system (admin only)
+- Route permission guard
+- Automatic token validation
+
+**Create Admin Account**
+```sql
+UPDATE user SET is_admin = 1 WHERE name = 'your_username';
+```
+
 ## 📊 Core Data Models
 
-**Resume Analysis Result**
-- `score` - Overall score (0-100)
-- `personal_info` - Personal information
-- `highlights` - Resume highlights
-- `suggestions` - Optimization suggestions
+**Resume Analysis Result**: score, personal_info, highlights, suggestions
 
-**Job Match Result**
-- `target_job` - Target position
-- `match_score` - Match score (0-100)
-- `matched_skills` - Matched skills
-- `missing_skills` - Missing skills
-- `recommendations` - Recommended positions
+**Job Match Result**: target_job, match_score, matched_skills, missing_skills, recommendations
 
 ## 🔧 System Configuration
 
-### Configuration Priority
+**Configuration Priority**: Environment Variables > config.yaml
 
-```
-Environment Variables > config.yaml
-```
+**Main Configuration Items**
+- Zhipu AI: API_KEY, MODEL_NAME
+- MySQL: HOST, PASSWORD, DB
+- ChromaDB: PERSIST_DIR
 
-### Main Configuration Items
-
-**Zhipu AI**
-- `ZHIPU_API_KEY` - API Key
-- `ZHIPU_MODEL_NAME` - Model Name (Default: glm-4-flash-250414)
-
-**MySQL**
-- `MYSQL_HOST` - Database Host
-- `MYSQL_PASSWORD` - Database Password
-- `MYSQL_DB` - Database Name
-
-**ChromaDB**
-- `CHROMA_PERSIST_DIR` - Vector Database Storage Directory
-
-### Frontend Configuration
-
-Create `.env` file:
-```env
-VITE_API_BASE_URL=http://localhost:8000
-```
+**Frontend Configuration**: Create `.env` file and set `VITE_API_BASE_URL`
 
 ## 📝 Development Guide
 
-### Code Style
-- Frontend: Follow Vue official style guide, use Prettier for formatting
-- Backend: Follow PEP 8 specification
-
-### Commit Convention
-
-Use semantic commits:
-```
-feat: new feature
-fix: bug fix
-docs: documentation update
-refactor: code refactoring
-```
+- Code Style: Frontend follows Vue official style guide, Backend follows PEP 8 specification
+- Commit Convention: Use semantic commits (feat/fix/docs/refactor)
 
 ## 🎯 Core Features
 
-### Intelligent Resume Analysis
-- Support PDF and DOCX formats
-- Automatically extract personal information, education background, work experience
-- Intelligently identify highlights and areas for improvement
-- Provide professional optimization suggestions
-
-### Precise Job Recommendation
-- Support entering desired position or AI automatic recommendation
-- Analyze skill matching degree and missing skills
-- Recommend multiple related positions
-
-### AI Intelligent Chat
-- Real-time conversation for optimization suggestions
-- Career planning guidance
-- Chat history memory
-
-### RAG Retrieval Enhancement
-- Vector storage based on ChromaDB
-- Similar resume and job retrieval
-- Graceful degradation mechanism
+- **User Authentication & Permission Management**: Registration/login, JWT auth, route guard, admin permissions
+- **Personal Information Management**: View/edit profile, change password
+- **Admin Management System**: User management, permission control (admin only)
+- **Intelligent Resume Analysis**: Support PDF/DOCX, auto-extract info, optimization suggestions
+- **Precise Job Recommendation**: Skill matching, missing skills analysis, multiple job recommendations
+- **AI Intelligent Chat**: Real-time conversation, career planning, history memory
+- **RAG Retrieval Enhancement**: Vector storage, similar retrieval, graceful degradation
 
 ## 🤝 Contributing Guide
 
@@ -255,12 +233,13 @@ This project uses MIT license
 
 ## 🎯 Future Optimization Directions
 
-1. 🔐 Add user authentication and permission management
-2. 📱 Optimize mobile responsive experience
+1. ✅ ~~Add user authentication and permission management~~ (Completed)
+2. ✅ ~~Optimize mobile responsive experience~~ (Completed)
 3. 🌐 Support more resume formats (OCR recognition)
 4. 🤖 Integrate more AI models
 5. 📊 Add resume score history trend analysis
 6. 🔍 Add job search and filtering functions
 7. 💾 Support resume template generation and download
+8. 📧 Email verification and password recovery
 
 Thank you for using AI Resume Assistant!🎉

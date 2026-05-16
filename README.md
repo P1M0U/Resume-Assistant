@@ -2,7 +2,7 @@
 
 [中文简体](README.md) | [English](README-EN.md)
 
-![项目状态](https://img.shields.io/badge/status-active-brightgreen) ![Python](https://img.shields.io/badge/python-3.13-blue) ![Vue](https://img.shields.io/badge/vue-3.5%2B-green) ![TypeScript](https://img.shields.io/badge/typescript-6.0%2B-blue) ![FastAPI](https://img.shields.io/badge/fastapi-0.136%2B-red) ![MySQL](https://img.shields.io/badge/mysql-8.0%2B-blue) ![LangChain](https://img.shields.io/badge/langchain-1.2%2B-orange) ![Element Plus](https://img.shields.io/badge/element--plus-2.13%2B-blue) ![Vite](https://img.shields.io/badge/vite-8.0%2B-yellow) ![智谱AI](https://img.shields.io/badge/zhipu--ai-glm--4-purple)
+![项目状态](https://img.shields.io/badge/status-active-brightgreen) ![版本](https://img.shields.io/badge/version-1.1.0-blue) ![Python](https://img.shields.io/badge/python-3.13-blue) ![Vue](https://img.shields.io/badge/vue-3.5%2B-green) ![TypeScript](https://img.shields.io/badge/typescript-6.0%2B-blue) ![FastAPI](https://img.shields.io/badge/fastapi-0.136%2B-red) ![MySQL](https://img.shields.io/badge/mysql-8.0%2B-blue) ![LangChain](https://img.shields.io/badge/langchain-1.2%2B-orange) ![Element Plus](https://img.shields.io/badge/element--plus-2.13%2B-blue) ![Vite](https://img.shields.io/badge/vite-8.0%2B-yellow) ![智谱AI](https://img.shields.io/badge/zhipu--ai-glm--4-purple)
 
 ## 🚀 项目简介
 
@@ -13,6 +13,10 @@
 - 📄 **简历智能分析** - 上传PDF/DOCX简历，AI自动解析并提供优化建议
 - 💼 **岗位智能推荐** - 根据简历内容推荐匹配岗位，支持自定义期望岗位
 - 🤖 **AI智能对话** - 实时对话获取简历优化建议和职业规划指导
+- 🔐 **用户认证系统** - 完整的用户注册、登录、JWT身份认证功能
+- 👤 **个人信息管理** - 查看和编辑个人资料，修改密码
+- 🎛️ **后台管理系统** - 管理员用户管理、权限控制（仅管理员可见）
+- 🛡️ **路由权限守卫** - 未登录用户无法访问需要认证的功能
 - 📊 **结果导出** - 支持导出简历分析报告和岗位推荐报告（JSON格式）
 - 🔄 **实时同步** - 简历分析结果实时同步到岗位推荐模块
 
@@ -20,11 +24,13 @@
 
 **前端**：Vue 3 + TypeScript + Element Plus + Pinia + Vue Router + Vite
 
-**后端**：FastAPI + LangChain + SQLAlchemy + ChromaDB
+**后端**：FastAPI + LangChain + SQLAlchemy + MySQL + ChromaDB
 
 **AI**：智谱AI GLM-4 + Embedding-3 + RAG
 
-**数据库**：MySQL 8.0+ + ChromaDB
+**认证**：JWT + bcrypt + OAuth2
+
+**数据库**：MySQL 8.0+（用户数据）+ ChromaDB（向量数据）
 
 ## 📁 项目结构
 
@@ -101,6 +107,15 @@ MYSQL:
 
 ### 主要API端点
 
+**用户认证**
+- `POST /api/v1/user/register` - 用户注册
+- `POST /api/v1/user/login` - 用户登录
+- `GET /api/v1/user/me` - 获取当前用户信息
+- `PUT /api/v1/user/me` - 更新当前用户信息
+- `GET /api/v1/user/` - 获取所有用户列表（管理员）
+- `PUT /api/v1/user/{user_id}` - 更新用户信息（管理员）
+- `DELETE /api/v1/user/{user_id}` - 删除用户（管理员）
+
 **AI对话**
 - `POST /api/v1/chat/send` - 发送消息
 - `GET /api/v1/chat/history` - 获取对话历史
@@ -115,88 +130,50 @@ MYSQL:
 - `POST /api/v1/rag/store-resume` - 存储简历到向量库
 - `POST /api/v1/rag/search-resumes` - 搜索相似简历
 
+## 🔐 用户认证与管理
+
+- 用户注册、登录、JWT身份认证
+- 个人信息查看与编辑
+- 后台管理系统（仅管理员可见）
+- 路由权限守卫
+- Token自动验证
+
+**创建管理员账号**
+```sql
+UPDATE user SET is_admin = 1 WHERE name = 'your_username';
+```
+
 ## 📊 核心数据模型
 
-**简历分析结果**
-- `score` - 综合评分（0-100）
-- `personal_info` - 个人信息
-- `highlights` - 简历亮点
-- `suggestions` - 优化建议
+**简历分析结果**：score、personal_info、highlights、suggestions
 
-**岗位匹配结果**
-- `target_job` - 目标岗位
-- `match_score` - 匹配度评分（0-100）
-- `matched_skills` - 匹配技能
-- `missing_skills` - 缺失技能
-- `recommendations` - 推荐岗位
+**岗位匹配结果**：target_job、match_score、matched_skills、missing_skills、recommendations
 
 ## 🔧 系统配置
 
-### 配置优先级
+**配置优先级**：环境变量 > config.yaml
 
-```
-环境变量 > config.yaml
-```
+**主要配置项**
+- 智谱AI：API_KEY、MODEL_NAME
+- MySQL：HOST、PASSWORD、DB
+- ChromaDB：PERSIST_DIR
 
-### 主要配置项
-
-**智谱AI**
-- `ZHIPU_API_KEY` - API密钥
-- `ZHIPU_MODEL_NAME` - 模型名称（默认：glm-4-flash-250414）
-
-**MySQL**
-- `MYSQL_HOST` - 数据库地址
-- `MYSQL_PASSWORD` - 数据库密码
-- `MYSQL_DB` - 数据库名称
-
-**ChromaDB**
-- `CHROMA_PERSIST_DIR` - 向量数据库存储目录
-
-### 前端配置
-
-创建 `.env` 文件：
-```env
-VITE_API_BASE_URL=http://localhost:8000
-```
+**前端配置**：创建 `.env` 文件设置 `VITE_API_BASE_URL`
 
 ## 📝 开发指南
 
-### 代码风格
-- 前端：遵循Vue官方风格指南，使用Prettier格式化
-- 后端：遵循PEP 8规范
-
-### 提交规范
-
-使用语义化提交：
-```
-feat: 新功能
-fix: 修复bug
-docs: 文档更新
-refactor: 代码重构
-```
+- 代码风格：前端遵循Vue官方风格指南，后端遵循PEP 8规范
+- 提交规范：使用语义化提交（feat/fix/docs/refactor）
 
 ## 🎯 核心特性
 
-### 智能简历分析
-- 支持PDF和DOCX格式
-- 自动提取个人信息、教育背景、工作经历
-- 智能识别亮点和待改进项
-- 提供专业优化建议
-
-### 精准岗位推荐
-- 支持输入期望岗位或AI自动推荐
-- 分析技能匹配度和缺失技能
-- 推荐多个相关岗位
-
-### AI智能对话
-- 实时对话获取优化建议
-- 职业规划指导
-- 对话历史记忆
-
-### RAG检索增强
-- 基于ChromaDB的向量存储
-- 相似简历和岗位检索
-- 优雅降级机制
+- **用户认证与权限管理**：注册登录、JWT认证、路由守卫、管理员权限
+- **个人信息管理**：查看编辑个人资料、修改密码
+- **后台管理系统**：用户管理、权限控制（仅管理员）
+- **智能简历分析**：支持PDF/DOCX、自动提取信息、优化建议
+- **精准岗位推荐**：技能匹配、缺失技能分析、多岗位推荐
+- **AI智能对话**：实时对话、职业规划、历史记忆
+- **RAG检索增强**：向量存储、相似检索、优雅降级
 
 ## 🤝 贡献指南
 
@@ -223,12 +200,13 @@ refactor: 代码重构
 
 ## 🎯 后续优化方向
 
-1. 🔐 增加用户认证和权限管理
-2. 📱 优化移动端响应式体验
+1. ✅ ~~增加用户认证和权限管理~~ （已完成）
+2. ✅ ~~优化移动端响应式体验~~ （已完成）
 3. 🌐 支持更多简历格式（OCR识别）
 4. 🤖 集成更多AI模型
 5. 📊 添加简历评分历史趋势分析
 6. 🔍 增加岗位搜索和筛选功能
 7. 💾 支持简历模板生成和下载
+8. 📧 邮箱验证和密码找回
 
 感谢使用AI简历助手！🎉

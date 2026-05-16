@@ -8,3 +8,6 @@
    - 后端：FastAPI (Version 0.136.0)+ Langchain (Version 1.2.15) + zai-sdk (Version 0.2.2)
    - 数据库：关系型数据库（MySQL） + 向量数据库（ChromaDB）
    - Python包管理器：UV
+
+4. 项目介绍规则：
+   - 生成所有的README文件（不论任何语言）时保持中文说明并且保留介绍重点不需要过于详细。
