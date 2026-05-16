@@ -2,6 +2,7 @@
 用户服务层
 处理用户相关的业务逻辑
 """
+from typing import List, Optional
 from sqlalchemy.orm import Session
 from dbs.mysql.models.user import User
 from core.security import get_password_hash, verify_password, create_access_token
@@ -94,7 +95,7 @@ class UserService:
                 headers={"WWW-Authenticate": "Bearer"},
             )
         
-        access_token = create_access_token(data={"sub": user.id})
+        access_token = create_access_token(data={"sub": str(user.id)})
         
         logger.info(f"用户登录成功 | 用户名: {user.name}")
         
@@ -137,6 +138,40 @@ class UserService:
             用户对象或None
         """
         return db.query(User).filter(User.name == name).first()
+    
+    @staticmethod
+    def get_all_users(db: Session, skip: int = 0, limit: int = 100) -> List[User]:
+        """
+        获取所有用户
+        
+        Args:
+            db: 数据库会话
+            skip: 跳过的记录数
+            limit: 返回的记录数
+            
+        Returns:
+            用户列表
+        """
+        return db.query(User).offset(skip).limit(limit).all()
+    
+    @staticmethod
+    def delete_user(db: Session, user_id: int) -> bool:
+        """
+        删除用户
+        
+        Args:
+            db: 数据库会话
+            user_id: 用户ID
+            
+        Returns:
+            是否删除成功
+        """
+        user = db.query(User).filter(User.id == user_id).first()
+        if user:
+            db.delete(user)
+            db.commit()
+            return True
+        return False
     
     @staticmethod
     def get_user_by_email(db: Session, email: str) -> Optional[User]:

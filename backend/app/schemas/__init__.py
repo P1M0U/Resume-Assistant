@@ -35,6 +35,7 @@ from .user import (
     UserResponse,
     TokenResponse,
     UserUpdateRequest,
+    RegisterResponse,
 )
 
 __all__ = [
@@ -62,4 +63,5 @@ __all__ = [
     "UserResponse",
     "TokenResponse",
     "UserUpdateRequest",
+    "RegisterResponse",
 ]

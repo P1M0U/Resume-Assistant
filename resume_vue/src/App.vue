@@ -126,6 +126,13 @@ const handleLogout = async (): Promise<void> => {
   }
 }
 
+/**
+ * 跳转到个人信息页面
+ */
+const goToPersonal = (): void => {
+  router.push('/personal')
+}
+
 onMounted(() => {
   checkMobile()
   window.addEventListener('resize', checkMobile)
@@ -153,7 +160,7 @@ onUnmounted(() => {
           </div>
           <div class="header-actions">
             <template v-if="userStore.isLoggedIn && userStore.userInfo">
-              <div class="user-info">
+              <div class="user-info" @click="goToPersonal">
                 <el-icon><UserFilled /></el-icon>
                 <span class="username">{{ userStore.userInfo.name }}</span>
               </div>
@@ -203,6 +210,10 @@ onUnmounted(() => {
             <el-menu-item index="settings">
               <el-icon><Setting /></el-icon>
               <span>设置</span>
+            </el-menu-item>
+            <el-menu-item v-if="userStore.userInfo?.is_admin" index="manage">
+              <el-icon><Operation /></el-icon>
+              <span>后台管理</span>
             </el-menu-item>
           </el-menu>
         </el-aside>

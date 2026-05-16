@@ -53,3 +53,11 @@ class UserUpdateRequest(BaseModel):
     name: Optional[str] = Field(None, min_length=2, max_length=50, description="用户名")
     email: Optional[EmailStr] = Field(None, description="邮箱地址")
     password: Optional[str] = Field(None, min_length=4, max_length=20, description="新密码")
+
+
+class RegisterResponse(BaseModel):
+    """
+    注册成功响应
+    """
+    message: str = "注册成功，请登录"
+    user: UserResponse

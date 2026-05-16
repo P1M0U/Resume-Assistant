@@ -33,6 +33,18 @@ const router = createRouter({
       component: () => import('@/views/SettingsView.vue'),
       meta: { requiresAuth: true },
     },
+    {
+      path: '/personal',
+      name: 'personal',
+      component: () => import('@/views/PersonalView.vue'),
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/manage',
+      name: 'manage',
+      component: () => import('@/views/ManageView.vue'),
+      meta: { requiresAuth: true, requiresAdmin: true },
+    },
   ],
 })
 
@@ -44,6 +56,8 @@ router.beforeEach((to, _from, next) => {
   const userStore = useUserStore()
 
   if (to.meta.requiresAuth && !userStore.isLoggedIn) {
+    next({ name: 'home' })
+  } else if (to.meta.requiresAdmin && !userStore.userInfo?.is_admin) {
     next({ name: 'home' })
   } else {
     next()

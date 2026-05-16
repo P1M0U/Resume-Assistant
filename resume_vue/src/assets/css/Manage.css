@@ -1,0 +1,331 @@
+.manage-container {
+  padding: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.manage-header {
+  margin-bottom: 24px;
+}
+
+.manage-header h1 {
+  margin: 0 0 8px 0;
+  font-size: 28px;
+  font-weight: 600;
+  background: linear-gradient(135deg, #00bcd4 0%, #0097a7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 30px rgba(0, 188, 212, 0.3);
+}
+
+.manage-header p {
+  margin: 0;
+  font-size: 14px;
+  color: #546e7a;
+}
+
+.manage-section {
+  margin-bottom: 24px;
+}
+
+.section-title {
+  margin: 0 0 16px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #00838f;
+  text-shadow: 0 0 20px rgba(0, 188, 212, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.section-title .el-icon {
+  font-size: 20px;
+}
+
+.manage-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 248, 255, 0.95) 100%);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(0, 188, 212, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 188, 212, 0.15);
+  transition: all 0.3s ease;
+}
+
+.manage-card:hover {
+  box-shadow: 0 12px 48px rgba(0, 188, 212, 0.25);
+}
+
+.manage-card :deep(.el-card__body) {
+  padding: 24px;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid rgba(0, 188, 212, 0.1);
+}
+
+.header-info h3 {
+  margin: 0 0 4px 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a237e;
+}
+
+.header-info p {
+  margin: 0;
+  font-size: 13px;
+  color: #546e7a;
+}
+
+.refresh-btn {
+  border-radius: 12px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.refresh-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 188, 212, 0.3);
+}
+
+.user-table {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.user-table :deep(.el-table__header-wrapper) {
+  background: linear-gradient(135deg, rgba(0, 188, 212, 0.05) 0%, rgba(0, 150, 136, 0.05) 100%);
+}
+
+.user-table :deep(.el-table__header th) {
+  background: transparent;
+  color: #00838f;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.user-table :deep(.el-table__row) {
+  transition: all 0.3s ease;
+}
+
+.user-table :deep(.el-table__row:hover) {
+  background: linear-gradient(135deg, rgba(0, 188, 212, 0.05) 0%, rgba(0, 150, 136, 0.05) 100%);
+}
+
+.user-name,
+.user-email {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.user-name .el-icon,
+.user-email .el-icon {
+  font-size: 16px;
+  color: #00bcd4;
+}
+
+.user-table :deep(.el-button) {
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.user-table :deep(.el-button:hover) {
+  transform: translateY(-2px);
+}
+
+/* 对话框样式 */
+:deep(.el-dialog) {
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+:deep(.el-dialog__header) {
+  background: linear-gradient(135deg, rgba(0, 188, 212, 0.1) 0%, rgba(0, 150, 136, 0.1) 100%);
+  padding: 20px;
+  border-bottom: 1px solid rgba(0, 188, 212, 0.2);
+}
+
+:deep(.el-dialog__title) {
+  font-weight: 600;
+  color: #00838f;
+}
+
+:deep(.el-dialog__body) {
+  padding: 24px;
+}
+
+:deep(.el-dialog__footer) {
+  padding: 16px 24px;
+  border-top: 1px solid rgba(0, 188, 212, 0.1);
+}
+
+.dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.dialog-footer :deep(.el-button) {
+  border-radius: 12px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.dialog-footer :deep(.el-button:hover) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 188, 212, 0.3);
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+  .manage-container {
+    padding: 16px;
+  }
+
+  .manage-header {
+    margin-bottom: 16px;
+  }
+
+  .manage-header h1 {
+    font-size: 22px;
+    margin-bottom: 6px;
+  }
+
+  .manage-header p {
+    font-size: 13px;
+  }
+
+  .manage-section {
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+
+  .manage-card :deep(.el-card__body) {
+    padding: 16px;
+  }
+
+  .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+  }
+
+  .header-info h3 {
+    font-size: 16px;
+  }
+
+  .header-info p {
+    font-size: 12px;
+  }
+
+  .refresh-btn {
+    width: 100%;
+  }
+
+  .user-table :deep(.el-table__header th) {
+    font-size: 13px;
+  }
+
+  .user-table :deep(.el-table__body td) {
+    font-size: 13px;
+  }
+
+  .user-table :deep(.el-button) {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  :deep(.el-dialog) {
+    width: 90% !important;
+    margin: 0 auto;
+  }
+
+  :deep(.el-dialog__body) {
+    padding: 16px;
+  }
+
+  :deep(.el-form-item__label) {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .manage-container {
+    padding: 12px;
+  }
+
+  .manage-header {
+    margin-bottom: 12px;
+  }
+
+  .manage-header h1 {
+    font-size: 18px;
+    margin-bottom: 4px;
+  }
+
+  .manage-header p {
+    font-size: 12px;
+  }
+
+  .manage-section {
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+
+  .manage-card :deep(.el-card__body) {
+    padding: 12px;
+  }
+
+  .card-header {
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+  }
+
+  .header-info h3 {
+    font-size: 14px;
+  }
+
+  .header-info p {
+    font-size: 11px;
+  }
+
+  .user-table :deep(.el-table__header th) {
+    font-size: 12px;
+    padding: 8px 4px;
+  }
+
+  .user-table :deep(.el-table__body td) {
+    font-size: 12px;
+    padding: 8px 4px;
+  }
+
+  .user-table :deep(.el-button) {
+    padding: 4px 8px;
+    font-size: 11px;
+  }
+
+  :deep(.el-dialog__body) {
+    padding: 12px;
+  }
+
+  :deep(.el-form-item__label) {
+    font-size: 12px;
+  }
+}
