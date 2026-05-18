@@ -10,20 +10,16 @@ services:
     restart: unless-stopped
     ports:
       - "8000:8000"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     environment:
-      - ZHIPU_API_KEY=${ZHIPU_API_KEY}
-      - MYSQL_HOST=${MYSQL_HOST:-mysql}
-      - MYSQL_PORT=${MYSQL_PORT:-3306}
-      - MYSQL_USER=${MYSQL_USER:-root}
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-      - MYSQL_DB=${MYSQL_DB:-resume_assistant}
+      - ENV=linux
     volumes:
-      - ./backend/app/config.yaml:/app/app/config.yaml
+      - ./backend/app/env.yaml:/app/app/env.yaml:ro
       - ./backend/app/logs:/app/app/logs
+      - chroma_data:/app/app/chroma_db
     networks:
       - resume_network
-    depends_on:
-      - mysql
 
   # 前端服务
   frontend:
@@ -39,28 +35,9 @@ services:
     depends_on:
       - backend
 
-  # MySQL 数据库
-  mysql:
-    image: mysql:8.0
-    container_name: resume_mysql
-    restart: unless-stopped
-    environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
-      - MYSQL_DATABASE=${MYSQL_DB:-resume_assistant}
-      - MYSQL_USER=${MYSQL_USER:-root}
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-    ports:
-      - "3306:3306"
-    volumes:
-      - mysql_data:/var/lib/mysql
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
-    networks:
-      - resume_network
-    command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
-
 networks:
   resume_network:
     driver: bridge
 
 volumes:
-  mysql_data:
+  chroma_data:

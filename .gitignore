@@ -78,6 +78,7 @@ Backend/app/alembic/versions/*
 .env
 .env.local
 .env.*.local
+env.yaml
 
 # ChromaDB向量数据库目录
 chroma_db/
