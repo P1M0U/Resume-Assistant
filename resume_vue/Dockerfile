@@ -1,6 +1,6 @@
 # 前端 Dockerfile
 # 第一阶段：构建阶段
-FROM node:22-alpine AS builder
+FROM registry.cn-hangzhou.aliyuncs.com/library/node:24-alpine AS builder
 
 # 设置工作目录
 WORKDIR /app
@@ -8,8 +8,8 @@ WORKDIR /app
 # 复制 package.json 和 package-lock.json
 COPY package*.json ./
 
-# 安装依赖
-RUN npm ci
+# 安装依赖（使用淘宝 npm 镜像源）
+RUN npm ci --registry=https://registry.npmmirror.com
 
 # 复制源代码
 COPY . .
@@ -18,7 +18,7 @@ COPY . .
 RUN npm run build
 
 # 第二阶段：生产阶段
-FROM nginx:alpine
+FROM registry.cn-hangzhou.aliyuncs.com/library/nginx:alpine
 
 # 复制自定义 Nginx 配置
 COPY nginx.conf /etc/nginx/conf.d/default.conf
