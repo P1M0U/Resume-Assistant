@@ -47,7 +47,7 @@ export const updateUser = async (data: Partial<RegisterRequest>): Promise<UserIn
 }
 
 export const getAllUsers = async (skip: number = 0, limit: number = 100): Promise<UserInfo[]> => {
-  return await get<UserInfo[]>(`/user?skip=${skip}&limit=${limit}`)
+  return await get<UserInfo[]>(`/user/?skip=${skip}&limit=${limit}`)
 }
 
 export const updateUserByAdmin = async (
