@@ -1,6 +1,5 @@
 # 后端 Dockerfile
-# 使用阿里云 Python 3.13 镜像
-FROM registry.cn-hangzhou.aliyuncs.com/library/python:3.13-slim
+FROM python:3.13-slim
 
 # 设置工作目录
 WORKDIR /app
