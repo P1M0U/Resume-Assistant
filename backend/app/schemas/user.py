@@ -50,9 +50,11 @@ class UserUpdateRequest(BaseModel):
     """
     用户信息更新请求
     """
-    name: Optional[str] = Field(None, min_length=2, max_length=50, description="用户名")
+    name: Optional[str] = Field(
+        None, min_length=2, max_length=50, description="用户名")
     email: Optional[EmailStr] = Field(None, description="邮箱地址")
-    password: Optional[str] = Field(None, min_length=4, max_length=20, description="新密码")
+    password: Optional[str] = Field(
+        None, min_length=4, max_length=20, description="新密码")
     is_admin: Optional[bool] = Field(None, description="是否为管理员")
 
 

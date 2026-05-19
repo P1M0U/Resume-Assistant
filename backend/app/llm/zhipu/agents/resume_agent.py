@@ -164,28 +164,43 @@ class ResumeAnalyzerAgent:
             解析后的字典或 None
         """
         try:
-            # 尝试直接解析
             result_dict = json.loads(text)
-            return result_dict
+            return self._clean_result(result_dict)
         except json.JSONDecodeError:
             pass
 
-        # 提取 JSON 代码块
         json_match = re.search(r'```json\s*(\{.*?\})\s*```', text, re.DOTALL)
         if json_match:
             try:
                 result_dict = json.loads(json_match.group(1))
-                return result_dict
+                return self._clean_result(result_dict)
             except json.JSONDecodeError:
                 pass
 
-        # 提取任意 JSON 对象
         json_match = re.search(r'\{[^{}]*"score"[^{}]*\}', text, re.DOTALL)
         if json_match:
             try:
                 result_dict = json.loads(json_match.group())
-                return result_dict
+                return self._clean_result(result_dict)
             except json.JSONDecodeError:
                 pass
 
         return None
+
+    def _clean_result(self, data: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        清理分析结果中的占位符值
+        将 personal_info 中的"未知"等占位符替换为空字符串
+
+        Args:
+            data: 原始分析结果字典
+
+        Returns:
+            清理后的字典
+        """
+        personal_info = data.get('personal_info')
+        if personal_info and isinstance(personal_info, dict):
+            for key, value in personal_info.items():
+                if isinstance(value, str) and value.strip() in ('未知', '无', '未提供', '未填写'):
+                    personal_info[key] = ''
+        return data

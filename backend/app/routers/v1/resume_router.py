@@ -43,7 +43,7 @@ async def upload_resume(file: UploadFile = File(...)):
 
         logger.info(f"文件解析成功，文本长度：{len(resume_text)}")
 
-        # 将简历存入向量数据库（失败不影响核心功能）
+        vector_store_success = False
         if VECTOR_STORE_ENABLED:
             try:
                 rag_service = RAGService()
@@ -51,28 +51,41 @@ async def upload_resume(file: UploadFile = File(...)):
                     resume_text=resume_text,
                     file_name=file.filename
                 )
-                logger.info(f"简历已存入向量库 | 块数: {chunk_count}")
+                vector_store_success = True
+                logger.success(f"简历已存入向量库 | 块数: {chunk_count}")
             except Exception as e:
                 logger.warning(f"向量存储失败，跳过: {str(e)}")
+                logger.info("向量存储失败不影响简历分析，继续执行智能体分析")
         else:
             logger.info("向量存储已禁用，跳过")
 
-        # 调用智能体分析
-        logger.info("开始调用智能体分析")
+        logger.info("="*50)
+        logger.info("开始调用智能体分析简历")
+        logger.info("="*50)
+
         analyzer = ResumeAnalyzerAgent()
         result = await analyzer.analyze_text(resume_text)
 
-        logger.info(f"分析完成，评分：{result.score}")
-        logger.info(
-            f"亮点数量：{len(result.highlights)}, 问题数量：{len(result.issues)}")
+        logger.success("="*50)
+        logger.success("智能体分析完成")
+        logger.success(f"简历评分：{result.score}")
+        logger.success(f"亮点数量：{len(result.highlights)}")
+        logger.success(f"问题数量：{len(result.issues)}")
+        logger.success(f"建议数量：{len(result.suggestions)}")
+        logger.success("="*50)
+
+        response_data = {
+            "success": True,
+            "data": result.model_dump(),
+            "message": "分析成功",
+            "vector_store_status": "success" if vector_store_success else "skipped"
+        }
+
+        logger.info(f"准备返回响应数据，数据大小：{len(str(response_data))} 字符")
 
         return JSONResponse(
             status_code=200,
-            content={
-                "success": True,
-                "data": result.dict(),
-                "message": "分析成功"
-            }
+            content=response_data
         )
     except Exception as e:
         logger.error(f"分析失败：{str(e)}")

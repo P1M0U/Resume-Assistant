@@ -254,7 +254,7 @@ const descriptionColumn = computed(() => {
 /**
  * 根据分数获取标签类型
  */
-const getScoreTagType = (score: number): string => {
+const getScoreTagType = (score: number): 'primary' | 'success' | 'warning' | 'info' | 'danger' => {
   if (score >= 90) return 'success'
   if (score >= 80) return 'primary'
   if (score >= 70) return 'warning'

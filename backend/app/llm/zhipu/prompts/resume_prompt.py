@@ -27,7 +27,7 @@ RESUME_SYSTEM_PROMPT = """你是一位专业的简历分析专家。请分析用
 
 分析要求：
 1. score: 综合评分（0-100分）
-2. personal_info: 提取的个人信息
+2. personal_info: 提取的个人信息，如果某个字段无法从简历中提取，请留空字符串""，不要填写"未知"或"无"等占位符
 3. highlights: 3-5个简历亮点
 4. issues: 3-5个待改进项
 5. suggestions: 分类给出优化建议

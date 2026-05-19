@@ -79,7 +79,13 @@ export class ResumeApiService {
    * @returns 简历分析结果
    */
   static async uploadAndAnalyze(params: UploadResumeParams): Promise<ResumeAnalysisResult> {
-    return uploadFile<ResumeAnalysisResult>('/resume/upload', params.file, params.onProgress)
+    const response = await uploadFile<{
+      success: boolean
+      data: ResumeAnalysisResult
+      message: string
+    }>('/resume/upload', params.file, params.onProgress)
+    console.log('后端返回的原始数据:', response)
+    return response.data
   }
 
   /**
@@ -108,7 +114,12 @@ export class ResumeApiService {
    * @returns 岗位匹配结果
    */
   static async getJobRecommendation(params: JobRecommendParams): Promise<JobMatchResult> {
-    return post('/resume/job-recommend', params)
+    const response = await post<{ success: boolean; data: JobMatchResult; message: string }>(
+      '/resume/job-recommend',
+      params,
+    )
+    console.log('岗位推荐后端返回的原始数据:', response)
+    return response.data
   }
 
   /**

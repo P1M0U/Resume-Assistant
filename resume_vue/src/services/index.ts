@@ -57,8 +57,17 @@ const createAxiosInstance = (): AxiosInstance => {
 
         let message = '服务器错误'
 
-        if (errorData.detail) {
-          message = errorData.detail
+        if (Array.isArray(errorData.detail)) {
+          const errors = errorData.detail.map((err: any) => {
+            const field = err.loc ? err.loc.slice(1).join('.') : '未知字段'
+            return `${field}: ${err.msg}`
+          })
+          message = errors.join('; ')
+        } else if (errorData.detail) {
+          message =
+            typeof errorData.detail === 'string'
+              ? errorData.detail
+              : JSON.stringify(errorData.detail)
         } else if (errorData.message) {
           message = errorData.message
         } else if (errorData.error?.message) {

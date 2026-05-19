@@ -8,7 +8,7 @@ class ChatRequest(BaseModel):
     """
     对话请求
     """
-    message: str
+    message: Optional[str] = ""
     resume_analysis_result: Optional[ResumeAnalysisResult] = None
     job_match_result: Optional[JobMatchResult] = None
 
