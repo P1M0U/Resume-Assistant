@@ -23,13 +23,9 @@ async def send_message(request: ChatRequest):
     Returns:
         AI回复
     """
-    logger.info(f"收到对话请求 | 完整请求: {request.model_dump_json(indent=2)}")
-    logger.info(f"消息内容: {request.message}")
-    logger.info(f"简历分析结果: {request.resume_analysis_result is not None}")
-    logger.info(f"岗位推荐结果: {request.job_match_result is not None}")
+    logger.info(f"收到对话请求 | 消息: {request.message[:50]}...")
 
-    if not request.message or not request.message.strip():
-        logger.error("消息为空或仅包含空白字符")
+    if not request.message.strip():
         raise HTTPException(status_code=400, detail="消息不能为空")
 
     try:

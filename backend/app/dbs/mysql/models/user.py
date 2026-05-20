@@ -18,8 +18,7 @@ class User(Base):
     password = Column(String(255), nullable=True)
     email = Column(String(255), unique=True, index=True, nullable=True)
     create_time = Column(DateTime, default=datetime.now, nullable=True)
-    latest_update = Column(DateTime, default=datetime.now,
-                           onupdate=datetime.now, nullable=True)
+    latest_update = Column(DateTime, default=datetime.now, onupdate=datetime.now, nullable=True)
     is_admin = Column(Boolean, default=False, nullable=True)
 
     def __repr__(self):

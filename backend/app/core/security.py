@@ -26,11 +26,11 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/user/login")
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     """
     验证密码
-
+    
     Args:
         plain_password: 明文密码
         hashed_password: 哈希密码
-
+        
     Returns:
         验证结果
     """
@@ -40,10 +40,10 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
 def get_password_hash(password: str) -> str:
     """
     生成密码哈希
-
+    
     Args:
         password: 明文密码
-
+        
     Returns:
         哈希密码
     """
@@ -53,11 +53,11 @@ def get_password_hash(password: str) -> str:
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -> str:
     """
     创建JWT访问令牌
-
+    
     Args:
         data: 要编码的数据
         expires_delta: 过期时间增量
-
+        
     Returns:
         JWT令牌
     """
@@ -66,7 +66,7 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -
         expire = datetime.utcnow() + expires_delta
     else:
         expire = datetime.utcnow() + timedelta(hours=ACCESS_TOKEN_EXPIRE_HOURS)
-
+    
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
@@ -75,10 +75,10 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -
 def decode_token(token: str) -> Optional[dict]:
     """
     解码JWT令牌
-
+    
     Args:
         token: JWT令牌
-
+        
     Returns:
         解码后的数据
     """
@@ -96,14 +96,14 @@ async def get_current_user(
 ) -> User:
     """
     获取当前登录用户
-
+    
     Args:
         token: JWT令牌
         db: 数据库会话
-
+        
     Returns:
         用户对象
-
+        
     Raises:
         HTTPException: 认证失败异常
     """
@@ -112,24 +112,24 @@ async def get_current_user(
         detail="无法验证凭据",
         headers={"WWW-Authenticate": "Bearer"},
     )
-
+    
     payload = decode_token(token)
     if payload is None:
         raise credentials_exception
-
+    
     user_id_str: str = payload.get("sub")
     if user_id_str is None:
         raise credentials_exception
-
+    
     try:
         user_id: int = int(user_id_str)
     except (ValueError, TypeError):
         raise credentials_exception
-
+    
     user = db.query(User).filter(User.id == user_id).first()
     if user is None:
         raise credentials_exception
-
+    
     return user
 
 
@@ -138,10 +138,10 @@ async def get_current_active_user(
 ) -> User:
     """
     获取当前活跃用户
-
+    
     Args:
         current_user: 当前用户
-
+        
     Returns:
         用户对象
     """

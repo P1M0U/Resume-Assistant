@@ -35,9 +35,6 @@
     "isolatedModules": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "forceConsistentCasingInFileNames": true,
-
-    // Element Plus type support
-    "types": ["element-plus/global"]
+    "forceConsistentCasingInFileNames": true
   }
 }

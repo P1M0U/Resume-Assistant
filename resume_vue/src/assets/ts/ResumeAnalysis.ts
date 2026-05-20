@@ -153,16 +153,13 @@ export function useResumeAnalysis(
     analyzing.value = true
 
     try {
+      // 调用真实API
       const result = await resumeApi.uploadAndAnalyze({
         file: uploadedFile.value,
         onProgress: (progress) => {
           console.log(`上传进度: ${progress}%`)
         },
       })
-
-      console.log('简历分析结果:', result)
-      console.log('评分:', result.score)
-      console.log('个人信息:', result.personal_info)
 
       analysisResult.value = result
       resumeStore.setAnalysisResult(result)

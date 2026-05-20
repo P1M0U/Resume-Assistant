@@ -52,3 +52,4 @@ export async function getChatHistory(): Promise<ChatHistoryResponse> {
 export async function clearChatHistory(): Promise<void> {
   await post('/chat/clear')
 }
+

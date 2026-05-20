@@ -69,8 +69,7 @@ MYSQL_USER = MYSQL.get('USER', 'root')
 MYSQL_PASSWORD = MYSQL.get('PASSWORD', '')
 MYSQL_DB = MYSQL.get('DB', 'resume_assistant')
 
-CHROMA_PERSIST_DIR = CHROMA.get(
-    'PERSIST_DIR', os.path.join(BACKEND_ROOT_DIR, 'chroma_db'))
+CHROMA_PERSIST_DIR = CHROMA.get('PERSIST_DIR', os.path.join(BACKEND_ROOT_DIR, 'chroma_db'))
 CHROMA_COLLECTION_RESUME = CHROMA.get('COLLECTION_RESUME', 'resume_collection')
 CHROMA_COLLECTION_JOB = CHROMA.get('COLLECTION_JOB', 'job_collection')
 

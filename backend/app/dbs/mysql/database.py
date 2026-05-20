@@ -24,7 +24,7 @@ Base = declarative_base()
 def get_db():
     """
     获取数据库会话
-
+    
     Yields:
         数据库会话对象
     """

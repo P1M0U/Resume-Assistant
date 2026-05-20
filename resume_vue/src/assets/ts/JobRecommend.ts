@@ -136,11 +136,6 @@ export function useJobRecommend(): UseJobRecommendReturn {
         resume_text: resumeText,
       })
 
-      console.log('岗位推荐结果:', result)
-      console.log('匹配分数:', result.match_score)
-      console.log('推荐岗位列表:', result.recommendations)
-      console.log('匹配技能:', result.matched_skills)
-
       jobMatchResult.value = result
       dialogVisible.value = true
 

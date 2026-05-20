@@ -9,7 +9,7 @@ import { ElMessage } from 'element-plus'
 /* 创建Axios实例 */
 const createAxiosInstance = (): AxiosInstance => {
   const instance = axios.create({
-    baseURL: 'http://localhost:8000/api/v1',
+    baseURL: '/api/v1',
     timeout: 120000,
     headers: {
       'Content-Type': 'application/json',
@@ -57,17 +57,8 @@ const createAxiosInstance = (): AxiosInstance => {
 
         let message = '服务器错误'
 
-        if (Array.isArray(errorData.detail)) {
-          const errors = errorData.detail.map((err: any) => {
-            const field = err.loc ? err.loc.slice(1).join('.') : '未知字段'
-            return `${field}: ${err.msg}`
-          })
-          message = errors.join('; ')
-        } else if (errorData.detail) {
-          message =
-            typeof errorData.detail === 'string'
-              ? errorData.detail
-              : JSON.stringify(errorData.detail)
+        if (errorData.detail) {
+          message = errorData.detail
         } else if (errorData.message) {
           message = errorData.message
         } else if (errorData.error?.message) {
