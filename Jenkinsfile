@@ -8,16 +8,25 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                // 直接在默认工作区拉取代码，不要用 dir()
+                // 拉取代码到默认工作区
                 git branch: 'main',
                     url: 'https://gitee.com/pimou/resume_assistant.git',
                     credentialsId: 'gitee-ci'
             }
         }
 
+        stage('Debug Directory') {
+            steps {
+                // 打印当前目录和文件列表
+                sh 'pwd'
+                sh 'ls -la'
+            }
+        }
+
         stage('Build with Docker Compose') {
             steps {
-                // 直接在当前目录执行（默认就是仓库根目录）
+                // 强制在仓库根目录执行
+                sh 'ls -la'  // 再次确认文件存在
                 sh 'docker compose build'
             }
         }
