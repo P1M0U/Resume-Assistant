@@ -4,10 +4,8 @@ pipeline {
     environment {
         // 你的项目部署目录
         PROJECT_DIR = '/home/pimou/Public/resume_ai'
-        // 容器名称
-        CONTAINER_NAME = 'resume-assistant'
-        // 镜像名称
-        IMAGE_NAME = 'resume-assistant:latest'
+        // docker compose 项目名称（通常与目录名一致）
+        COMPOSE_PROJECT_NAME = 'resume-assistant'
     }
 
     stages {
@@ -22,23 +20,23 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Build with Docker Compose') {
             steps {
-                // 进入部署目录并构建镜像
+                // 进入部署目录，使用 docker compose 构建
                 dir("${PROJECT_DIR}") {
-                    sh 'docker build -t ${IMAGE_NAME} .'
+                    sh 'docker compose build'
                 }
             }
         }
 
-        stage('Deploy to Local Docker') {
+        stage('Deploy with Docker Compose') {
             steps {
-                script {
-                    sh """
-                        docker stop ${CONTAINER_NAME} || true
-                        docker rm ${CONTAINER_NAME} || true
-                        docker run -d --name ${CONTAINER_NAME} -p 8081:8080 --restart always ${IMAGE_NAME}
-                    """
+                // 进入部署目录，使用 docker compose 部署
+                dir("${PROJECT_DIR}") {
+                    sh '''
+                        docker compose down || true
+                        docker compose up -d
+                    '''
                 }
             }
         }
