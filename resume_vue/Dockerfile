@@ -1,6 +1,6 @@
 # 前端 Dockerfile
 # 第一阶段：构建阶段
-FROM node:24-alpine AS builder
+FROM docker.m.daocloud.io/library/node:24-alpine AS builder
 
 # 设置工作目录
 WORKDIR /app
@@ -18,7 +18,7 @@ COPY . .
 RUN npm run build
 
 # 第二阶段：生产阶段
-FROM nginx:alpine
+FROM docker.m.daocloud.io/library/nginx:alpine
 
 # 复制自定义 Nginx 配置
 COPY nginx.conf /etc/nginx/conf.d/default.conf

@@ -1,5 +1,5 @@
 # 后端 Dockerfile
-FROM python:3.13-slim
+FROM docker.m.daocloud.io/library/python:3.13-slim
 
 # 设置工作目录
 WORKDIR /app
