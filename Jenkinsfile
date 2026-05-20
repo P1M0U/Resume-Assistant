@@ -2,18 +2,20 @@ pipeline {
     agent any
 
     environment {
-        // 移除 PROJECT_DIR，改用 Jenkins 默认工作区
+        PROJECT_DIR = '/home/pimou/Public/resume_assistant'
         COMPOSE_PROJECT_NAME = 'resume-assistant'
     }
 
     stages {
         stage('Checkout') {
             steps {
-                // 直接在默认工作区拉取代码
-                // 注意：这里改成了 Gitee 地址和凭证，如果你继续用 GitHub，请改回原来的
-                git branch: 'main',
-                    url: 'https://gitee.com/pimou/resume_assistant.git',
-                    credentialsId: 'gitee-ci'
+                // 切换到项目目录
+                dir("${PROJECT_DIR}") {
+                    // 拉取代码
+                    git branch: 'main',
+                        url: 'https://gitee.com/pimou/resume_assistant.git',
+                        credentialsId: 'gitee-ci'
+                }
             }
         }
 
