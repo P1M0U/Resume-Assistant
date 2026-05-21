@@ -5,16 +5,15 @@ FROM docker.m.daocloud.io/library/node:24-alpine AS builder
 # 设置工作目录
 WORKDIR /app
 
-# 设置 npm 镜像源和超时时间
-RUN npm config set registry https://registry.npmmirror.com
-
 # 复制 package.json 和 package-lock.json
 COPY package*.json ./
 
-# 安装依赖（设置超时 10 分钟）
-RUN npm ci --no-audit --no-fund --ignore-scripts --timeout=600000 \
-    || (npm cache clean --force && npm ci --no-audit --no-fund --ignore-scripts --timeout=600000) \
-    || (sleep 10 && npm ci --no-audit --no-fund --ignore-scripts --timeout=600000)
+# 安装依赖（依次尝试多个国内镜像源，设置超时 10 分钟）
+RUN npm ci --registry=https://registry.npmmirror.com --no-audit --no-fund --ignore-scripts --timeout=600000 \
+    || (npm ci --registry=https://mirrors.cloud.tencent.com/npm/ --no-audit --no-fund --ignore-scripts --timeout=600000) \
+    || (npm ci --registry=https://mirrors.tuna.tsinghua.edu.cn/npm/ --no-audit --no-fund --ignore-scripts --timeout=600000) \
+    || (npm cache clean --force && npm ci --registry=https://registry.npmmirror.com --no-audit --no-fund --ignore-scripts --timeout=600000) \
+    || (sleep 10 && npm ci --registry=https://registry.npmmirror.com --no-audit --no-fund --ignore-scripts --timeout=600000)
 
 # 复制源代码
 COPY . .
