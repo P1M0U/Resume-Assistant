@@ -9,11 +9,11 @@ WORKDIR /app
 COPY package*.json ./
 
 # 安装依赖（依次尝试多个国内镜像源，设置超时 10 分钟）
-RUN npm ci --registry=https://registry.npmmirror.com --no-audit --no-fund --ignore-scripts --timeout=600000 \
-    || (npm ci --registry=https://mirrors.cloud.tencent.com/npm/ --no-audit --no-fund --ignore-scripts --timeout=600000) \
-    || (npm ci --registry=https://mirrors.tuna.tsinghua.edu.cn/npm/ --no-audit --no-fund --ignore-scripts --timeout=600000) \
-    || (npm cache clean --force && npm ci --registry=https://registry.npmmirror.com --no-audit --no-fund --ignore-scripts --timeout=600000) \
-    || (sleep 10 && npm ci --registry=https://registry.npmmirror.com --no-audit --no-fund --ignore-scripts --timeout=600000)
+RUN npm ci --registry=https://registry.npmmirror.com --no-audit --no-fund --ignore-scripts --timeout=1200000 \
+    || (npm ci --registry=https://mirrors.cloud.tencent.com/npm/ --no-audit --no-fund --ignore-scripts --timeout=1200000) \
+    || (npm ci --registry=https://mirrors.tuna.tsinghua.edu.cn/npm/ --no-audit --no-fund --ignore-scripts --timeout=1200000) \
+    || (npm cache clean --force && npm ci --registry=https://registry.npmmirror.com --no-audit --no-fund --ignore-scripts --timeout=1200000) \
+    || (sleep 10 && npm ci --registry=https://registry.npmmirror.com --no-audit --no-fund --ignore-scripts --timeout=1200000)
 
 # 复制源代码
 COPY . .
