@@ -26,32 +26,6 @@ pipeline {
             }
         }
 
-        stage('Setup Docker Mirrors') {
-            steps {
-                sh '''
-                    sudo mkdir -p /etc/docker
-
-                    if [ ! -f /etc/docker/daemon.json ]; then
-                        echo "{}" | sudo tee /etc/docker/daemon.json
-                    fi
-
-                    sudo tee /etc/docker/daemon.json <<EOF
-{
-    "registry-mirrors": [
-        "https://docker.m.daocloud.io",
-    ],
-    "features": {
-        "buildkit": true
-    }
-}
-EOF
-                    sudo systemctl daemon-reload  || true
-                    sudo systemctl restart docker || true
-                    sleep 3
-                '''
-            }
-        }
-
         stage('Setup BuildKit Cache') {
             steps {
                 sh 'mkdir -p ${DOCKER_CACHE_DIR}'
