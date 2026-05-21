@@ -22,7 +22,7 @@ COPY requirements.txt .
 # 使用阿里云源，跳过编译，设置超时
 # ------------------------------------------------------------
 RUN pip install --no-cache-dir -i https://mirrors.aliyun.com/pypi/simple/ \
-    numpy==1.26.4 \
+    numpy==2.4.4 \
     --timeout 1000
 
 # ------------------------------------------------------------
