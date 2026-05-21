@@ -21,8 +21,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.5'      # 限制最多使用 0.5 核 CPU
-          memory: 512M     # 限制最多使用 512MB 内存
+          cpus: '0.8'      # 限制最多使用 0.8 核 CPU
+          memory: 1G     # 限制最多使用 1GB 内存
         reservations:
           cpus: '0.2'      # 保证至少分配 0.2 核 CPU
           memory: 256M     # 保证至少分配 256MB 内存
@@ -43,8 +43,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.5'      # 限制最多使用 0.5 核 CPU
-          memory: 512M     # 限制最多使用 512MB 内存
+          cpus: '0.8'      # 限制最多使用 0.8 核 CPU
+          memory: 1G     # 限制最多使用 1GB 内存
         reservations:
           cpus: '0.2'      # 保证至少分配 0.2 核 CPU
           memory: 256M     # 保证至少分配 256MB 内存
