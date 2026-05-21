@@ -39,11 +39,23 @@ pipeline {
             steps {
                 sh 'ls -la'
                 sh '''
-                    docker compose build \
-                        --parallel \
+                    # 1. 首先构建后端 (Python，通常更稳定，先占用资源)
+                    echo "====== 开始构建后端服务 ======"
+                    docker compose build backend \
                         --build-arg BUILDKIT_INLINE_CACHE=1 \
-                        --build-arg NPM_REGISTRY=https://registry.npmmirror.com \
                         --build-arg PIP_INDEX_URL=https://mirrors.aliyun.com/pypi/simple/
+
+                    # 2. 然后构建前端 (Node.js，CPU 消耗大，单独构建)
+                    echo "====== 开始构建前端服务 ======"
+                    docker compose build frontend \
+                        --build-arg BUILDKIT_INLINE_CACHE=1 \
+                        --build-arg NPM_REGISTRY=https://registry.npmmirror.com
+
+                    # 3. 最后构建其他服务 (如 Nginx)
+                    echo "====== 开始构建其他服务 ======"
+                    docker compose build \
+                        --parallel=1 \
+                        --build-arg BUILDKIT_INLINE_CACHE=1
                 '''
             }
         }
