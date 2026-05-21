@@ -7,15 +7,14 @@ WORKDIR /app
 
 # 设置 npm 镜像源和超时时间
 RUN npm config set registry https://registry.npmmirror.com
-RUN npm config set timeout 600000
 
 # 复制 package.json 和 package-lock.json
 COPY package*.json ./
 
-# 安装依赖（使用淘宝 npm 镜像源，添加重试机制）
-RUN npm ci --no-audit --no-fund --ignore-scripts \
-    || (npm cache clean --force && npm ci --no-audit --no-fund --ignore-scripts) \
-    || (sleep 10 && npm ci --no-audit --no-fund --ignore-scripts)
+# 安装依赖（设置超时 10 分钟）
+RUN npm ci --no-audit --no-fund --ignore-scripts --timeout=600000 \
+    || (npm cache clean --force && npm ci --no-audit --no-fund --ignore-scripts --timeout=600000) \
+    || (sleep 10 && npm ci --no-audit --no-fund --ignore-scripts --timeout=600000)
 
 # 复制源代码
 COPY . .
