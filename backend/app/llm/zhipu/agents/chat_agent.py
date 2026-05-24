@@ -2,6 +2,7 @@
 from langchain_community.chat_message_histories import ChatMessageHistory
 from langchain_core.messages import HumanMessage, AIMessage
 from llm.zhipu.chat import zhipu_config
+from llm.zhipu.prompts.chat_prompt import CHAT_SYSTEM_PROMPT, CHAT_CONTEXT_GUIDANCE
 from schemas import ResumeAnalysisResult, JobMatchResult
 from loguru import logger
 from typing import List, Dict, Optional
@@ -16,18 +17,6 @@ class AIChatAgent:
 
         # 初始化对话记忆
         self.chat_history = ChatMessageHistory()
-
-        # 基础系统提示词
-        self.base_system_prompt = """你是一个专业的简历助手AI，专注于帮助用户优化简历、提供职业发展建议、面试技巧和薪资谈判指导。
-
-你的职责：
-1. 帮助用户优化简历内容和格式
-2. 提供职业规划和发展建议
-3. 分享面试技巧和注意事项
-4. 指导薪资谈判策略
-5. 回答与求职相关的其他问题
-
-请用专业、友好、简洁的方式回答用户的问题。"""
 
         logger.info("AI对话 Agent 初始化成功（带记忆）")
 
@@ -46,7 +35,7 @@ class AIChatAgent:
         Returns:
             完整的系统提示词
         """
-        context_parts = [self.base_system_prompt]
+        context_parts = [CHAT_SYSTEM_PROMPT]
 
         # 如果有简历分析结果，添加简历上下文
         if resume_analysis_result:
@@ -114,13 +103,7 @@ class AIChatAgent:
 
         # 添加指导说明
         if resume_analysis_result or job_match_result:
-            context_parts.append(
-                "\n\n## 指导说明：\n"
-                "请根据上述用户的简历分析结果和岗位推荐结果，提供针对性的建议。\n"
-                "如果用户询问简历优化问题，请结合简历亮点和待改进项给出具体建议。\n"
-                "如果用户询问岗位相关问题，请结合匹配技能和缺失技能给出指导。\n"
-                "如果用户询问职业规划，请结合推荐岗位给出建议。"
-            )
+            context_parts.append(CHAT_CONTEXT_GUIDANCE)
 
         return "".join(context_parts)
 
