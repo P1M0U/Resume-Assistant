@@ -3,10 +3,8 @@ pipeline {
 
     environment {
         COMPOSE_PROJECT_NAME     = 'resume-assistant'
-        DOCKER_BUILDKIT          = '1'
-        COMPOSE_DOCKER_CLI_BUILD = '1'
-        BUILDKIT_PROGRESS        = 'plain'
-        BUILDKIT_INLINE_CACHE    = '1'
+        DOCKER_BUILDKIT          = '0'
+        COMPOSE_DOCKER_CLI_BUILD = '0'
         DOCKER_CACHE_DIR         = '/tmp/docker-build-cache'
     }
 
@@ -32,30 +30,30 @@ pipeline {
             }
         }
 
-        stage('Build with Docker Compose') {
+        stage('Build Backend') {
             options {
-                timeout(time: 30, unit: 'MINUTES')
+                timeout(time: 15, unit: 'MINUTES')
+                retry(2)
             }
             steps {
-                sh 'ls -la'
                 sh '''
-                    # 1. 首先构建后端 (Python，通常更稳定，先占用资源)
                     echo "====== 开始构建后端服务 ======"
                     docker compose build backend \
-                        --build-arg BUILDKIT_INLINE_CACHE=1 \
                         --build-arg PIP_INDEX_URL=https://mirrors.aliyun.com/pypi/simple/
+                '''
+            }
+        }
 
-                    # 2. 然后构建前端 (Node.js，CPU 消耗大，单独构建)
+        stage('Build Frontend') {
+            options {
+                timeout(time: 20, unit: 'MINUTES')
+                retry(2)
+            }
+            steps {
+                sh '''
                     echo "====== 开始构建前端服务 ======"
                     docker compose build frontend \
-                        --build-arg BUILDKIT_INLINE_CACHE=1 \
                         --build-arg NPM_REGISTRY=https://registry.npmmirror.com
-
-                    # 3. 最后构建其他服务 (如 Nginx)
-                    echo "====== 开始构建其他服务 ======"
-                    docker compose build \
-                        --parallel=1 \
-                        --build-arg BUILDKIT_INLINE_CACHE=1
                 '''
             }
         }
