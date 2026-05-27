@@ -9,7 +9,7 @@ import { ElMessage } from 'element-plus'
 /* 创建Axios实例 */
 const createAxiosInstance = (): AxiosInstance => {
   const instance = axios.create({
-    baseURL: '/api/v1',
+    baseURL: 'http://localhost:8000/api/v1',
     timeout: 120000,
     headers: {
       'Content-Type': 'application/json',
