@@ -226,7 +226,7 @@
               <h4>匹配技能</h4>
               <div class="skill-tags">
                 <el-tag
-                  v-for="(skill, index) in jobMatchResult.matched_skills"
+                  v-for="(skill, index) in (jobMatchResult.matched_skills || [])"
                   :key="index"
                   type="success"
                   class="skill-tag"
@@ -240,7 +240,7 @@
               <h4>缺失技能</h4>
               <div class="skill-tags">
                 <el-tag
-                  v-for="(skill, index) in jobMatchResult.missing_skills"
+                  v-for="(skill, index) in (jobMatchResult.missing_skills || [])"
                   :key="index"
                   type="danger"
                   class="skill-tag"
@@ -256,7 +256,7 @@
               <h4>推荐岗位</h4>
               <div class="recommendation-list">
                 <div
-                  v-for="(rec, index) in jobMatchResult.recommendations"
+                  v-for="(rec, index) in (jobMatchResult.recommendations || [])"
                   :key="index"
                   class="recommendation-item"
                 >
@@ -269,7 +269,7 @@
                   <p class="recommendation-reason">{{ rec.reason }}</p>
                   <div class="requirements-tags">
                     <el-tag
-                      v-for="(req, idx) in rec.key_requirements"
+                      v-for="(req, idx) in (rec.key_requirements || [])"
                       :key="idx"
                       size="small"
                       type="info"
@@ -287,7 +287,7 @@
               <h4>优化建议</h4>
               <el-timeline>
                 <el-timeline-item
-                  v-for="(suggestion, index) in jobMatchResult.optimization_suggestions"
+                  v-for="(suggestion, index) in (jobMatchResult.optimization_suggestions || [])"
                   :key="index"
                   :timestamp="suggestion.category"
                   placement="top"
@@ -346,35 +346,35 @@
 
             <div class="result-skills">
               <div class="skill-section">
-                <h5>匹配技能 ({{ jobMatchResult.matched_skills.length }})</h5>
+                <h5>匹配技能 ({{ (jobMatchResult.matched_skills || []).length }})</h5>
                 <div class="skill-tags-mini">
                   <el-tag
-                    v-for="(skill, index) in jobMatchResult.matched_skills.slice(0, 5)"
+                    v-for="(skill, index) in (jobMatchResult.matched_skills || []).slice(0, 5)"
                     :key="index"
                     type="success"
                     size="small"
                   >
                     {{ skill }}
                   </el-tag>
-                  <el-tag v-if="jobMatchResult.matched_skills.length > 5" size="small" type="info">
-                    +{{ jobMatchResult.matched_skills.length - 5 }}
+                  <el-tag v-if="(jobMatchResult.matched_skills || []).length > 5" size="small" type="info">
+                    +{{ (jobMatchResult.matched_skills || []).length - 5 }}
                   </el-tag>
                 </div>
               </div>
 
               <div class="skill-section">
-                <h5>缺失技能 ({{ jobMatchResult.missing_skills.length }})</h5>
+                <h5>缺失技能 ({{ (jobMatchResult.missing_skills || []).length }})</h5>
                 <div class="skill-tags-mini">
                   <el-tag
-                    v-for="(skill, index) in jobMatchResult.missing_skills.slice(0, 5)"
+                    v-for="(skill, index) in (jobMatchResult.missing_skills || []).slice(0, 5)"
                     :key="index"
                     type="danger"
                     size="small"
                   >
                     {{ skill }}
                   </el-tag>
-                  <el-tag v-if="jobMatchResult.missing_skills.length > 5" size="small" type="info">
-                    +{{ jobMatchResult.missing_skills.length - 5 }}
+                  <el-tag v-if="(jobMatchResult.missing_skills || []).length > 5" size="small" type="info">
+                    +{{ (jobMatchResult.missing_skills || []).length - 5 }}
                   </el-tag>
                 </div>
               </div>
@@ -383,10 +383,10 @@
             <el-divider />
 
             <div class="result-recommendations">
-              <h5>推荐岗位 ({{ jobMatchResult.recommendations.length }})</h5>
+              <h5>推荐岗位 ({{ (jobMatchResult.recommendations || []).length }})</h5>
               <div class="recommendation-tags">
                 <el-tag
-                  v-for="(rec, index) in jobMatchResult.recommendations"
+                  v-for="(rec, index) in (jobMatchResult.recommendations || [])"
                   :key="index"
                   :type="getMatchTagType(rec.match_score)"
                   size="small"
@@ -401,7 +401,7 @@
     </el-row>
 
     <el-empty
-      v-if="!hasResumeData"
+      v-if="!hasResumeData && !jobMatchResult"
       description="暂无简历数据，请先上传并分析简历"
       :image-size="200"
     >
