@@ -42,10 +42,12 @@ pipeline {
                 withCredentials([file(credentialsId: 'env-yaml', variable: 'ENV_FILE')]) {
                     sh '''
                         echo "准备环境配置文件..."
-                        rm -rf backend/app
+                        # 确保目录存在
                         mkdir -p backend/app
+                        # 只替换 env.yaml，不删除其他代码
                         cp $ENV_FILE backend/app/env.yaml
-                        ls -la backend/app/
+                        echo "env.yaml 已放置"
+                        ls -la backend/app/env.yaml
                     '''
                 }
             }
