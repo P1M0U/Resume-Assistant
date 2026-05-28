@@ -12,8 +12,8 @@ pipeline {
         stage('Checkout') {
             steps {
                 git branch: 'main',
-                    url: 'https://gitee.com/pimou/resume_assistant.git',
-                    credentialsId: 'gitee-ci'
+                    url: 'https://gitee.com/pimou/Resume-Assistant.git',
+                    credentialsId: 'gitee-jenkins'
             }
         }
 
