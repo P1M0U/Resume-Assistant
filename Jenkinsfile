@@ -96,7 +96,7 @@ pipeline {
             steps {
                 sh '''
                     echo "等待服务启动..."
-                    sleep 10
+                    sleep 6
 
                     echo "检查后端服务..."
                     curl -f -s -o /dev/null -w "后端状态码: %{http_code}" \
