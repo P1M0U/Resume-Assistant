@@ -30,6 +30,26 @@ pipeline {
             }
         }
 
+        // ========== 新增的部分开始 ==========
+        stage('Prepare Environment File') {
+            steps {
+                withCredentials([file(credentialsId: 'env-yaml', variable: 'ENV_FILE')]) {
+                    sh '''
+                        echo "准备环境配置文件..."
+                        # 确保目标目录存在
+                        # 注意：这里相对于 Jenkins 工作目录（/home/pimou/Public/workspace/Resume-Assistant）
+                        mkdir -p backend/app
+                        # 将 Jenkins 凭据中的文件复制到正确位置
+                        cp $ENV_FILE backend/app/env.yaml
+                        # 验证文件是否复制成功
+                        echo "文件已复制到: $(pwd)/backend/app/env.yaml"
+                        ls -la backend/app/
+                    '''
+                }
+            }
+        }
+        // ========== 新增的部分结束 ==========
+
         stage('Build Backend') {
             options {
                 timeout(time: 15, unit: 'MINUTES')
