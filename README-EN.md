@@ -1,127 +1,100 @@
-# 🤖 AI Resume Assistant
+# AI Resume Assistant
 
 [中文简体](README.md) | [English](README-EN.md)
 
-![Project Status](https://img.shields.io/badge/status-active-brightgreen) ![Version](https://img.shields.io/badge/version-1.1.0-blue) ![Python](https://img.shields.io/badge/python-3.13-blue) ![LICENSE](https://img.shields.io/badge/license-MIT-green) ![Vue](https://img.shields.io/badge/vue-3.5%2B-green) ![TypeScript](https://img.shields.io/badge/typescript-6.0%2B-blue) ![FastAPI](https://img.shields.io/badge/fastapi-0.136%2B-red) ![MySQL](https://img.shields.io/badge/mysql-8.0%2B-blue) ![LangChain](https://img.shields.io/badge/langchain-1.2%2B-orange) ![Element Plus](https://img.shields.io/badge/element--plus-2.13%2B-blue) ![Vite](https://img.shields.io/badge/vite-8.0%2B-yellow) ![Zhipu AI](https://img.shields.io/badge/zhipu--ai-glm--4-purple)
+![Project Status](https://img.shields.io/badge/status-active-brightgreen) ![Version](https://img.shields.io/badge/version-1.1.0-blue) ![Python](https://img.shields.io/badge/python-3.13-blue) ![License](https://img.shields.io/badge/license-MIT-green) ![Vue](https://img.shields.io/badge/vue-3.5%2B-green) ![TypeScript](https://img.shields.io/badge/typescript-6.0%2B-blue) ![FastAPI](https://img.shields.io/badge/fastapi-0.136%2B-red) ![MySQL](https://img.shields.io/badge/mysql-8.0%2B-blue) ![LangChain](https://img.shields.io/badge/langchain-1.2%2B-orange) ![Element Plus](https://img.shields.io/badge/element--plus-2.13%2B-blue) ![Vite](https://img.shields.io/badge/vite-8.0%2B-yellow) ![ZhipuAI](https://img.shields.io/badge/zhipu--ai-glm--4-blueviolet)
 
-## 🚀 Project Introduction
+---
 
-**AI Resume Assistant** is an intelligent resume analysis and job recommendation system based on Zhipu AI's large language model. Users can upload resume files (PDF or DOCX format), and the system will intelligently parse the resume content, provide professional optimization suggestions, and recommend highly matching positions based on the resume content.
+## Introduction
 
-### ✨ Core Features
+An intelligent resume analysis and job recommendation system powered by Zhipu AI's large language model. Upload PDF or DOCX resumes, and the system automatically parses content, provides professional optimization suggestions, and recommends matching positions.
 
-- 📄 **Intelligent Resume Analysis**: Upload PDF/DOCX format resumes, AI automatically parses and provides professional optimization suggestions
-- 💼 **Intelligent Job Recommendation**: Recommend highly matching positions based on resume content and desired position
-- 🤖 **AI Intelligent Chat**: Real-time conversation with AI assistant for resume optimization advice and career planning guidance
-- 🔐 **User Authentication System**: Complete user registration, login, and JWT authentication functionality
-- 👤 **Personal Information Management**: View and edit personal profile, change password
-- 🎛️ **Admin Management System**: Administrator user management and permission control (admin only)
-- 🛡️ **Route Permission Guard**: Unauthenticated users cannot access protected features
-- 🎯 **Skill Matching Assessment**: Analyze the matching degree between resume skills and job requirements
-- 💡 **Optimization Suggestion Generation**: Provide personalized resume optimization suggestions
-- 📊 **Analysis Result Export**: Support exporting resume analysis reports and job recommendation reports
-- 🔄 **Real-time Data Update**: Resume analysis results are synchronized to the job recommendation module in real-time
+## Core Features
 
-## 🛠️ Tech Stack
+- **Smart Resume Analysis** -- Upload PDF/DOCX resumes; AI extracts personal info, skills, provides multi-dimensional scoring and actionable suggestions
+- **Job Recommendation** -- Recommend matching positions based on resume content; support custom target positions, skill gap analysis
+- **AI Chat** -- Context-aware conversation leveraging resume analysis and job recommendation results for personalized career guidance
+- **RAG Enhancement** -- Resume and job data vectorization via ChromaDB; similarity retrieval improves analysis accuracy
+- **User Authentication** -- Registration/login, JWT authentication, route permission guards
+- **Admin Panel** -- User management and role-based access control
+- **Export** -- Export analysis reports and job recommendation results as JSON
 
-### Frontend Tech Stack
+## Tech Stack
 
-| Technology/Framework | Version | Purpose |
-|---------|------|------|
-| Vue.js | ^3.5.0 | Frontend Framework |
-| TypeScript | ~6.0.0 | Type System |
-| Vue Router | ^5.0.4 | Route Management |
-| Pinia | ^3.0.4 | State Management |
-| Element Plus | ^2.13.7 | UI Component Library |
-| Axios | ^1.15.2 | HTTP Client |
-| Vite | ^8.0.8 | Build Tool |
+| Layer | Technology | Purpose |
+|-------|-----------|---------|
+| Frontend | Vue 3 + TypeScript 6 | Reactive UI |
+| UI Kit | Element Plus 2 | Component library |
+| State | Pinia 3 | State management |
+| Router | Vue Router 5 | Route management |
+| Build | Vite 8 | Frontend tooling |
+| HTTP | Axios | API communication |
+| Backend | FastAPI 0.136 | RESTful API framework |
+| LLM | LangChain 1.2 + LangChain-OpenAI | LLM orchestration |
+| AI | Zhipu GLM-4-Flash + Embedding-3 | Text generation & embeddings |
+| ORM | SQLAlchemy 2.0 | Database operations |
+| Vector DB | ChromaDB | Semantic search |
+| Database | MySQL 8.0 | User data persistence |
+| Parsing | PyPDF / python-docx | PDF/DOCX extraction |
 
-### Backend Tech Stack
-
-| Technology/Framework | Version | Purpose |
-|---------|------|------|
-| FastAPI | 0.136.0 | Backend API Framework |
-| LangChain | 1.2.15 | LLM Application Framework |
-| LangChain OpenAI | 1.2.1 | OpenAI Compatible Interface |
-| Pydantic | 2.13.0 | Data Validation |
-| SQLAlchemy | 2.0.49 | ORM Framework |
-| Uvicorn | 0.46.0 | ASGI Server |
-| PyPDF | 6.10.2 | PDF Parsing |
-| Python-docx | 1.2.0 | DOCX Parsing |
-| Loguru | 0.7.3 | Log Management |
-| ChromaDB | - | Vector Database |
-| httpx | - | HTTP Client |
-| python-jose | 3.4.0 | JWT Token |
-| bcrypt | 4.1.2 | Password Hashing |
-| email-validator | 2.2.0 | Email Validation |
-
-### AI Tech Stack
-
-| Technology/Framework | Version | Purpose |
-|---------|------|------|
-| Zhipu AI GLM-4 | - | Large Language Model |
-| Zhipu AI Embedding-3 | - | Text Vectorization |
-| LangChain Agents | 1.2.15 | Agent Framework |
-| LangChain Tools | - | Tool Integration |
-| RAG | - | Retrieval-Augmented Generation |
-
-## 📁 Project Structure
+## Project Structure
 
 ```
 resume_assistant/
-├── backend/app/           # Backend Application
-│   ├── llm/zhipu/        # Zhipu AI Module (Agents, Prompts, RAG, Tools)
-│   ├── routers/v1/       # API Routes (Resume, Job, Chat, RAG)
-│   ├── main.py           # Application Entry
-│   └── settings.py       # Configuration Management
-├── resume_vue/           # Frontend Application
-│   └── src/
-│       ├── components/   # Vue Components
-│       ├── views/        # Page Components
-│       ├── stores/       # State Management
-│       └── services/     # API Services
-└── requirements.txt      # Python Dependencies
+├── backend/app/
+│   ├── core/                 # Config & security module
+│   │   ├── security.py       # JWT + bcrypt auth
+│   │   └── config.py         # Config definitions
+│   ├── dbs/mysql/            # Database layer
+│   │   ├── database.py       # SQLAlchemy engine & session
+│   │   └── models/           # Data models
+│   ├── llm/zhipu/            # Zhipu AI module
+│   │   ├── agents/           # Agents (resume/job/chat)
+│   │   ├── prompts/          # Prompt templates
+│   │   ├── rag/              # RAG chain
+│   │   ├── tools/            # LangChain tools
+│   │   └── utils/            # Utilities (JSON extraction, file parsing)
+│   ├── routers/v1/           # API routes
+│   ├── schemas/              # Pydantic models
+│   ├── services/             # Business logic
+│   ├── main.py               # Application entry point
+│   ├── settings.py           # Configuration loader
+│   └── env.yaml              # Environment config
+├── resume_vue/src/
+│   ├── assets/css/           # Global styles (CSS variables)
+│   ├── components/           # Vue components
+│   ├── composables/          # Composable functions
+│   ├── services/             # API layer
+│   ├── stores/               # Pinia stores
+│   ├── utils/                # Shared utilities
+│   ├── views/                # Page components
+│   └── router/               # Route definitions
+├── docker-compose.yml
+└── requirements.txt
 ```
 
-## ⚙️ Quick Start
+## Quick Start
 
-### Requirements
+### Prerequisites
 
-- Node.js ^20.19.0 || >=22.12.0
+- Node.js ^20.19.0 or >=22.12.0
 - Python 3.13+
 - MySQL 8.0+
 
-### Frontend Setup
-
-```bash
-cd resume_vue
-npm install
-npm run dev
-```
-
-### Backend Setup
-
-```bash
-cd backend/app
-
-# Install dependencies (UV recommended)
-pip install uv
-uv pip install -r ../../requirements.txt
-
-# Configure Zhipu AI and Database
-# Edit config.yaml file, fill in API_KEY and database info
-
-# Start service
-uvicorn main:app --reload
-```
-
 ### Configuration
 
-Edit `backend/app/config.yaml`:
+Copy the template and fill in your credentials:
+
+```bash
+cp backend/app/env.yaml.template backend/app/env.yaml
+```
+
+Edit `backend/app/env.yaml`:
 
 ```yaml
 ZHIPU:
-  API_KEY: "your_zhipu_api_key_here"
+  API_KEY: "your_zhipu_api_key"
   MODEL_NAME: "glm-4-flash-250414"
 
 MYSQL:
@@ -132,114 +105,91 @@ MYSQL:
   DB: "resume_db"
 ```
 
-## 🔗 API Documentation
+### Start Backend
 
-After starting backend service, access:
+```bash
+cd backend/app
+
+# Install dependencies
+pip install uv
+uv pip install -r ../../requirements.txt
+
+# Start dev server
+uvicorn main:app --reload --port 8000
+```
+
+### Start Frontend
+
+```bash
+cd resume_vue
+npm install
+npm run dev
+```
+
+Frontend runs at `http://localhost:5173`. API requests are automatically proxied to the backend at `http://localhost:8000`.
+
+### Docker
+
+```bash
+docker compose up -d --build
+```
+
+## API Documentation
+
+After starting the backend:
+
 - Swagger UI: http://localhost:8000/docs
 - ReDoc: http://localhost:8000/redoc
 
-### Main API Endpoints
+### Key Endpoints
 
-**User Authentication**
-- `POST /api/v1/user/register` - User registration
-- `POST /api/v1/user/login` - User login
-- `GET /api/v1/user/me` - Get current user info
-- `PUT /api/v1/user/me` - Update current user info
-- `GET /api/v1/user/` - Get all users list (Admin)
-- `PUT /api/v1/user/{user_id}` - Update user info (Admin)
-- `DELETE /api/v1/user/{user_id}` - Delete user (Admin)
+| Category | Method | Path | Description |
+|----------|--------|------|-------------|
+| User | POST | `/api/v1/user/register` | Register |
+| User | POST | `/api/v1/user/login` | Login |
+| User | GET | `/api/v1/user/me` | Get current user |
+| User | PUT | `/api/v1/user/me` | Update profile |
+| User | GET | `/api/v1/user/` | List users (admin) |
+| Resume | POST | `/api/v1/resume/upload` | Upload & analyze |
+| Job | POST | `/api/v1/resume/job-recommend` | Get recommendations |
+| Chat | POST | `/api/v1/chat/send` | Send message |
+| Chat | GET | `/api/v1/chat/history` | Get history |
+| RAG | POST | `/api/v1/rag/store/resume` | Store resume to vector DB |
+| RAG | POST | `/api/v1/rag/search/resume` | Search similar resumes |
 
-**AI Chat**
-- `POST /api/v1/chat/send` - Send message
-- `GET /api/v1/chat/history` - Get chat history
+## Available Scripts
 
-**Resume Analysis**
-- `POST /api/v1/resume/upload` - Upload and analyze resume
+### Frontend
 
-**Job Recommendation**
-- `POST /api/v1/job/recommend` - Get job recommendations
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start dev server |
+| `npm run build` | Type check + production build |
+| `npm run lint` | ESLint code quality check |
+| `npm run lint:fix` | Auto-fix ESLint issues |
+| `npm run format` | Prettier formatting |
+| `npm run type-check` | TypeScript type checking |
+| `npm run test:unit` | Run unit tests |
 
-**RAG Features**
-- `POST /api/v1/rag/store-resume` - Store resume to vector database
-- `POST /api/v1/rag/search-resumes` - Search similar resumes
+### Admin Setup
 
-## 🔐 User Authentication & Management
-
-- User registration, login, JWT authentication
-- Personal information viewing and editing
-- Admin management system (admin only)
-- Route permission guard
-- Automatic token validation
-
-**Create Admin Account**
 ```sql
 UPDATE user SET is_admin = 1 WHERE name = 'your_username';
 ```
 
-## 📊 Core Data Models
+## Development Guide
 
-**Resume Analysis Result**: score, personal_info, highlights, suggestions
+- **Code Style** -- Frontend follows Vue style guide + ESLint config; backend follows PEP 8
+- **Commit Convention** -- Semantic commits: `feat:` / `fix:` / `refactor:` / `docs:`
+- **CSS Variables** -- Theme colors defined in `assets/css/variables.css` -- change once, apply everywhere
+- **Custom Agents** -- Extend `agents/base_agent.py` `BaseAgent` class for new AI agents
 
-**Job Match Result**: target_job, match_score, matched_skills, missing_skills, recommendations
+## License
 
-## 🔧 System Configuration
+MIT License.
 
-**Configuration Priority**: Environment Variables > config.yaml
+## Contact
 
-**Main Configuration Items**
-- Zhipu AI: API_KEY, MODEL_NAME
-- MySQL: HOST, PASSWORD, DB
-- ChromaDB: PERSIST_DIR
-
-**Frontend Configuration**: Create `.env` file and set `VITE_API_BASE_URL`
-
-## 📝 Development Guide
-
-- Code Style: Frontend follows Vue official style guide, Backend follows PEP 8 specification
-- Commit Convention: Use semantic commits (feat/fix/docs/refactor)
-
-## 🎯 Core Features
-
-- **User Authentication & Permission Management**: Registration/login, JWT auth, route guard, admin permissions
-- **Personal Information Management**: View/edit profile, change password
-- **Admin Management System**: User management, permission control (admin only)
-- **Intelligent Resume Analysis**: Support PDF/DOCX, auto-extract info, optimization suggestions
-- **Precise Job Recommendation**: Skill matching, missing skills analysis, multiple job recommendations
-- **AI Intelligent Chat**: Real-time conversation, career planning, history memory
-- **RAG Retrieval Enhancement**: Vector storage, similar retrieval, graceful degradation
-
-## 🤝 Contributing Guide
-
-Welcome to contribute! Please follow these steps:
-
-1. Fork this repository
-2. Create feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit changes (`git commit -m 'feat: add amazing feature'`)
-4. Push to branch (`git push origin feature/amazing-feature`)
-5. Open Pull Request
-
-## 📜 License
-
-This project uses MIT license
-
-## 📧 Contact
-
-- Project Maintainer: PIMOU(Gitee) / P1M0U(Github)
-- Project URL: [Github](https://github.com/P1M0U/resume-assistant)
+- Maintainer: PIMOU (Gitee) / P1M0U (GitHub)
+- Repository: [GitHub](https://github.com/P1M0U/resume-assistant)
 - Email: `p1m0u@foxmail.com`
-- If you find this useful, please give a star ⭐
-
----
-
-## 🎯 Future Optimization Directions
-
-1. ✅ ~~Add user authentication and permission management~~ (Completed)
-2. ✅ ~~Optimize mobile responsive experience~~ (Completed)
-3. 🌐 Support more resume formats (OCR recognition)
-4. 🤖 Integrate more AI models
-5. 📊 Add resume score history trend analysis
-6. 🔍 Add job search and filtering functions
-7. 💾 Support resume template generation and download
-8. 📧 Email verification and password recovery
-
-Thank you for using AI Resume Assistant!🎉
