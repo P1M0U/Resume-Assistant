@@ -55,7 +55,7 @@ async def store_job(request: StoreJobRequest):
     """
     logger.info(f"存储岗位请求 | 岗位: {request.job_title}")
     rag_service = RAGService()
-    await rag_service.store_job(
+    rag_service.store_job(
         request.job_title,
         request.job_description,
         request.requirements,

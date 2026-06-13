@@ -14,11 +14,12 @@ class User(Base):
     __tablename__ = "user"
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=True)
-    name = Column(String(255), unique=True, index=True, nullable=True)
-    password = Column(String(255), nullable=True)
-    email = Column(String(255), unique=True, index=True, nullable=True)
+    name = Column(String(255), unique=True, index=True, nullable=False)
+    password = Column(String(255), nullable=False)
+    email = Column(String(255), unique=True, index=True, nullable=False)
     create_time = Column(DateTime, default=datetime.now, nullable=True)
-    latest_update = Column(DateTime, default=datetime.now, onupdate=datetime.now, nullable=True)
+    latest_update = Column(DateTime, default=datetime.now,
+                           onupdate=datetime.now, nullable=True)
     is_admin = Column(Boolean, default=False, nullable=True)
 
     def __repr__(self):

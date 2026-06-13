@@ -1,27 +1,23 @@
-# 岗位推荐智能体
+"""岗位推荐智能体"""
 from langchain.agents import create_agent
-from langchain_community.chat_message_histories import ChatMessageHistory
-from langchain_core.messages import HumanMessage, AIMessage
 from llm.zhipu.chat import zhipu_config
 from llm.zhipu.prompts.job_prompt import JOB_SYSTEM_PROMPT
 from llm.zhipu.tools import JOB_TOOLS
+from llm.zhipu.agents.base_agent import BaseAgent
+from llm.zhipu.utils.json_utils import extract_json
 from schemas import JobMatchResult, JobRecommendation, Suggestion
 from loguru import logger
-from typing import List, Dict, Any, Optional
-import json
-import re
+from typing import Dict, Any, Optional, List
 
 
-class JobRecommenderAgent:
+class JobRecommenderAgent(BaseAgent):
     """岗位推荐智能体（带记忆）"""
 
     def __init__(self):
         """初始化岗位推荐智能体"""
+        super().__init__()
         self.llm = zhipu_config.get_chat_model()
         self.tools = JOB_TOOLS
-
-        # 初始化对话记忆
-        self.chat_history = ChatMessageHistory()
 
         # 使用 create_agent 创建 Agent
         self.agent = create_agent(
@@ -74,7 +70,7 @@ class JobRecommenderAgent:
                 self.chat_history.add_user_message(input_text)
                 self.chat_history.add_ai_message(output)
 
-                json_data = self._extract_json(output)
+                json_data = extract_json(output)
 
                 if json_data:
                     logger.success("成功解析 Agent 返回的 JSON 数据")
@@ -84,60 +80,6 @@ class JobRecommenderAgent:
 
         logger.warning("Agent 模式失败，返回默认结果")
         return self._get_default_result(target_job)
-
-    def clear_memory(self):
-        """清空对话记忆"""
-        self.chat_history.clear()
-        logger.info("对话记忆已清空")
-
-    def get_memory_history(self) -> List[Dict[str, str]]:
-        """
-        获取对话历史
-
-        Returns:
-            对话历史列表
-        """
-        messages = self.chat_history.messages
-        history = []
-        for msg in messages:
-            if isinstance(msg, HumanMessage):
-                history.append({"role": "user", "content": msg.content})
-            elif isinstance(msg, AIMessage):
-                history.append({"role": "assistant", "content": msg.content})
-        return history
-
-    def _extract_json(self, text: str) -> Optional[Dict[str, Any]]:
-        """
-        从文本中提取 JSON 数据
-
-        Args:
-            text: 包含 JSON 的文本
-
-        Returns:
-            解析后的字典或 None
-        """
-        json_pattern = r'```json\s*([\s\S]*?)\s*```'
-        matches = re.findall(json_pattern, text)
-
-        if matches:
-            json_str = matches[0]
-        else:
-            json_pattern2 = r'\{[\s\S]*\}'
-            matches2 = re.findall(json_pattern2, text)
-            if matches2:
-                json_str = matches2[0]
-            else:
-                return None
-
-        json_str = json_str.strip()
-
-        try:
-            data = json.loads(json_str)
-            logger.success("JSON 解析成功")
-            return data
-        except json.JSONDecodeError as e:
-            logger.error(f"JSON 解析失败: {e}")
-            return None
 
     def _build_result(self, data: Dict[str, Any], target_job: str) -> JobMatchResult:
         """
@@ -180,7 +122,8 @@ class JobRecommenderAgent:
             optimization_suggestions=optimization_suggestions
         )
 
-    def _get_default_result(self, target_job: str) -> JobMatchResult:
+    @staticmethod
+    def _get_default_result(target_job: str) -> JobMatchResult:
         """
         获取默认的岗位匹配结果
 

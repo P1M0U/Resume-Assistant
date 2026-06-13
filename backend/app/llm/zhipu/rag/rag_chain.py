@@ -1,6 +1,5 @@
 from typing import List, Optional
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.documents import Document
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
 from loguru import logger
@@ -179,13 +178,48 @@ class RAGService:
     """RAG 服务类，统一管理简历和岗位的 RAG 操作"""
 
     def __init__(self):
-        """初始化 RAG 服务"""
-        self.resume_store = ResumeVectorStore()
-        self.job_store = JobVectorStore()
-        self.text_splitter = ResumeTextSplitter()
-        self.resume_rag = ResumeRAGChain()
-        self.job_rag = JobRAGChain()
-        logger.info("RAG 服务初始化完成")
+        """初始化 RAG 服务（延迟加载，按需初始化各组件）"""
+        self._resume_store = None
+        self._job_store = None
+        self._text_splitter = None
+        self._resume_rag = None
+        self._job_rag = None
+        logger.info("RAG 服务初始化完成（延迟加载模式）")
+
+    @property
+    def resume_store(self):
+        """延迟加载简历向量存储"""
+        if self._resume_store is None:
+            self._resume_store = ResumeVectorStore()
+        return self._resume_store
+
+    @property
+    def job_store(self):
+        """延迟加载岗位向量存储"""
+        if self._job_store is None:
+            self._job_store = JobVectorStore()
+        return self._job_store
+
+    @property
+    def text_splitter(self):
+        """延迟加载文本分块器"""
+        if self._text_splitter is None:
+            self._text_splitter = ResumeTextSplitter()
+        return self._text_splitter
+
+    @property
+    def resume_rag(self):
+        """延迟加载简历 RAG 链"""
+        if self._resume_rag is None:
+            self._resume_rag = ResumeRAGChain()
+        return self._resume_rag
+
+    @property
+    def job_rag(self):
+        """延迟加载岗位 RAG 链"""
+        if self._job_rag is None:
+            self._job_rag = JobRAGChain()
+        return self._job_rag
 
     async def store_resume(
         self,
@@ -211,7 +245,7 @@ class RAGService:
         logger.info(f"简历已存入向量存储 | 文件: {file_name} | 块数: {len(documents)}")
         return len(documents)
 
-    async def store_job(
+    def store_job(
         self,
         job_title: str,
         job_description: str,

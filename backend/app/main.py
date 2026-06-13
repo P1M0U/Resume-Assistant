@@ -87,18 +87,18 @@ app = FastAPI(
     title="AI简历助手",
     version="1.0.0",
     description="""
-    ## 🤖 AI简历助手 API
-    
-    基于智谱AI大模型的智能简历分析与岗位推荐系统
-    
-    ### 主要功能
-    - 📄 **简历分析**: 智能解析简历内容，提供专业的优化建议
-    - 💼 **岗位推荐**: 根据简历内容推荐匹配度高的岗位
-    - 🎯 **技能评估**: 分析技能匹配度，提供提升建议
-    
-    ### 技术栈
+    ## AI Resume Assistant API
+
+    Intelligent resume analysis and job recommendation system based on Zhipu AI LLM
+
+    ### Main Features
+    - Resume Analysis: Parse resume content, provide professional optimization suggestions
+    - Job Recommendation: Recommend matching positions based on resume content
+    - Skill Assessment: Analyze skill fit, provide improvement suggestions
+
+    ### Tech Stack
     - FastAPI + Python 3.13
-    - 智谱AI GLM-4
+    - Zhipu AI GLM-4
     - LangChain
     """,
     lifespan=lifespan,
@@ -115,7 +115,9 @@ app.add_middleware(GZipMiddleware, minimum_size=1000)
 # CORS中间件
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["http://localhost:5173",
+                   "http://localhost:80", "http://localhost:8000"],
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
     expose_headers=["*"],

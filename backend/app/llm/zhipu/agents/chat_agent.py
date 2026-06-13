@@ -1,23 +1,20 @@
-# AI对话智能体
-from langchain_community.chat_message_histories import ChatMessageHistory
+"""AI对话智能体"""
 from langchain_core.messages import HumanMessage, AIMessage
 from llm.zhipu.chat import zhipu_config
 from llm.zhipu.prompts.chat_prompt import CHAT_SYSTEM_PROMPT, CHAT_CONTEXT_GUIDANCE
+from llm.zhipu.agents.base_agent import BaseAgent
 from schemas import ResumeAnalysisResult, JobMatchResult
 from loguru import logger
-from typing import List, Dict, Optional
+from typing import Optional
 
 
-class AIChatAgent:
+class AIChatAgent(BaseAgent):
     """AI对话智能体（带记忆）"""
 
     def __init__(self):
         """初始化AI对话智能体"""
+        super().__init__()
         self.llm = zhipu_config.get_chat_model()
-
-        # 初始化对话记忆
-        self.chat_history = ChatMessageHistory()
-
         logger.info("AI对话 Agent 初始化成功（带记忆）")
 
     def _build_context_prompt(
@@ -163,24 +160,3 @@ class AIChatAgent:
         except Exception as e:
             logger.error(f"AI对话失败: {e}")
             return f"抱歉，我遇到了一些问题：{str(e)}"
-
-    def clear_memory(self):
-        """清空对话记忆"""
-        self.chat_history.clear()
-        logger.info("对话记忆已清空")
-
-    def get_memory_history(self) -> List[Dict[str, str]]:
-        """
-        获取对话历史
-
-        Returns:
-            对话历史列表
-        """
-        messages = self.chat_history.messages
-        history = []
-        for msg in messages:
-            if isinstance(msg, HumanMessage):
-                history.append({"role": "user", "content": msg.content})
-            elif isinstance(msg, AIMessage):
-                history.append({"role": "assistant", "content": msg.content})
-        return history

@@ -70,7 +70,7 @@ async def upload_resume(file: UploadFile = File(...)):
             status_code=200,
             content={
                 "success": True,
-                "data": result.dict(),
+                "data": result.model_dump(),
                 "message": "分析成功"
             }
         )

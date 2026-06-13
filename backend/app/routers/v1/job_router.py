@@ -34,7 +34,7 @@ async def get_job_recommendation(request: JobRecommendRequest):
         status_code=200,
         content={
             "success": True,
-            "data": result.dict(),
+            "data": result.model_dump(),
             "message": "岗位推荐成功"
         }
     )

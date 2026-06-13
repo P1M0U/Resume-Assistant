@@ -1,7 +1,6 @@
 # 文件解析工具（PDF、DOCX）
 from pypdf import PdfReader
 from docx import Document
-from docx.opc.constants import RELATIONSHIP_TYPE as RT
 from loguru import logger
 import zipfile
 import xml.etree.ElementTree as ET
