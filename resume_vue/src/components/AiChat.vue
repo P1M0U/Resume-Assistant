@@ -77,7 +77,7 @@
 
 <script setup lang="ts">
 import { ChatDotRound, Delete, Promotion } from '@element-plus/icons-vue'
-import { useAiChat } from '../assets/ts/AiChat'
+import { useAiChat } from '@/composables/useAiChat'
 
 const {
   messages,

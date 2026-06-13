@@ -86,7 +86,7 @@
 
 <script setup lang="ts">
 import { UserFilled, User, Lock, Message } from '@element-plus/icons-vue'
-import { useRegister } from '../assets/ts/Register'
+import { useRegister } from '@/composables/useRegister'
 
 const emit = defineEmits(['close', 'switch-to-login'])
 

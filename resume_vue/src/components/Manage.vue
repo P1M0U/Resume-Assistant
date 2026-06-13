@@ -119,7 +119,7 @@
 
 <script setup lang="ts">
 import { User, UserFilled, Message, Edit, Delete, Refresh } from '@element-plus/icons-vue'
-import { useManage } from '../assets/ts/Manage'
+import { useManage } from '@/composables/useManage'
 
 const {
   users,

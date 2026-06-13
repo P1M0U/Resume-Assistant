@@ -6,8 +6,8 @@ import {
   sendMessage as sendChatMessage,
   clearChatHistory,
   getChatHistory,
-} from '../../services/chat_api'
-import { useResumeStore } from '../../stores/resume'
+} from '../services/chat_api'
+import { useResumeStore } from '../stores/resume'
 
 /**
  * 消息接口定义

@@ -219,7 +219,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue'
-import { useResumeAnalysis } from '../assets/ts/ResumeAnalysis'
+import { useResumeAnalysis } from '@/composables/useResumeAnalysis'
 
 const fileInputRef = ref<HTMLInputElement | null>(null)
 const windowWidth = ref(window.innerWidth)

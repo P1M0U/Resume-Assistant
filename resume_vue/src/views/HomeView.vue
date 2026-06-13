@@ -56,7 +56,7 @@
 </template>
 
 <script setup lang="ts">
-import { useHomeView } from '../assets/ts/HomeView'
+import { useHomeView } from '@/composables/useHomeView'
 
 const { features, handleUpload, handleInputJob, handleFeatureClick } = useHomeView()
 </script>

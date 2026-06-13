@@ -1,7 +1,7 @@
 import { ref, type Ref, onMounted, computed, watch } from 'vue'
 import { ElMessage } from 'element-plus'
-import { useResumeStore } from '../../stores/resume'
-import { resumeApi, type ResumeAnalysisResult } from '../../services/resume_api'
+import { useResumeStore } from '../stores/resume'
+import { resumeApi, type ResumeAnalysisResult } from '../services/resume_api'
 
 /**
  * useResumeAnalysis返回类型接口定义

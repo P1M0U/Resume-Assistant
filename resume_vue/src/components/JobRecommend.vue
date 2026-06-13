@@ -412,7 +412,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue'
-import { useJobRecommend } from '../assets/ts/JobRecommend'
+import { useJobRecommend } from '@/composables/useJobRecommend'
 
 const windowWidth = ref(window.innerWidth)
 

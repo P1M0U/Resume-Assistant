@@ -97,7 +97,7 @@ import {
   Position,
   Edit,
 } from '@element-plus/icons-vue'
-import { useSettings } from '../assets/ts/Settings'
+import { useSettings } from '@/composables/useSettings'
 
 const { settings, handleSettingChange, handleClearCache, handleExportData, handleResetSettings } =
   useSettings()

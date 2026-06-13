@@ -140,7 +140,7 @@ import {
   Avatar,
   CircleCheck,
 } from '@element-plus/icons-vue'
-import { usePersonal } from '../assets/ts/Personal'
+import { usePersonal } from '@/composables/usePersonal'
 import { useUserStore } from '@/stores/user'
 
 const userStore = useUserStore()

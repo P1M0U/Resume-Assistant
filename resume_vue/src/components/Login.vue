@@ -56,7 +56,7 @@
 
 <script setup lang="ts">
 import { UserFilled, User, Lock } from '@element-plus/icons-vue'
-import { useLogin } from '../assets/ts/Login'
+import { useLogin } from '@/composables/useLogin'
 
 const emit = defineEmits(['close', 'switch-to-register'])
 
