@@ -16,13 +16,13 @@
             <h3>用户列表</h3>
             <p>共 {{ users.length }} 个用户</p>
           </div>
-          <el-button class="refresh-btn" @click="loadUsers" :loading="loading">
+          <el-button class="refresh-btn" :loading="loading" @click="loadUsers">
             <el-icon><Refresh /></el-icon>
             刷新
           </el-button>
         </div>
 
-        <el-table :data="users" style="width: 100%" v-loading="loading" class="user-table">
+        <el-table v-loading="loading" :data="users" style="width: 100%" class="user-table">
           <el-table-column prop="id" label="ID" width="80" />
           <el-table-column prop="name" label="用户名" min-width="120">
             <template #default="{ row }">
@@ -61,8 +61,8 @@
               <el-button
                 type="danger"
                 size="small"
-                @click="handleDeleteUser(row.id)"
                 :disabled="row.is_admin && users.filter((u) => u.is_admin).length === 1"
+                @click="handleDeleteUser(row.id)"
               >
                 <el-icon><Delete /></el-icon>
                 删除
@@ -110,7 +110,7 @@
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="closeEditDialog">取消</el-button>
-          <el-button type="primary" @click="handleUpdateUser" :loading="loading"> 确定 </el-button>
+          <el-button type="primary" :loading="loading" @click="handleUpdateUser"> 确定 </el-button>
         </span>
       </template>
     </el-dialog>

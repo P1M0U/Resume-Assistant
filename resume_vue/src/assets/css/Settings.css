@@ -12,7 +12,7 @@
   margin: 0 0 8px 0;
   font-size: 28px;
   font-weight: 600;
-  background: linear-gradient(135deg, #00bcd4 0%, #0097a7 100%);
+  background: var(--gradient-primary);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -22,7 +22,7 @@
 .settings-header p {
   margin: 0;
   font-size: 14px;
-  color: #546e7a;
+  color: var(--color-text-secondary);
 }
 
 .settings-section {
@@ -33,7 +33,7 @@
   margin: 0 0 16px 0;
   font-size: 18px;
   font-weight: 600;
-  color: #00838f;
+  color: var(--color-primary-deep);
   text-shadow: 0 0 20px rgba(0, 188, 212, 0.3);
   display: flex;
   align-items: center;
@@ -86,7 +86,7 @@
   margin: 0 0 4px 0;
   font-size: 16px;
   font-weight: 600;
-  color: #1a237e;
+  color: var(--color-text-primary);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -94,13 +94,13 @@
 
 .setting-info h3 .el-icon {
   font-size: 18px;
-  color: #00bcd4;
+  color: var(--color-primary);
 }
 
 .setting-info p {
   margin: 0;
   font-size: 13px;
-  color: #546e7a;
+  color: var(--color-text-secondary);
 }
 
 .setting-control {
@@ -135,13 +135,13 @@
   margin: 0 0 8px 0;
   font-size: 18px;
   font-weight: 600;
-  color: #00838f;
+  color: var(--color-primary-deep);
 }
 
 .about-section p {
   margin: 0 0 4px 0;
   font-size: 14px;
-  color: #546e7a;
+  color: var(--color-text-secondary);
 }
 
 .version {

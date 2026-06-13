@@ -251,9 +251,10 @@ export function useAiChat(): UseAiChatReturn {
       })
 
       scrollToBottom()
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('发送失败:', error)
-      ElMessage.error(error.response?.data?.detail || '发送失败，请重试')
+      const errMsg = error instanceof Error ? error.message : '发送失败，请重试'
+      ElMessage.error(errMsg)
 
       // 移除用户消息
       messages.value.pop()
@@ -277,9 +278,10 @@ export function useAiChat(): UseAiChatReturn {
       await clearChatHistory()
       messages.value = []
       ElMessage.success('对话已清空')
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('清空对话失败:', error)
-      ElMessage.error(error.response?.data?.detail || '清空对话失败')
+      const errMsg = error instanceof Error ? error.message : '清空对话失败'
+      ElMessage.error(errMsg)
     }
   }
 

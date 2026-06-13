@@ -2,6 +2,7 @@ import { ref, type Ref } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { useUserStore } from '@/stores/user'
 import { updateUser, getCurrentUser } from '@/services/auth_api'
+import { validateEmail } from '@/utils/validation'
 
 /**
  * 用户信息表单接口
@@ -41,14 +42,6 @@ export function usePersonal(): UsePersonalReturn {
     password: '',
     confirmPassword: '',
   })
-
-  /**
-   * 验证邮箱格式
-   */
-  const validateEmail = (email: string): boolean => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    return emailRegex.test(email)
-  }
 
   /**
    * 开始编辑
@@ -133,8 +126,8 @@ export function usePersonal(): UsePersonalReturn {
 
       userForm.value.password = ''
       userForm.value.confirmPassword = ''
-    } catch (error: any) {
-      if (error !== 'cancel') {
+    } catch (error: unknown) {
+      if (error instanceof Error && error.message !== 'cancel') {
         console.error('更新用户信息失败:', error)
       }
     } finally {

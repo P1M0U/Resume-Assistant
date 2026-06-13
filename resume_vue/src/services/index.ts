@@ -27,7 +27,6 @@ const createAxiosInstance = (): AxiosInstance => {
         config.headers.Authorization = `Bearer ${token}`
       }
 
-      console.log(`[API Request] ${config.method?.toUpperCase()} ${config.url}`)
       return config
     },
     (error) => {
@@ -41,11 +40,6 @@ const createAxiosInstance = (): AxiosInstance => {
    */
   instance.interceptors.response.use(
     (response: AxiosResponse) => {
-      console.log(
-        `[API Response] ${response.config.method?.toUpperCase()} ${response.config.url}`,
-        response.data,
-      )
-
       return response
     },
     (error) => {
@@ -109,6 +103,7 @@ const apiClient = createAxiosInstance()
  * @param config - 请求配置
  * @returns Promise
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const get = async <T = any>(url: string, config?: AxiosRequestConfig): Promise<T> => {
   const response = await apiClient.get<T>(url, config)
   return response.data
@@ -121,8 +116,10 @@ export const get = async <T = any>(url: string, config?: AxiosRequestConfig): Pr
  * @param config - 请求配置
  * @returns Promise
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const post = async <T = any>(
   url: string,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data?: any,
   config?: AxiosRequestConfig,
 ): Promise<T> => {
@@ -137,8 +134,10 @@ export const post = async <T = any>(
  * @param config - 请求配置
  * @returns Promise
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const put = async <T = any>(
   url: string,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data?: any,
   config?: AxiosRequestConfig,
 ): Promise<T> => {
@@ -152,6 +151,7 @@ export const put = async <T = any>(
  * @param config - 请求配置
  * @returns Promise
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const del = async <T = any>(url: string, config?: AxiosRequestConfig): Promise<T> => {
   const response = await apiClient.delete<T>(url, config)
   return response.data
@@ -164,6 +164,7 @@ export const del = async <T = any>(url: string, config?: AxiosRequestConfig): Pr
  * @param onProgress - 上传进度回调
  * @returns Promise
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const uploadFile = async <T = any>(
   url: string,
   file: File,

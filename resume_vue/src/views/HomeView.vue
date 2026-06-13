@@ -11,7 +11,7 @@
 
     <div class="feature-section">
       <el-row :gutter="20">
-        <el-col :xs="24" :sm="12" :md="8" v-for="feature in features" :key="feature.id">
+        <el-col v-for="feature in features" :key="feature.id" :xs="24" :sm="12" :md="8">
           <el-card class="feature-card" shadow="hover" @click="handleFeatureClick(feature.id)">
             <div class="feature-icon">
               <el-icon :size="48" :color="feature.color">

@@ -23,14 +23,14 @@
             <el-switch
               v-if="setting.type === 'switch'"
               v-model="setting.value"
-              @change="handleSettingChange(setting.id, $event)"
               active-color="#00bcd4"
+              @change="handleSettingChange(setting.id, $event)"
             />
             <el-select
               v-else-if="setting.type === 'select'"
               v-model="setting.value"
-              @change="handleSettingChange(setting.id, $event)"
               placeholder="请选择"
+              @change="handleSettingChange(setting.id, $event)"
             >
               <el-option
                 v-for="option in setting.options"
@@ -51,15 +51,15 @@
       </h2>
       <el-card class="settings-card" shadow="hover">
         <div class="action-section">
-          <el-button class="action-button" @click="handleClearCache" type="warning">
+          <el-button class="action-button" type="warning" @click="handleClearCache">
             <el-icon><Delete /></el-icon>
             清除缓存
           </el-button>
-          <el-button class="action-button" @click="handleExportData" type="primary">
+          <el-button class="action-button" type="primary" @click="handleExportData">
             <el-icon><Download /></el-icon>
             导出数据
           </el-button>
-          <el-button class="action-button" @click="handleResetSettings" type="danger">
+          <el-button class="action-button" type="danger" @click="handleResetSettings">
             <el-icon><RefreshRight /></el-icon>
             重置设置
           </el-button>
@@ -102,7 +102,9 @@ import { useSettings } from '@/composables/useSettings'
 const { settings, handleSettingChange, handleClearCache, handleExportData, handleResetSettings } =
   useSettings()
 
-const iconMap: Record<string, any> = {
+import type { Component } from 'vue'
+
+const iconMap: Record<string, Component> = {
   Moon,
   Bell,
   Document,
@@ -110,8 +112,8 @@ const iconMap: Record<string, any> = {
   FontSize: Edit,
 }
 
-const getIconComponent = (iconName: string): any => {
-  return iconMap[iconName] || Setting
+const getIconComponent = (iconName: string): Component => {
+  return iconMap[iconName] ?? Setting
 }
 </script>
 

@@ -161,7 +161,7 @@ onUnmounted(() => {
         <div class="header-content">
           <div class="logo">
             <!-- 移动端菜单按钮 -->
-            <el-button v-if="isMobile" class="mobile-menu-btn" @click="toggleSidebar" circle>
+            <el-button v-if="isMobile" class="mobile-menu-btn" circle @click="toggleSidebar">
               <el-icon :size="20">
                 <component :is="sidebarVisible ? 'Close' : 'Menu'" />
               </el-icon>

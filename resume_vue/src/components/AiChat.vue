@@ -44,27 +44,27 @@
           type="textarea"
           :rows="3"
           placeholder="输入您的问题，例如：如何优化我的简历？"
-          @keydown.enter.ctrl="sendMessage"
           :disabled="isLoading"
+          @keydown.enter.ctrl="sendMessage"
         />
         <div class="input-actions">
           <div class="quick-questions">
             <el-tag
               v-for="question in quickQuestions"
               :key="question"
-              @click="handleQuickQuestion(question)"
               class="quick-question"
               effect="plain"
+              @click="handleQuickQuestion(question)"
             >
               {{ question }}
             </el-tag>
           </div>
           <div class="action-buttons">
-            <el-button @click="clearChat" :disabled="messages.length === 0">
+            <el-button :disabled="messages.length === 0" @click="clearChat">
               <el-icon><Delete /></el-icon>
               清空对话
             </el-button>
-            <el-button type="primary" @click="sendMessage" :loading="isLoading">
+            <el-button type="primary" :loading="isLoading" @click="sendMessage">
               <el-icon><Promotion /></el-icon>
               发送
             </el-button>

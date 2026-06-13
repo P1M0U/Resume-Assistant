@@ -30,7 +30,7 @@
       </el-col>
     </el-row>
 
-    <el-row :gutter="20" v-if="uploadedFile">
+    <el-row v-if="uploadedFile" :gutter="20">
       <el-col :span="24">
         <el-card class="file-info-card" shadow="hover">
           <div class="file-info">
@@ -39,7 +39,7 @@
               <h4>{{ uploadedFile.name }}</h4>
               <p>{{ formatFileSize(uploadedFile.size) }}</p>
             </div>
-            <el-button type="primary" @click="handleAnalyze" :loading="analyzing">
+            <el-button type="primary" :loading="analyzing" @click="handleAnalyze">
               {{ analyzing ? '分析中...' : '开始分析' }}
             </el-button>
           </div>

@@ -118,8 +118,8 @@ export function useManage(): UseManageReturn {
       showEditDialog.value = false
 
       await loadUsers()
-    } catch (error: any) {
-      if (error !== 'cancel') {
+    } catch (error: unknown) {
+      if (error instanceof Error && error.message !== 'cancel') {
         console.error('更新用户信息失败:', error)
       }
     } finally {
@@ -145,8 +145,8 @@ export function useManage(): UseManageReturn {
       ElMessage.success('用户删除成功')
 
       await loadUsers()
-    } catch (error: any) {
-      if (error !== 'cancel') {
+    } catch (error: unknown) {
+      if (error instanceof Error && error.message !== 'cancel') {
         console.error('删除用户失败:', error)
       }
     } finally {

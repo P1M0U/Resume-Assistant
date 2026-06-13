@@ -1,0 +1,56 @@
+/* 全局 CSS 变量 */
+:root {
+  /* 品牌色 */
+  --color-primary: #00bcd4;
+  --color-primary-hover: #00acc1;
+  --color-primary-dark: #0097a7;
+  --color-primary-deep: #00838f;
+
+  /* 文字色 */
+  --color-text-primary: #1a237e;
+  --color-text-secondary: #546e7a;
+  --color-text-body: #37474f;
+
+  /* 背景色 */
+  --color-bg-light-blue: #e3f2fd;
+  --color-bg-light-gray: #f5f5f5;
+  --color-bg-light-green: #e8f5e9;
+
+  /* 渐变色 */
+  --gradient-primary: linear-gradient(
+    135deg,
+    var(--color-primary) 0%,
+    var(--color-primary-dark) 100%
+  );
+  --gradient-primary-hover: linear-gradient(
+    135deg,
+    var(--color-primary-hover) 0%,
+    var(--color-primary-deep) 100%
+  );
+  --gradient-bg: linear-gradient(
+    135deg,
+    var(--color-bg-light-blue) 0%,
+    var(--color-bg-light-gray) 50%,
+    var(--color-bg-light-green) 100%
+  );
+
+  /* Element Plus 标签色 */
+  --color-success: #67c23a;
+  --color-warning: #e6a23c;
+  --color-danger: #f56c6c;
+  --color-info: #909399;
+  --color-primary-blue: #409eff;
+
+  /* 阴影 */
+  --shadow-sm: 0 4px 16px rgba(0, 188, 212, 0.15);
+  --shadow-md: 0 8px 24px rgba(0, 188, 212, 0.25);
+  --shadow-lg: 0 8px 32px rgba(0, 188, 212, 0.15);
+  --shadow-hover: 0 8px 32px rgba(0, 188, 212, 0.4);
+
+  /* 圆角 */
+  --radius-sm: 12px;
+  --radius-md: 20px;
+
+  /* 动画 */
+  --transition-base: all 0.3s ease;
+}

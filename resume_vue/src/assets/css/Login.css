@@ -72,14 +72,14 @@
 
 .login-header .logo-icon .el-icon {
   font-size: 32px;
-  color: #00bcd4;
+  color: var(--color-primary);
 }
 
 .login-header h2 {
   margin: 0 0 8px 0;
   font-size: 24px;
   font-weight: 600;
-  background: linear-gradient(135deg, #00bcd4 0%, #0097a7 100%);
+  background: var(--gradient-primary);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -88,7 +88,7 @@
 .login-header p {
   margin: 0;
   font-size: 14px;
-  color: #546e7a;
+  color: var(--color-text-secondary);
 }
 
 .login-form {
@@ -108,20 +108,20 @@
 }
 
 .login-form :deep(.el-input__wrapper:hover) {
-  border-color: #00bcd4;
+  border-color: var(--color-primary);
 }
 
 .login-form :deep(.el-input__wrapper.is-focus) {
-  border-color: #00bcd4;
+  border-color: var(--color-primary);
   box-shadow: 0 0 0 2px rgba(0, 188, 212, 0.1);
 }
 
 .login-form :deep(.el-input__inner) {
-  color: #1a237e;
+  color: var(--color-text-primary);
 }
 
 .login-form :deep(.el-input__prefix) {
-  color: #00bcd4;
+  color: var(--color-primary);
 }
 
 .form-options {
@@ -132,25 +132,25 @@
 }
 
 .form-options :deep(.el-checkbox__label) {
-  color: #546e7a;
+  color: var(--color-text-secondary);
   font-size: 13px;
 }
 
 .forgot-password {
-  color: #00bcd4;
+  color: var(--color-primary);
   font-size: 13px;
   cursor: pointer;
   transition: color 0.3s ease;
 }
 
 .forgot-password:hover {
-  color: #00838f;
+  color: var(--color-primary-deep);
 }
 
 .login-button {
   width: 100%;
   height: 48px;
-  background: linear-gradient(135deg, #00bcd4 0%, #0097a7 100%);
+  background: var(--gradient-primary);
   border: none;
   border-radius: 12px;
   font-size: 16px;
@@ -161,7 +161,7 @@
 }
 
 .login-button:hover {
-  background: linear-gradient(135deg, #00acc1 0%, #00838f 100%);
+  background: var(--gradient-primary-hover);
   transform: translateY(-2px);
   box-shadow: 0 8px 32px rgba(0, 188, 212, 0.5);
 }
@@ -175,18 +175,18 @@
 .login-footer p {
   margin: 0;
   font-size: 14px;
-  color: #546e7a;
+  color: var(--color-text-secondary);
 }
 
 .login-footer .register-link {
-  color: #00bcd4;
+  color: var(--color-primary);
   font-weight: 600;
   cursor: pointer;
   transition: color 0.3s ease;
 }
 
 .login-footer .register-link:hover {
-  color: #00838f;
+  color: var(--color-primary-deep);
 }
 
 /* 移动端适配 */

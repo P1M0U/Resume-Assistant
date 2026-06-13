@@ -118,7 +118,7 @@ export function useSettings(): UseSettingsReturn {
       localStorage.clear()
       sessionStorage.clear()
       ElMessage.success('缓存已清除')
-    } catch (error) {
+    } catch {
       // 用户取消操作
     }
   }
@@ -163,7 +163,7 @@ export function useSettings(): UseSettingsReturn {
       })
 
       ElMessage.success('设置已重置')
-    } catch (error) {
+    } catch {
       // 用户取消操作
     }
   }

@@ -10,7 +10,7 @@
   margin: 0 0 8px 0;
   font-size: 28px;
   font-weight: 600;
-  background: linear-gradient(135deg, #00bcd4 0%, #0097a7 100%);
+  background: var(--gradient-primary);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -20,7 +20,7 @@
 .page-header p {
   margin: 0;
   font-size: 14px;
-  color: #546e7a;
+  color: var(--color-text-secondary);
 }
 
 .upload-card {
@@ -39,7 +39,7 @@
 }
 
 .upload-area:hover {
-  border-color: #00bcd4;
+  border-color: var(--color-primary);
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(248, 250, 255, 0.8) 100%);
   box-shadow: 0 12px 36px rgba(0, 188, 212, 0.25);
   transform: scale(1.02);
@@ -49,14 +49,14 @@
   margin: 16px 0 8px 0;
   font-size: 18px;
   font-weight: 600;
-  color: #00838f;
+  color: var(--color-primary-deep);
   text-shadow: 0 0 20px rgba(0, 188, 212, 0.3);
 }
 
 .upload-area p {
   margin: 0;
   font-size: 14px;
-  color: #546e7a;
+  color: var(--color-text-secondary);
 }
 
 .file-info-card {
@@ -81,14 +81,14 @@
   margin: 0 0 4px 0;
   font-size: 16px;
   font-weight: 600;
-  color: #00838f;
+  color: var(--color-primary-deep);
   text-shadow: 0 0 20px rgba(0, 188, 212, 0.3);
 }
 
 .file-details p {
   margin: 0;
   font-size: 14px;
-  color: #546e7a;
+  color: var(--color-text-secondary);
 }
 
 .analysis-result {
@@ -113,7 +113,7 @@
   margin: 0;
   font-size: 18px;
   font-weight: 600;
-  color: #00838f;
+  color: var(--color-primary-deep);
   text-shadow: 0 0 20px rgba(0, 188, 212, 0.3);
 }
 
@@ -147,7 +147,7 @@
 .score-number .number {
   font-size: 56px;
   font-weight: 700;
-  background: linear-gradient(135deg, #00bcd4 0%, #0097a7 100%);
+  background: var(--gradient-primary);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -158,7 +158,7 @@
 .score-number .unit {
   font-size: 24px;
   font-weight: 600;
-  color: #00838f;
+  color: var(--color-primary-deep);
   text-shadow: 0 0 20px rgba(0, 188, 212, 0.3);
 }
 
@@ -182,7 +182,7 @@
   margin: 0 0 12px 0;
   font-size: 16px;
   font-weight: 600;
-  color: #00838f;
+  color: var(--color-primary-deep);
   text-shadow: 0 0 20px rgba(0, 188, 212, 0.3);
 }
 
@@ -210,19 +210,19 @@
   margin: 0 0 8px 0;
   font-size: 15px;
   font-weight: 600;
-  color: #00838f;
+  color: var(--color-primary-deep);
   text-shadow: 0 0 20px rgba(0, 188, 212, 0.3);
 }
 
 .suggestion-item p {
   margin: 0;
   font-size: 14px;
-  color: #37474f;
+  color: var(--color-text-body);
   line-height: 1.6;
 }
 
 .el-timeline-item__timestamp {
-  color: #00bcd4 !important;
+  color: var(--color-primary) !important;
   font-weight: 500;
 }
 
@@ -242,7 +242,7 @@
   gap: 12px;
   font-size: 18px;
   font-weight: 600;
-  color: #00838f;
+  color: var(--color-primary-deep);
   text-shadow: 0 0 20px rgba(0, 188, 212, 0.3);
 }
 
@@ -267,14 +267,14 @@
   margin: 0 0 8px 0;
   font-size: 15px;
   font-weight: 600;
-  color: #00838f;
+  color: var(--color-primary-deep);
   text-shadow: 0 0 20px rgba(0, 188, 212, 0.3);
 }
 
 .suggestion-card p {
   margin: 0;
   font-size: 14px;
-  color: #37474f;
+  color: var(--color-text-body);
   line-height: 1.6;
 }
 
@@ -282,28 +282,6 @@
   display: flex;
   justify-content: flex-end;
   gap: 12px;
-}
-
-.el-button {
-  border-radius: 12px;
-  font-weight: 500;
-  transition: all 0.3s ease;
-}
-
-.el-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 188, 212, 0.3);
-}
-
-.el-button--primary {
-  background: linear-gradient(135deg, #00bcd4 0%, #0097a7 100%);
-  border: none;
-  box-shadow: 0 4px 16px rgba(0, 188, 212, 0.25);
-}
-
-.el-button--primary:hover {
-  background: linear-gradient(135deg, #00acc1 0%, #00838f 100%);
-  box-shadow: 0 8px 32px rgba(0, 188, 212, 0.4);
 }
 
 .el-tag--success {
@@ -329,8 +307,8 @@
 
 .el-tag--info {
   background: linear-gradient(135deg, rgba(0, 188, 212, 0.15) 0%, rgba(0, 150, 136, 0.15) 100%);
-  border-color: #00bcd4;
-  color: #00838f;
+  border-color: var(--color-primary);
+  color: var(--color-primary-deep);
   box-shadow: 0 0 20px rgba(0, 188, 212, 0.2);
 }
 

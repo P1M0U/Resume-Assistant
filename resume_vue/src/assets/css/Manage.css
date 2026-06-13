@@ -12,7 +12,7 @@
   margin: 0 0 8px 0;
   font-size: 28px;
   font-weight: 600;
-  background: linear-gradient(135deg, #00bcd4 0%, #0097a7 100%);
+  background: var(--gradient-primary);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -22,7 +22,7 @@
 .manage-header p {
   margin: 0;
   font-size: 14px;
-  color: #546e7a;
+  color: var(--color-text-secondary);
 }
 
 .manage-section {
@@ -33,7 +33,7 @@
   margin: 0 0 16px 0;
   font-size: 18px;
   font-weight: 600;
-  color: #00838f;
+  color: var(--color-primary-deep);
   text-shadow: 0 0 20px rgba(0, 188, 212, 0.3);
   display: flex;
   align-items: center;
@@ -73,13 +73,13 @@
   margin: 0 0 4px 0;
   font-size: 18px;
   font-weight: 600;
-  color: #1a237e;
+  color: var(--color-text-primary);
 }
 
 .header-info p {
   margin: 0;
   font-size: 13px;
-  color: #546e7a;
+  color: var(--color-text-secondary);
 }
 
 .refresh-btn {
@@ -104,7 +104,7 @@
 
 .user-table :deep(.el-table__header th) {
   background: transparent;
-  color: #00838f;
+  color: var(--color-primary-deep);
   font-weight: 600;
   font-size: 14px;
 }
@@ -127,7 +127,7 @@
 .user-name .el-icon,
 .user-email .el-icon {
   font-size: 16px;
-  color: #00bcd4;
+  color: var(--color-primary);
 }
 
 .user-table :deep(.el-button) {
@@ -154,7 +154,7 @@
 
 :deep(.el-dialog__title) {
   font-weight: 600;
-  color: #00838f;
+  color: var(--color-primary-deep);
 }
 
 :deep(.el-dialog__body) {

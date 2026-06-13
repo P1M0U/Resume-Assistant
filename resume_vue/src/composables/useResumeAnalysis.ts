@@ -156,8 +156,8 @@ export function useResumeAnalysis(
       // 调用真实API
       const result = await resumeApi.uploadAndAnalyze({
         file: uploadedFile.value,
-        onProgress: (progress) => {
-          console.log(`上传进度: ${progress}%`)
+        onProgress: (_progress: number) => {
+          // 上传进度回调，无需额外处理
         },
       })
 

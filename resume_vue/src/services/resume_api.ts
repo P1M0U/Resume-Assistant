@@ -79,32 +79,12 @@ export class ResumeApiService {
    * @returns 简历分析结果
    */
   static async uploadAndAnalyze(params: UploadResumeParams): Promise<ResumeAnalysisResult> {
-    const response = await uploadFile<{ success: boolean; data: ResumeAnalysisResult; message: string }>(
-      '/resume/upload',
-      params.file,
-      params.onProgress,
-    )
+    const response = await uploadFile<{
+      success: boolean
+      data: ResumeAnalysisResult
+      message: string
+    }>('/resume/upload', params.file, params.onProgress)
     return response.data
-  }
-
-  /**
-   * 仅上传简历文件
-   * @param params - 上传参数
-   * @returns 文件路径或ID
-   */
-  static async uploadResume(
-    params: UploadResumeParams,
-  ): Promise<{ file_id: string; file_path: string }> {
-    return uploadFile('/resume/upload-file', params.file, params.onProgress)
-  }
-
-  /**
-   * 分析已上传的简历
-   * @param fileId - 文件ID
-   * @returns 简历分析结果
-   */
-  static async analyzeResume(fileId: string): Promise<ResumeAnalysisResult> {
-    return post('/resume/analyze', { file_id: fileId })
   }
 
   /**
@@ -165,8 +145,6 @@ export class ResumeApiService {
  */
 export const resumeApi = {
   uploadAndAnalyze: ResumeApiService.uploadAndAnalyze,
-  uploadResume: ResumeApiService.uploadResume,
-  analyzeResume: ResumeApiService.analyzeResume,
   getJobRecommendation: ResumeApiService.getJobRecommendation,
   getAnalysisHistory: ResumeApiService.getAnalysisHistory,
   getAnalysisDetail: ResumeApiService.getAnalysisDetail,

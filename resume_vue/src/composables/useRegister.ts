@@ -1,8 +1,9 @@
-// d:\Study_or_work\CQIE_Python\resume_assistant\resume_vue\src\assets\ts\Register.ts
+// 注册组合式函数
 
 import { ref, type Ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import { register as registerApi } from '@/services/auth_api'
+import { validateEmail } from '@/utils/validation'
 
 /**
  * 注册表单接口定义
@@ -40,14 +41,6 @@ export function useRegister(emit: (event: 'close' | 'switch-to-login') => void):
   })
 
   const loading = ref(false)
-
-  /**
-   * 验证邮箱格式
-   */
-  const validateEmail = (email: string): boolean => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    return emailRegex.test(email)
-  }
 
   /**
    * 处理注册

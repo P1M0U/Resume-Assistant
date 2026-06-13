@@ -1,11 +1,7 @@
 import { ref, type Ref, computed, onMounted, watch } from 'vue'
 import { ElMessage } from 'element-plus'
 import { useResumeStore } from '../stores/resume'
-import {
-  resumeApi,
-  type ResumeAnalysisResult,
-  type JobMatchResult,
-} from '../services/resume_api'
+import { resumeApi, type ResumeAnalysisResult, type JobMatchResult } from '../services/resume_api'
 
 /**
  * useJobRecommend返回类型接口定义

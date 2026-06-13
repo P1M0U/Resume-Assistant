@@ -62,7 +62,7 @@
       </el-col>
     </el-row>
 
-    <el-row :gutter="20" v-if="hasResumeData">
+    <el-row v-if="hasResumeData" :gutter="20">
       <el-col :span="24">
         <el-card class="result-card" shadow="hover" @click="showResumeDetail">
           <template #header>
@@ -226,7 +226,7 @@
               <h4>匹配技能</h4>
               <div class="skill-tags">
                 <el-tag
-                  v-for="(skill, index) in (jobMatchResult.matched_skills || [])"
+                  v-for="(skill, index) in jobMatchResult.matched_skills || []"
                   :key="index"
                   type="success"
                   class="skill-tag"
@@ -240,7 +240,7 @@
               <h4>缺失技能</h4>
               <div class="skill-tags">
                 <el-tag
-                  v-for="(skill, index) in (jobMatchResult.missing_skills || [])"
+                  v-for="(skill, index) in jobMatchResult.missing_skills || []"
                   :key="index"
                   type="danger"
                   class="skill-tag"
@@ -256,7 +256,7 @@
               <h4>推荐岗位</h4>
               <div class="recommendation-list">
                 <div
-                  v-for="(rec, index) in (jobMatchResult.recommendations || [])"
+                  v-for="(rec, index) in jobMatchResult.recommendations || []"
                   :key="index"
                   class="recommendation-item"
                 >
@@ -269,7 +269,7 @@
                   <p class="recommendation-reason">{{ rec.reason }}</p>
                   <div class="requirements-tags">
                     <el-tag
-                      v-for="(req, idx) in (rec.key_requirements || [])"
+                      v-for="(req, idx) in rec.key_requirements || []"
                       :key="idx"
                       size="small"
                       type="info"
@@ -287,7 +287,7 @@
               <h4>优化建议</h4>
               <el-timeline>
                 <el-timeline-item
-                  v-for="(suggestion, index) in (jobMatchResult.optimization_suggestions || [])"
+                  v-for="(suggestion, index) in jobMatchResult.optimization_suggestions || []"
                   :key="index"
                   :timestamp="suggestion.category"
                   placement="top"
@@ -315,7 +315,7 @@
       </template>
     </el-dialog>
 
-    <el-row :gutter="20" v-if="jobMatchResult">
+    <el-row v-if="jobMatchResult" :gutter="20">
       <el-col :span="24">
         <el-card class="job-result-card" shadow="hover" @click="dialogVisible = true">
           <template #header>
@@ -356,7 +356,11 @@
                   >
                     {{ skill }}
                   </el-tag>
-                  <el-tag v-if="(jobMatchResult.matched_skills || []).length > 5" size="small" type="info">
+                  <el-tag
+                    v-if="(jobMatchResult.matched_skills || []).length > 5"
+                    size="small"
+                    type="info"
+                  >
                     +{{ (jobMatchResult.matched_skills || []).length - 5 }}
                   </el-tag>
                 </div>
@@ -373,7 +377,11 @@
                   >
                     {{ skill }}
                   </el-tag>
-                  <el-tag v-if="(jobMatchResult.missing_skills || []).length > 5" size="small" type="info">
+                  <el-tag
+                    v-if="(jobMatchResult.missing_skills || []).length > 5"
+                    size="small"
+                    type="info"
+                  >
                     +{{ (jobMatchResult.missing_skills || []).length - 5 }}
                   </el-tag>
                 </div>
@@ -386,7 +394,7 @@
               <h5>推荐岗位 ({{ (jobMatchResult.recommendations || []).length }})</h5>
               <div class="recommendation-tags">
                 <el-tag
-                  v-for="(rec, index) in (jobMatchResult.recommendations || [])"
+                  v-for="(rec, index) in jobMatchResult.recommendations || []"
                   :key="index"
                   :type="getMatchTagType(rec.match_score)"
                   size="small"
