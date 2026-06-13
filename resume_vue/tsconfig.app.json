@@ -17,6 +17,9 @@
     // Enable incremental compilation for tsBuildInfoFile
     "incremental": true,
 
+    // Only type-check, no JS output emitted
+    "noEmit": true,
+
     // Path mapping for cleaner imports.
     "paths": {
       "@/*": ["./src/*"]
